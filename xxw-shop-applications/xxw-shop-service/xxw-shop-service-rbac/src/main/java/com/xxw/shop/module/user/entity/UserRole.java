@@ -27,7 +27,7 @@ public class UserRole implements Serializable {
      * 关联id
      */
     @Id(keyType = KeyType.Auto)
-    private BigInteger id;
+    private Long id;
     /**
      * 创建时间
      */
@@ -39,10 +39,10 @@ public class UserRole implements Serializable {
     /**
      * 用户ID
      */
-    private BigInteger userId;
+    private Long userId;
     /**
      * 角色ID
      */
-    private BigInteger roleId;
+    private Long roleId;
 
 }

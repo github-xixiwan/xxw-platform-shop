@@ -27,7 +27,7 @@ public class SysUser implements Serializable {
      * 平台用户id
      */
     @Id
-    private BigInteger sysUserId;
+    private Long sysUserId;
     /**
      * 创建时间
      */

@@ -27,7 +27,7 @@ public class Role implements Serializable {
      * 角色id
      */
     @Id(keyType = KeyType.Auto)
-    private BigInteger roleId;
+    private Long roleId;
     /**
      * 创建时间
      */
@@ -47,7 +47,7 @@ public class Role implements Serializable {
     /**
      * 创建者ID
      */
-    private BigInteger createUserId;
+    private Long createUserId;
     /**
      * 业务类型 1 店铺菜单 2平台菜单
      */

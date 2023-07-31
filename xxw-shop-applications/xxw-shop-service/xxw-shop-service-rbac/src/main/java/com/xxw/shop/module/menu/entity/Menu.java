@@ -3,13 +3,13 @@ package com.xxw.shop.module.menu.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *  实体类。
@@ -27,7 +27,7 @@ public class Menu implements Serializable {
      * 菜单id
      */
     @Id(keyType = KeyType.Auto)
-    private BigInteger menuId;
+    private Long menuId;
     /**
      * 创建时间
      */
@@ -39,7 +39,7 @@ public class Menu implements Serializable {
     /**
      * 父菜单ID，一级菜单为0
      */
-    private BigInteger parentId;
+    private Long parentId;
     /**
      * 业务类型 1 店铺菜单 2平台菜单
      */

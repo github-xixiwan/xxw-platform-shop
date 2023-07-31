@@ -1,8 +1,8 @@
 package com.xxw.shop.module.web.cache;
 
-public interface CacheNames extends PlatformCacheNames {
+public interface CacheNames extends RbacCacheNames {
+
     /**
-     *
      * 参考CacheKeyPrefix
      * cacheNames 与 key 之间的默认连接字符
      */

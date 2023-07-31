@@ -27,7 +27,7 @@ public class MenuPermission implements Serializable {
      * 菜单资源用户id
      */
     @Id(keyType = KeyType.Auto)
-    private BigInteger menuPermissionId;
+    private Long menuPermissionId;
     /**
      * 创建时间
      */

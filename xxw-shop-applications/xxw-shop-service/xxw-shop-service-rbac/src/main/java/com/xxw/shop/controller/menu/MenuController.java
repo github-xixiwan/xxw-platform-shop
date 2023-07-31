@@ -1,22 +1,25 @@
 package com.xxw.shop.controller.menu;
 
-import com.mybatisflex.core.paginate.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xxw.shop.module.menu.dto.MenuDTO;
 import com.xxw.shop.module.menu.entity.Menu;
 import com.xxw.shop.module.menu.service.MenuService;
-import org.springframework.web.bind.annotation.RestController;
-import java.io.Serializable;
+import com.xxw.shop.module.menu.vo.MenuSimpleVO;
+import com.xxw.shop.module.menu.vo.MenuVO;
+import com.xxw.shop.module.menu.vo.RouteMetaVO;
+import com.xxw.shop.module.menu.vo.RouteVO;
+import com.xxw.shop.module.web.response.ServerResponseEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
- *  控制层。
+ * 控制层。
  *
  * @author liaoxiting
  * @since 2023-07-31
@@ -25,72 +28,107 @@ import java.util.List;
 @RequestMapping("/menu")
 public class MenuController {
 
-    @Autowired
+    @Resource
     private MenuService menuService;
 
-    /**
-     * 添加。
-     *
-     * @param menu 
-     * @return {@code true} 添加成功，{@code false} 添加失败
-     */
-    @PostMapping("save")
-    public boolean save(@RequestBody Menu menu) {
-        return menuService.save(menu);
+    @GetMapping(value = "/route")
+    @Operation(summary = "路由菜单", description = "获取当前登陆用户可用的路由菜单列表")
+    public ServerResponseEntity<List<RouteVO>> route(Integer sysType) {
+        sysType = Objects.isNull(sysType) ? AuthUserContext.get().getSysType() : sysType;
+        List<Menu> menus = menuService.listBySysType(sysType);
+
+        List<RouteVO> routes = new ArrayList<>(menus.size());
+
+        for (Menu menu : menus) {
+            RouteVO route = new RouteVO();
+            route.setAlwaysShow(Objects.equals(menu.getAlwaysShow(), 1));
+            route.setComponent(menu.getComponent());
+            route.setHidden(Objects.equals(menu.getHidden(), 1));
+            route.setName(menu.getName());
+            route.setPath(menu.getPath());
+            route.setRedirect(menu.getRedirect());
+            route.setId(menu.getMenuId());
+            route.setParentId(menu.getParentId());
+            route.setSeq(menu.getSeq());
+
+            RouteMetaVO meta = new RouteMetaVO();
+            meta.setActiveMenu(menu.getActiveMenu());
+            meta.setAffix(Objects.equals(menu.getAffix(), 1));
+            meta.setBreadcrumb(Objects.equals(menu.getBreadcrumb(), 1));
+            meta.setIcon(menu.getIcon());
+            meta.setNoCache(Objects.equals(menu.getNoCache(), 1));
+            meta.setTitle(menu.getTitle());
+            // 对于前端来说角色就是权限
+            meta.setRoles(Collections.singletonList(menu.getPermission()));
+
+            route.setMeta(meta);
+            routes.add(route);
+        }
+        return ServerResponseEntity.success(routes);
     }
 
-    /**
-     * 根据主键删除。
-     *
-     * @param id 主键
-     * @return {@code true} 删除成功，{@code false} 删除失败
-     */
-    @DeleteMapping("remove/{id}")
-    public boolean remove(@PathVariable Serializable id) {
-        return menuService.removeById(id);
+    @GetMapping
+    @Operation(summary = "获取菜单管理", description = "根据menuId获取菜单管理")
+    public ServerResponseEntity<MenuVO> getByMenuId(@RequestParam Long menuId) {
+        return ServerResponseEntity.success(menuService.getByMenuId(menuId));
     }
 
-    /**
-     * 根据主键更新。
-     *
-     * @param menu 
-     * @return {@code true} 更新成功，{@code false} 更新失败
-     */
-    @PutMapping("update")
-    public boolean update(@RequestBody Menu menu) {
-        return menuService.updateById(menu);
+    @PostMapping
+    @Operation(summary = "保存菜单管理", description = "保存菜单管理")
+    public ServerResponseEntity<Void> save(@Valid @RequestBody MenuDTO menuDTO) {
+        Menu menu = checkAndGenerate(menuDTO);
+        menu.setMenuId(null);
+        menuService.save(menu);
+        return ServerResponseEntity.success();
     }
 
-    /**
-     * 查询所有。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("list")
-    public List<Menu> list() {
-        return menuService.list();
+    private Menu checkAndGenerate(@RequestBody @Valid MenuDTO menuDTO) {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        if (!Objects.equals(userInfoInTokenBO.getTenantId(), 0L)) {
+            throw new Mall4cloudException("无权限操作！");
+        }
+        Menu menu = mapperFacade.map(menuDTO, Menu.class);
+        menu.setBizType(menuDTO.getSysType());
+        if (Objects.isNull(menuDTO.getSysType())) {
+            menu.setBizType(AuthUserContext.get().getSysType());
+        }
+        return menu;
     }
 
-    /**
-     * 根据主键获取详细信息。
-     *
-     * @param id 主键
-     * @return 详情
-     */
-    @GetMapping("getInfo/{id}")
-    public Menu getInfo(@PathVariable Serializable id) {
-        return menuService.getById(id);
+    @PutMapping
+    @Operation(summary = "更新菜单管理", description = "更新菜单管理")
+    public ServerResponseEntity<Void> update(@Valid @RequestBody MenuDTO menuDTO) {
+        Menu menu = checkAndGenerate(menuDTO);
+        menuService.update(menu);
+        return ServerResponseEntity.success();
     }
 
-    /**
-     * 分页查询。
-     *
-     * @param page 分页对象
-     * @return 分页对象
-     */
-    @GetMapping("page")
-    public Page<Menu> page(Page<Menu> page) {
-        return menuService.page(page);
+    @DeleteMapping
+    @Operation(summary = "删除菜单管理", description = "根据菜单管理id删除菜单管理")
+    public ServerResponseEntity<Void> delete(@RequestParam("menuId") Long menuId, @RequestParam("sysType") Integer sysType) {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        if (!Objects.equals(userInfoInTokenBO.getTenantId(), 0L)) {
+            throw new Mall4cloudException("无权限操作！");
+        }
+        sysType = Objects.isNull(sysType) ? userInfoInTokenBO.getSysType() : sysType;
+        menuService.deleteById(menuId, sysType);
+        return ServerResponseEntity.success();
+    }
+
+    @GetMapping(value = "/list_with_permissions")
+    @Operation(summary = "菜单列表和按钮列表", description = "根据系统类型获取该系统的菜单列表 + 菜单下的权限列表")
+    public ServerResponseEntity<List<MenuSimpleVO>> listWithPermissions() {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        List<MenuSimpleVO> menuList = menuService.listWithPermissions(userInfoInTokenBO.getSysType());
+        return ServerResponseEntity.success(menuList);
+    }
+
+    @GetMapping(value = "/list_menu_ids")
+    @Operation(summary = "获取当前用户可见的菜单ids", description = "获取当前用户可见的菜单id")
+    public ServerResponseEntity<List<Long>> listMenuIds() {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        List<Long> menuList = menuService.listMenuIds(userInfoInTokenBO.getUserId());
+        return ServerResponseEntity.success(menuList);
     }
 
 }

@@ -27,7 +27,7 @@ public class RoleMenu implements Serializable {
      * 关联id
      */
     @Id(keyType = KeyType.Auto)
-    private BigInteger id;
+    private Long id;
     /**
      * 创建时间
      */
@@ -39,14 +39,14 @@ public class RoleMenu implements Serializable {
     /**
      * 角色ID
      */
-    private BigInteger roleId;
+    private Long roleId;
     /**
      * 菜单ID
      */
-    private BigInteger menuId;
+    private Long menuId;
     /**
      * 菜单资源用户id
      */
-    private BigInteger menuPermissionId;
+    private Long menuPermissionId;
 
 }
