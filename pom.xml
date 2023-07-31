@@ -48,7 +48,7 @@
         <!-- modules -->
         <module>xxw-shop-dependencies</module>
         <module>xxw-shop-modules</module>
-<!--        <module>xxw-shop-starters</module>-->
+        <module>xxw-shop-starters</module>
         <module>xxw-shop-applications</module>
     </modules>
 

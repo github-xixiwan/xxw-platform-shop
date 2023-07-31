@@ -77,7 +77,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.xxw.shop.GatewayApplication</mainClass>
+                    <mainClass>com.xxw.shop.api.platform.user.GatewayApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

@@ -30,12 +30,12 @@ public class Codegen {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-        globalConfig.setBasePackage("com.xxw.shop");
+        globalConfig.setBasePackage("com.xxw.shop.module.config");
 
         //设置表前缀和只生成哪些表
 //        globalConfig.setGenerateSchema("schema");
 //        globalConfig.setTablePrefix("tb_");
-        globalConfig.setGenerateTable("users");
+        globalConfig.setGenerateTable("sys_user");
 
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);

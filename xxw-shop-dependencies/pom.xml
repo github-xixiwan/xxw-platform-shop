@@ -15,13 +15,17 @@
 
         <mybatis-flex.version>1.5.3</mybatis-flex.version>
         <redisson.version>3.23.1</redisson.version>
+        <knife4j.version>4.1.0</knife4j.version>
+        <elasticsearch.version>7.17.12</elasticsearch.version>
         <guava.version>32.1.1-jre</guava.version>
         <orika.version>1.5.4</orika.version>
         <jackson.version>2.15.2</jackson.version>
+        <hutool.version>5.8.21</hutool.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- basic -->
             <dependency>
                 <groupId>com.xxw.shop</groupId>
                 <artifactId>xxw-shop-module-util</artifactId>
@@ -48,48 +52,26 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- api -->
             <dependency>
                 <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-api</artifactId>
+                <artifactId>xxw-shop-api-rbac</artifactId>
                 <version>${revision}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.xxw.shop</groupId>-->
-<!--                <artifactId>xxw-shop-starter-redisson</artifactId>-->
-<!--                <version>${revision}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.xxw.shop</groupId>-->
-<!--                <artifactId>xxw-shop-starter-elasticsearch</artifactId>-->
-<!--                <version>${revision}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.xxw.shop</groupId>-->
-<!--                <artifactId>xxw-shop-starter-mqtt-publish</artifactId>-->
-<!--                <version>${revision}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.xxw.shop</groupId>-->
-<!--                <artifactId>xxw-shop-starter-mqtt-subscribe</artifactId>-->
-<!--                <version>${revision}</version>-->
-<!--            </dependency>-->
+            <!-- starter -->
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-starter-redisson</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-starter-elasticsearch</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-generator</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>-->
-<!--                <version>${dynamic-datasource.version}</version>-->
-<!--            </dependency>-->
+            <!-- other -->
             <dependency>
                 <groupId>com.mybatis-flex</groupId>
                 <artifactId>mybatis-flex-spring-boot-starter</artifactId>
@@ -106,6 +88,16 @@
                 <version>${redisson.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
@@ -119,6 +111,11 @@
                 <groupId>ma.glasnost.orika</groupId>
                 <artifactId>orika-core</artifactId>
                 <version>${orika.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
