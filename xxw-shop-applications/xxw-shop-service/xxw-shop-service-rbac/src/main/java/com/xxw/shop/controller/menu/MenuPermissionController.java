@@ -1,18 +1,18 @@
 package com.xxw.shop.controller.menu;
 
+import cn.hutool.core.util.BooleanUtil;
 import com.mybatisflex.core.paginate.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xxw.shop.module.menu.dto.MenuPermissionDTO;
+import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
 import com.xxw.shop.module.menu.service.MenuPermissionService;
-import org.springframework.web.bind.annotation.RestController;
-import java.io.Serializable;
+import com.xxw.shop.module.menu.vo.MenuPermissionVO;
+import com.xxw.shop.module.web.response.ServerResponseEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -25,72 +25,63 @@ import java.util.List;
 @RequestMapping("/menuPermission")
 public class MenuPermissionController {
 
-    @Autowired
+    @Resource
     private MenuPermissionService menuPermissionService;
 
-    /**
-     * 添加。
-     *
-     * @param menuPermission 
-     * @return {@code true} 添加成功，{@code false} 添加失败
-     */
-    @PostMapping("save")
-    public boolean save(@RequestBody MenuPermission menuPermission) {
+    @GetMapping("/list_by_menu")
+    @Operation(summary = "获取菜单资源列表" , description = "分页获取菜单资源列表")
+    public ServerResponseEntity<List<MenuPermissionVO>> listByMenuId(Long menuId) {
+        List<MenuPermissionVO> menuPermissionVOList = menuPermissionService.listByMenuId(menuId);
+        return ServerResponseEntity.success(menuPermissionVOList);
+    }
+
+    @GetMapping
+    @Operation(summary = "获取菜单资源" , description = "根据menuPermissionId获取菜单资源")
+    public ServerResponseEntity<MenuPermissionVO> getByMenuPermissionId(@RequestParam Long menuPermissionId) {
+        return ServerResponseEntity.success(menuPermissionService.getByMenuPermissionId(menuPermissionId));
+    }
+
+    @PostMapping
+    @Operation(summary = "保存菜单资源" , description = "保存菜单资源")
+    public ServerResponseEntity<Void> save(@Valid @RequestBody MenuPermissionDTO menuPermissionDTO) {
+        MenuPermission menuPermission = mapperFacade.map(menuPermissionDTO, MenuPermission.class);
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        menuPermission.setMenuPermissionId(null);
+        menuPermission.setBizType(userInfoInTokenBO.getSysType());
         return menuPermissionService.save(menuPermission);
     }
 
-    /**
-     * 根据主键删除。
-     *
-     * @param id 主键
-     * @return {@code true} 删除成功，{@code false} 删除失败
-     */
-    @DeleteMapping("remove/{id}")
-    public boolean remove(@PathVariable Serializable id) {
-        return menuPermissionService.removeById(id);
+    @PutMapping
+    @Operation(summary = "更新菜单资源" , description = "更新菜单资源")
+    public ServerResponseEntity<Void> update(@Valid @RequestBody MenuPermissionDTO menuPermissionDTO) {
+        MenuPermission menuPermission = mapperFacade.map(menuPermissionDTO, MenuPermission.class);
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        menuPermission.setBizType(userInfoInTokenBO.getSysType());
+        return menuPermissionService.update(menuPermission);
     }
 
-    /**
-     * 根据主键更新。
-     *
-     * @param menuPermission 
-     * @return {@code true} 更新成功，{@code false} 更新失败
-     */
-    @PutMapping("update")
-    public boolean update(@RequestBody MenuPermission menuPermission) {
-        return menuPermissionService.updateById(menuPermission);
+    @DeleteMapping
+    @Operation(summary = "删除菜单资源" , description = "根据菜单资源id删除菜单资源")
+    public ServerResponseEntity<Void> delete(@RequestParam Long menuPermissionId) {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        menuPermissionService.deleteById(menuPermissionId,userInfoInTokenBO.getSysType());
+        return ServerResponseEntity.success();
     }
 
-    /**
-     * 查询所有。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("list")
-    public List<MenuPermission> list() {
-        return menuPermissionService.list();
+    @GetMapping(value = "/list")
+    @Operation(summary = "获取当前用户拥有的权限" , description = "当前用户所拥有的所有权限，精确到按钮，实际上element admin里面的roles就可以理解成权限")
+    public ServerResponseEntity<List<String>> permissions() {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        return ServerResponseEntity.success(menuPermissionService.listUserPermissions(userInfoInTokenBO.getUserId(),
+                userInfoInTokenBO.getSysType(), BooleanUtil.isTrue(userInfoInTokenBO.getIsAdmin())));
     }
 
-    /**
-     * 根据主键获取详细信息。
-     *
-     * @param id 主键
-     * @return 详情
-     */
-    @GetMapping("getInfo/{id}")
-    public MenuPermission getInfo(@PathVariable Serializable id) {
-        return menuPermissionService.getById(id);
-    }
-
-    /**
-     * 分页查询。
-     *
-     * @param page 分页对象
-     * @return 分页对象
-     */
-    @GetMapping("page")
-    public Page<MenuPermission> page(Page<MenuPermission> page) {
-        return menuPermissionService.page(page);
+    @GetMapping(value = "/page")
+    @Operation(summary = "获取当前用户拥有的权限" , description = "当前用户所拥有的所有权限，精确到按钮，实际上element admin里面的roles就可以理解成权限")
+    public ServerResponseEntity<Page<MenuPermissionVO>> pagePermissions(MenuPermissionQueryDTO dto) {
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        Page<MenuPermissionVO> permissionPage = menuPermissionService.page(dto, userInfoInTokenBO.getSysType());
+        return ServerResponseEntity.success(permissionPage);
     }
 
 }

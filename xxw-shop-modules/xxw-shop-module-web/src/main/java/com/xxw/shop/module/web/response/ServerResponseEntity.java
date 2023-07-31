@@ -1,5 +1,6 @@
 package com.xxw.shop.module.web.response;
 
+import com.xxw.shop.module.web.constant.SystemErrorEnumError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,7 @@ public class ServerResponseEntity<T> implements Serializable {
     }
 
     public boolean isSuccess() {
-        return Objects.equals(ResponseEnum.OK.value(), this.code);
+        return Objects.equals(SystemErrorEnumError.OK.getCode(), this.code);
     }
 
     @Override
@@ -60,15 +61,16 @@ public class ServerResponseEntity<T> implements Serializable {
 
     public static <T> ServerResponseEntity<T> success(T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
+        serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
+        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMsg());
         serverResponseEntity.setData(data);
-        serverResponseEntity.setCode(ResponseEnum.OK.value());
         return serverResponseEntity;
     }
 
     public static <T> ServerResponseEntity<T> success() {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setCode(ResponseEnum.OK.value());
-        serverResponseEntity.setMsg(ResponseEnum.OK.getMsg());
+        serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
+        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMsg());
         return serverResponseEntity;
     }
 
@@ -79,35 +81,31 @@ public class ServerResponseEntity<T> implements Serializable {
      * @return
      */
     public static <T> ServerResponseEntity<T> showFailMsg(String msg) {
-        log.error(msg);
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
+        serverResponseEntity.setCode(SystemErrorEnumError.SHOW_FAIL.getCode());
         serverResponseEntity.setMsg(msg);
-        serverResponseEntity.setCode(ResponseEnum.SHOW_FAIL.value());
         return serverResponseEntity;
     }
 
-    public static <T> ServerResponseEntity<T> fail(ResponseEnum responseEnum) {
-        log.error(responseEnum.toString());
+    public static <T> ServerResponseEntity<T> fail(SystemErrorEnumError errorEnum) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setMsg(responseEnum.getMsg());
-        serverResponseEntity.setCode(responseEnum.value());
+        serverResponseEntity.setCode(errorEnum.getCode());
+        serverResponseEntity.setMsg(errorEnum.getMsg());
         return serverResponseEntity;
     }
 
-    public static <T> ServerResponseEntity<T> fail(ResponseEnum responseEnum, T data) {
-        log.error(responseEnum.toString());
+    public static <T> ServerResponseEntity<T> fail(SystemErrorEnumError errorEnum, T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setMsg(responseEnum.getMsg());
-        serverResponseEntity.setCode(responseEnum.value());
+        serverResponseEntity.setCode(errorEnum.getCode());
+        serverResponseEntity.setMsg(errorEnum.getMsg());
         serverResponseEntity.setData(data);
         return serverResponseEntity;
     }
 
     public static <T> ServerResponseEntity<T> transform(ServerResponseEntity<?> oldServerResponseEntity) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setMsg(oldServerResponseEntity.getMsg());
         serverResponseEntity.setCode(oldServerResponseEntity.getCode());
-        log.error(serverResponseEntity.toString());
+        serverResponseEntity.setMsg(oldServerResponseEntity.getMsg());
         return serverResponseEntity;
     }
 

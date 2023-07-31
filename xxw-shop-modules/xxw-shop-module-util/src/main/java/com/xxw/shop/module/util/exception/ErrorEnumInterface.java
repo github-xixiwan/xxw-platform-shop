@@ -13,13 +13,13 @@ public interface ErrorEnumInterface {
      *
      * @return 错误code
      */
-    Integer getCode();
+    String getCode();
 
     /**
      * 获取msg
      *
      * @return 错误msg
      */
-    String getMessage();
+    String getMsg();
 
 }

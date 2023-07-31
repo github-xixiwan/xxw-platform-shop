@@ -8,8 +8,8 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.alibaba.csp.sentinel.slots.system.SystemBlockException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xxw.shop.module.web.constant.CustomBusinessError;
-import com.xxw.shop.module.util.rest.Result;
+import com.xxw.shop.module.web.constant.SystemErrorEnumError;
+import com.xxw.shop.module.web.response.ServerResponseEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.annotation.Order;
@@ -21,22 +21,22 @@ public class SentinelBlockExceptionHandler implements BlockExceptionHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, BlockException ex) throws Exception {
-        Result<Object> failure = Result.failure(CustomBusinessError.UNKNOWN_EXCEPTION);
+        ServerResponseEntity<Object> fail = ServerResponseEntity.fail(SystemErrorEnumError.SHOW_FAIL);
         if (ex instanceof FlowException) {
-            failure = Result.failure(CustomBusinessError.SENTINEL_FLOW_EXCEPTION);
+            fail = ServerResponseEntity.fail(SystemErrorEnumError.SENTINEL_FLOW_EXCEPTION);
         } else if (ex instanceof DegradeException) {
-            failure = Result.failure(CustomBusinessError.SENTINEL_DEGRADE_EXCEPTION);
+            fail = ServerResponseEntity.fail(SystemErrorEnumError.SENTINEL_DEGRADE_EXCEPTION);
         } else if (ex instanceof ParamFlowException) {
-            failure = Result.failure(CustomBusinessError.SENTINEL_PARAM_FLOW_EXCEPTION);
+            fail = ServerResponseEntity.fail(SystemErrorEnumError.SENTINEL_PARAM_FLOW_EXCEPTION);
         } else if (ex instanceof SystemBlockException) {
-            failure = Result.failure(CustomBusinessError.SENTINEL_SYSTEM_BLOCK_EXCEPTION);
+            fail = ServerResponseEntity.fail(SystemErrorEnumError.SENTINEL_SYSTEM_BLOCK_EXCEPTION);
         } else if (ex instanceof AuthorityException) {
-            failure = Result.failure(CustomBusinessError.SENTINEL_AUTHORITY_EXCEPTION);
+            fail = ServerResponseEntity.fail(SystemErrorEnumError.SENTINEL_AUTHORITY_EXCEPTION);
         }
         httpServletResponse.setStatus(500);
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setHeader("Content-Type", "application/json;charset=utf-8");
         httpServletResponse.setContentType("application/json;charset=utf-8");
-        new ObjectMapper().writeValue(httpServletResponse.getWriter(), failure);
+        new ObjectMapper().writeValue(httpServletResponse.getWriter(), fail);
     }
 }

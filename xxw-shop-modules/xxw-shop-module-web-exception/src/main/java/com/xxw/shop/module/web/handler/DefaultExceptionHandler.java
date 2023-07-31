@@ -3,7 +3,7 @@ package com.xxw.shop.module.web.handler;
 import com.xxw.shop.module.util.exception.BusinessException;
 import com.xxw.shop.module.util.exception.ElasticsearchException;
 import com.xxw.shop.module.util.exception.SystemException;
-import com.xxw.shop.module.web.constant.CustomBusinessError;
+import com.xxw.shop.module.web.constant.SystemErrorEnumError;
 import com.xxw.shop.module.util.rest.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -49,46 +49,46 @@ public class DefaultExceptionHandler {
 
     private Result<Void> handelException(Exception ex) {
         log.error("Exception:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.UNKNOWN_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.UNKNOWN_EXCEPTION);
     }
 
     private Result<Void> handelException(BusinessException ex) {
         log.warn("BusinessException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.BUSINESS_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.BUSINESS_EXCEPTION);
     }
 
     private Result<Void> handelException(ElasticsearchException ex) {
         log.warn("ElasticsearchException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.ELASTICSEARCH_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.ELASTICSEARCH_EXCEPTION);
     }
 
     private Result<Void> handelException(SystemException ex) {
         log.warn("SystemException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.SYSTEM_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.SYSTEM_EXCEPTION);
     }
 
     private Result<Void> handelException(RestClientException ex) {
         log.warn("RestClientException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.REST_CLIENT_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.REST_CLIENT_EXCEPTION);
     }
 
     private Result<Void> handelException(NoHandlerFoundException ex) {
         log.warn("NoHandlerFoundException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.NO_HANDLER_FOUND_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.NO_HANDLER_FOUND_EXCEPTION);
     }
 
     private Result<Void> handelException(MissingServletRequestParameterException ex) {
         log.warn("MissingServletRequestParameterException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.MISSING_SERVLET_REQUEST_PARAMETER_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.MISSING_SERVLET_REQUEST_PARAMETER_EXCEPTION);
     }
 
     private Result<Void> handelException(HttpMediaTypeNotSupportedException ex) {
         log.warn("HttpMediaTypeNotSupportedException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.HTTP_MEDIA_TYPE_NOT_SUPPORTED_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.HTTP_MEDIA_TYPE_NOT_SUPPORTED_EXCEPTION);
     }
 
     private Result<Void> handelException(HttpMessageNotReadableException ex) {
         log.warn("HttpMessageNotReadableException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(CustomBusinessError.HTTP_MESSAGE_NOT_READABLE_EXCEPTION);
+        return Result.failure(SystemErrorEnumError.HTTP_MESSAGE_NOT_READABLE_EXCEPTION);
     }
 }

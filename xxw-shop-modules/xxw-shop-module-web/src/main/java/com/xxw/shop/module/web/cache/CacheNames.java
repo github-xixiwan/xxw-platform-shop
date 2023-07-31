@@ -1,6 +1,6 @@
 package com.xxw.shop.module.web.cache;
 
-public interface CacheNames extends RbacCacheNames {
+public interface CacheNames {
 
     /**
      * 参考CacheKeyPrefix
