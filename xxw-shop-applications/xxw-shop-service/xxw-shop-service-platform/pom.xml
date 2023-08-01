@@ -25,6 +25,14 @@
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-auth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-rbac</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-starter-redisson</artifactId>
         </dependency>
         <dependency>
