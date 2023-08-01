@@ -28,26 +28,26 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_BIZ_TYPE_KEY, key = "#menu.bizType")
+    @CacheEvict(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#menu.bizType")
     public boolean save(Menu menu) {
         mapper.save(menu);
         return true;
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_BIZ_TYPE_KEY, key = "#menu.bizType")
+    @CacheEvict(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#menu.bizType")
     public void update(Menu menu) {
         mapper.update(menu);
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_BIZ_TYPE_KEY, key = "#sysType")
+    @CacheEvict(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#sysType")
     public void deleteById(Long menuId, Integer sysType) {
         mapper.deleteById(menuId, sysType);
     }
 
     @Override
-    @Cacheable(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_BIZ_TYPE_KEY, key = "#sysType")
+    @Cacheable(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#sysType")
     public List<Menu> listBySysType(Integer sysType) {
         return mapper.listBySysType(sysType);
     }
@@ -58,7 +58,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    @Cacheable(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_USER_ID_KEY, key = "#userId")
+    @Cacheable(cacheNames = RbacCacheNames.MENU_ID_LIST_KEY, key = "#userId")
     public List<Long> listMenuIds(Long userId) {
         return mapper.listMenuIds(userId);
     }

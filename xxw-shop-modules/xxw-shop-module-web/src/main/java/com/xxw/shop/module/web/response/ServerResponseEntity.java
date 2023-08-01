@@ -2,15 +2,11 @@ package com.xxw.shop.module.web.response;
 
 import com.xxw.shop.module.util.exception.ErrorEnumInterface;
 import com.xxw.shop.module.web.constant.SystemErrorEnumError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class ServerResponseEntity<T> implements Serializable {
-
-    private static final Logger log = LoggerFactory.getLogger(ServerResponseEntity.class);
 
     /**
      * 状态码
@@ -72,19 +68,6 @@ public class ServerResponseEntity<T> implements Serializable {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
         serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMessage());
-        return serverResponseEntity;
-    }
-
-    /**
-     * 前端显示失败消息
-     *
-     * @param message 失败消息
-     * @return
-     */
-    public static <T> ServerResponseEntity<T> showFailMsg(String message) {
-        ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setCode(SystemErrorEnumError.SHOW_FAIL.getCode());
-        serverResponseEntity.setMsg(message);
         return serverResponseEntity;
     }
 

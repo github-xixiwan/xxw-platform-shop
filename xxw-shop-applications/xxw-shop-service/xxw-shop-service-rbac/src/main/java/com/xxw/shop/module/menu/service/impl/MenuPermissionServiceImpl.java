@@ -10,6 +10,7 @@ import com.xxw.shop.module.menu.mapper.MenuPermissionMapper;
 import com.xxw.shop.module.menu.service.MenuPermissionService;
 import com.xxw.shop.module.menu.vo.MenuPermissionVO;
 import com.xxw.shop.module.menu.vo.UriPermissionVO;
+import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.CacheEvict;
@@ -40,9 +41,8 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#menuPermission.bizType")
-    public ServerResponseEntity<Void> save(MenuPermission menuPermission) {
-
+    @CacheEvict(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#menuPermission.bizType")
+    public ServerResponseEntity<Void> insert(MenuPermission menuPermission) {
         MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(), AuthUserContext.get().getSysType());
         if (dbMenuPermission != null) {
             return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
@@ -52,7 +52,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#menuPermission.bizType")
+    @CacheEvict(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#menuPermission.bizType")
     public ServerResponseEntity<Void> update(MenuPermission menuPermission) {
         MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(), AuthUserContext.get().getSysType());
         if (dbMenuPermission != null && !Objects.equals(menuPermission.getMenuPermissionId(), dbMenuPermission.getMenuPermissionId())) {
@@ -63,13 +63,13 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#sysType")
+    @CacheEvict(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#sysType")
     public void deleteById(Long menuPermissionId, Integer sysType) {
         mapper.deleteById(menuPermissionId, sysType);
     }
 
     @Override
-    @Caching(evict = {@CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY, key = "#sysType + ':' + #userId"), @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_USER_ID_KEY, key = "#userId")})
+    @Caching(evict = {@CacheEvict(cacheNames = RbacCacheNames.USER_PERMISSIONS_KEY, key = "#sysType + ':' + #userId"), @CacheEvict(cacheNames = RbacCacheNames.MENU_ID_LIST_KEY, key = "#userId")})
     public void clearUserPermissionsCache(Long userId, Integer sysType) {
     }
 
@@ -88,7 +88,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @Cacheable(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#sysType")
+    @Cacheable(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#sysType")
     public List<UriPermissionVO> listUriPermissionInfo(Integer sysType) {
         return mapper.listUriPermissionInfo(sysType);
     }
@@ -114,7 +114,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
      * @param sysType 系统类型
      * @return 权限列表
      */
-    @Cacheable(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY, key = "#sysType + ':' + #userId")
+    @Cacheable(cacheNames = RbacCacheNames.USER_PERMISSIONS_KEY, key = "#sysType + ':' + #userId")
     public List<String> listPermissionByUserIdAndSysType(Long userId, Integer sysType) {
         return mapper.listPermissionByUserIdAndSysType(userId, sysType);
     }

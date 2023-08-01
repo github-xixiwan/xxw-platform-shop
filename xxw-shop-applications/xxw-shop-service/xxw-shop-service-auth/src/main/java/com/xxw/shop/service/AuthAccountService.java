@@ -2,7 +2,7 @@ package com.xxw.shop.service;
 
 import com.mybatisflex.core.service.IService;
 import com.xxw.shop.entity.AuthAccount;
-import com.xxw.shop.module.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
 
 /**

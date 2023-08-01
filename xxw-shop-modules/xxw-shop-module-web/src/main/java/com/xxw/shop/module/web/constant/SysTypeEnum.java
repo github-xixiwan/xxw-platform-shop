@@ -1,4 +1,4 @@
-package com.xxw.shop.module.security.constant;
+package com.xxw.shop.module.web.constant;
 
 /**
  * 系统类型

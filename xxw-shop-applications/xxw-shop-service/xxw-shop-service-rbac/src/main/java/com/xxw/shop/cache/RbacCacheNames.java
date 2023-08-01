@@ -7,15 +7,26 @@ public interface RbacCacheNames extends CacheNames {
     /**
      * 前缀
      */
-    String SERVICE_PREFIX = "service_rbac:";
+    String SERVICE_PREFIX = "shop_rbac:";
 
+    /**
+     * uri对应的权限缓存key
+     */
+    String MENU_LIST_KEY = SERVICE_PREFIX + "menu:list:";
 
-    String SERVICE_MENU_BIZ_TYPE_KEY = SERVICE_PREFIX + "menu_biz_type:";
+    /**
+     * 菜单id key
+     */
+    String MENU_ID_LIST_KEY = SERVICE_PREFIX + "menu:id_list:";
 
-    String SERVICE_MENU_USER_ID_KEY = SERVICE_PREFIX + "menu_user_id:";
+    /**
+     * uri对应的权限缓存key
+     */
+    String URI_PERMISSION_KEY = SERVICE_PREFIX + "permission:uri_permissions:";
 
-    String SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY = SERVICE_PREFIX + "menu_permission_biz_type:";
-
-    String SERVICE_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY = SERVICE_PREFIX + "menu_permission_biz_type_user_id:";
+    /**
+     * 用户拥有的权限列表缓存key
+     */
+    String USER_PERMISSIONS_KEY = SERVICE_PREFIX + "permission:user_permissions:";
 
 }

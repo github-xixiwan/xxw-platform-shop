@@ -1,4 +1,4 @@
-package com.xxw.shop.module.security.config;
+package com.xxw.shop.module.web.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

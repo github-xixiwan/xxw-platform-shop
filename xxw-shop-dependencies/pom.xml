@@ -22,6 +22,7 @@
         <jackson.version>2.15.2</jackson.version>
         <hutool.version>5.8.21</hutool.version>
         <jsoup.version>1.16.1</jsoup.version>
+        <anji-plus.version>1.3.0</anji-plus.version>
     </properties>
 
     <dependencyManagement>
@@ -102,6 +103,11 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.anji-plus</groupId>
+                <artifactId>spring-boot-starter-captcha</artifactId>
+                <version>${anji-plus.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>

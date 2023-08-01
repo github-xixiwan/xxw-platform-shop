@@ -3,6 +3,7 @@ package com.xxw.shop.starter.elasticsearch.service;
 import cn.hutool.core.bean.BeanUtil;
 import com.xxw.shop.module.util.exception.ElasticsearchException;
 import com.xxw.shop.starter.elasticsearch.config.ElasticsearchProperties;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -17,7 +18,6 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -25,8 +25,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.xcontent.XContentType;
 
-import jakarta.annotation.Resource;
 import java.io.IOException;
 
 @Slf4j
@@ -65,7 +65,7 @@ public abstract class BaseElasticsearchService {
             log.info(" whether all of the nodes have acknowledged the request : {}", createIndexResponse.isAcknowledged());
             log.info(" Indicates whether the requisite number of shard copies were started for each shard in the index before timing out :{}", createIndexResponse.isShardsAcknowledged());
         } catch (IOException e) {
-            throw new ElasticsearchException(1, "创建索引 {" + index + "} 失败");
+            throw new ElasticsearchException("创建索引 {" + index + "} 失败");
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class BaseElasticsearchService {
         try {
             client.indices().delete(deleteIndexRequest, COMMON_OPTIONS);
         } catch (IOException e) {
-            throw new ElasticsearchException(2, "删除索引 {" + index + "} 失败");
+            throw new ElasticsearchException("删除索引 {" + index + "} 失败");
         }
     }
 
@@ -120,7 +120,7 @@ public abstract class BaseElasticsearchService {
             UpdateRequest updateRequest = new UpdateRequest(index, id).doc(BeanUtil.beanToMap(object), XContentType.JSON);
             client.update(updateRequest, COMMON_OPTIONS);
         } catch (IOException e) {
-            throw new ElasticsearchException(3, "更新索引 {" + index + "} 数据 {" + object + "} 失败");
+            throw new ElasticsearchException("更新索引 {" + index + "} 数据 {" + object + "} 失败");
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class BaseElasticsearchService {
             DeleteRequest deleteRequest = new DeleteRequest(index, id);
             client.delete(deleteRequest, COMMON_OPTIONS);
         } catch (IOException e) {
-            throw new ElasticsearchException(4, "删除索引 {" + index + "} 数据id {" + id + "} 失败");
+            throw new ElasticsearchException("删除索引 {" + index + "} 数据id {" + id + "} 失败");
         }
     }
 

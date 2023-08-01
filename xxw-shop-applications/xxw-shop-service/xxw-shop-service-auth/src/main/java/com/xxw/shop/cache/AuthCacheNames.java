@@ -7,15 +7,21 @@ public interface AuthCacheNames extends CacheNames {
     /**
      * 前缀
      */
-    String SERVICE_PREFIX = "service_auth:";
+    String SERVICE_PREFIX = "shop_auth:";
 
+    /**
+     * 保存token 缓存使用key
+     */
+    String ACCESS = SERVICE_PREFIX + "access:";
 
-    String SERVICE_MENU_BIZ_TYPE_KEY = SERVICE_PREFIX + "menu_biz_type:";
+    /**
+     * 根据uid获取保存的token key缓存使用的key
+     */
+    String UID_TO_ACCESS = SERVICE_PREFIX + "uid_to_access:";
 
-    String SERVICE_MENU_USER_ID_KEY = SERVICE_PREFIX + "menu_user_id:";
-
-    String SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY = SERVICE_PREFIX + "menu_permission_biz_type:";
-
-    String SERVICE_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY = SERVICE_PREFIX + "menu_permission_biz_type_user_id:";
+    /**
+     * 刷新token 缓存使用key
+     */
+    String REFRESH_TO_ACCESS = SERVICE_PREFIX + "refresh_to_access:";
 
 }

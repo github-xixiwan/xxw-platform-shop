@@ -1,5 +1,5 @@
 spring:
   application:
-    name: shop-user
+    name: shop-auth
   profiles:
     active: @profileActive@

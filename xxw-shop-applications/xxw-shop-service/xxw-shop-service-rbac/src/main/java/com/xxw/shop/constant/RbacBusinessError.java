@@ -7,7 +7,8 @@ import com.xxw.shop.module.util.exception.ErrorEnumInterface;
  */
 public enum RbacBusinessError implements ErrorEnumInterface {
 
-    RBAC_00001("RBAC_00001", "权限编码已存在，请勿重复添加");
+    RBAC_00001("RBAC_00001", "权限编码已存在，请勿重复添加"),
+    RBAC_00002("RBAC_00002", "无权限操作");
 
     private String code;
 

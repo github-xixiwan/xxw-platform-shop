@@ -2,23 +2,25 @@ package com.xxw.shop.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.constant.AuthAccountStatusEnum;
+import com.xxw.shop.constant.AuthBusinessError;
 import com.xxw.shop.entity.AuthAccount;
 import com.xxw.shop.mapper.AuthAccountMapper;
-import com.xxw.shop.module.security.bo.AuthAccountInVerifyBO;
-import com.xxw.shop.module.security.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.security.constant.InputUserNameEnum;
 import com.xxw.shop.module.util.string.PrincipalUtil;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import com.xxw.shop.service.AuthAccountService;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 /**
- *  服务层实现。
+ * 服务层实现。
  *
  * @author liaoxiting
  * @since 2023-08-01
@@ -33,15 +35,19 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Resource
     private MapperFacade mapperFacade;
 
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public ServerResponseEntity<UserInfoInTokenBO> getUserInfoInTokenByInputUserNameAndPassword(String inputUserName,
-                                                                                                String password, Integer sysType) {
+                                                                                                String password,
+                                                                                                Integer sysType) {
 
         if (StrUtil.isBlank(inputUserName)) {
-            return ServerResponseEntity.showFailMsg("用户名不能为空");
+            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00008);
         }
         if (StrUtil.isBlank(password)) {
-            return ServerResponseEntity.showFailMsg("密码不能为空");
+            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00009);
         }
 
         InputUserNameEnum inputUserNameEnum = null;
@@ -52,11 +58,11 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         }
 
         if (inputUserNameEnum == null) {
-            return ServerResponseEntity.showFailMsg("请输入正确的用户名");
+            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00010);
         }
 
-        AuthAccountInVerifyBO authAccountInVerifyBO = authAccountMapper
-                .getAuthAccountInVerifyByInputUserName(inputUserNameEnum.value(), inputUserName, sysType);
+        AuthAccountInVerifyBO authAccountInVerifyBO =
+                mapper.getAuthAccountInVerifyByInputUserName(inputUserNameEnum.value(), inputUserName, sysType);
 
         if (authAccountInVerifyBO == null) {
             prepareTimingAttackProtection();
@@ -64,15 +70,15 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
             // 计时攻击（Timing
             // attack），通过设备运算的用时来推断出所使用的运算操作，或者通过对比运算的时间推定数据位于哪个存储设备，或者利用通信的时间差进行数据窃取。
             mitigateAgainstTimingAttack(password);
-            return ServerResponseEntity.showFailMsg("用户名或密码不正确");
+            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00011);
         }
 
         if (Objects.equals(authAccountInVerifyBO.getStatus(), AuthAccountStatusEnum.DISABLE.value())) {
-            return ServerResponseEntity.showFailMsg("用户已禁用，请联系客服");
+            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00012);
         }
 
         if (!passwordEncoder.matches(password, authAccountInVerifyBO.getPassword())) {
-            return ServerResponseEntity.showFailMsg("用户名或密码不正确");
+            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00011);
         }
 
         return ServerResponseEntity.success(mapperFacade.map(authAccountInVerifyBO, UserInfoInTokenBO.class));
@@ -80,22 +86,22 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
 
     @Override
     public AuthAccount getByUserIdAndType(Long userId, Integer sysType) {
-        return authAccountMapper.getByUserIdAndType(userId, sysType);
+        return mapper.getByUserIdAndType(userId, sysType);
     }
 
     @Override
     public void updatePassword(Long userId, Integer sysType, String newPassWord) {
-        authAccountMapper.updatePassword(userId, sysType, passwordEncoder.encode(newPassWord));
+        mapper.updatePassword(userId, sysType, passwordEncoder.encode(newPassWord));
     }
 
     @Override
     public AuthAccount getByUid(Long uid) {
-        return authAccountMapper.getByUid(uid);
+        return mapper.getByUid(uid);
     }
 
     @Override
     public AuthAccount getAccountByInputUserName(String mobile, Integer systemType) {
-        return authAccountMapper.getAccountByInputUserName(mobile,systemType);
+        return mapper.getAccountByInputUserName(mobile, systemType);
     }
 
     /**

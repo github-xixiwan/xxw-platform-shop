@@ -14,7 +14,7 @@
     </parent>
 
     <modules>
-        <module>xxw-shop-gateway</module>
+<!--        <module>xxw-shop-gateway</module>-->
         <module>xxw-shop-api</module>
         <module>xxw-shop-service</module>
     </modules>

@@ -25,7 +25,7 @@
         `status`, sys_type, user_id, tenant_id, is_admin
     </sql>
 
-    <select id="getAuthAccountInVerifyByInputUserName" resultType="com.xxw.shop.module.security.bo.AuthAccountInVerifyBO">
+    <select id="getAuthAccountInVerifyByInputUserName" resultType="com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO">
         select user_id, sys_type,uid,password,is_admin,tenant_id, status from auth_account
         where sys_type = #{sysType} and status != -1
         <if test="inputUserNameType == 1">
@@ -80,7 +80,7 @@
     <select id="getAccountByInputUserName" resultType="com.xxw.shop.entity.AuthAccount">
         select uid,sys_type,user_id from auth_account where username = #{validAccount} and sys_type = #{systemType}
     </select>
-    <select id="getByUsernameAndSysType" resultType="com.xxw.shop.vo.AuthAccountVO">
+    <select id="getByUsernameAndSysType" resultType="com.xxw.shop.api.auth.vo.AuthAccountVO">
         select uid, username from auth_account where status != 1
         <if test="sysType != null">
             and sys_type = #{sysType}
@@ -89,7 +89,7 @@
             and username = #{userName}
         </if>
     </select>
-    <select id="getMerchantInfoByTenantId" resultType="com.xxw.shop.vo.AuthAccountVO">
+    <select id="getMerchantInfoByTenantId" resultType="com.xxw.shop.api.auth.vo.AuthAccountVO">
         select user_id, sys_type, uid, username, password, is_admin, tenant_id, status from auth_account
         where sys_type = 1 and is_admin = 1 and tenant_id = #{tenantId} limit 1
     </select>

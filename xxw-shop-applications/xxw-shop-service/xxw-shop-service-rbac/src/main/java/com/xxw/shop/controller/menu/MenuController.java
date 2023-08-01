@@ -1,5 +1,6 @@
 package com.xxw.shop.controller.menu;
 
+import com.xxw.shop.constant.RbacBusinessError;
 import com.xxw.shop.module.menu.dto.MenuDTO;
 import com.xxw.shop.module.menu.entity.Menu;
 import com.xxw.shop.module.menu.service.MenuService;
@@ -7,10 +8,15 @@ import com.xxw.shop.module.menu.vo.MenuSimpleVO;
 import com.xxw.shop.module.menu.vo.MenuVO;
 import com.xxw.shop.module.menu.vo.RouteMetaVO;
 import com.xxw.shop.module.menu.vo.RouteVO;
+import com.xxw.shop.module.security.AuthUserContext;
+import com.xxw.shop.module.util.exception.BusinessException;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,12 +30,16 @@ import java.util.Objects;
  * @author liaoxiting
  * @since 2023-07-31
  */
+@Tag(name = "菜单接口")
 @RestController
 @RequestMapping("/menu")
 public class MenuController {
 
     @Resource
     private MenuService menuService;
+
+    @Resource
+    private MapperFacade mapperFacade;
 
     @GetMapping(value = "/route")
     @Operation(summary = "路由菜单", description = "获取当前登陆用户可用的路由菜单列表")
@@ -85,7 +95,7 @@ public class MenuController {
     private Menu checkAndGenerate(@RequestBody @Valid MenuDTO menuDTO) {
         UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
         if (!Objects.equals(userInfoInTokenBO.getTenantId(), 0L)) {
-            throw new Mall4cloudException("无权限操作！");
+            throw new BusinessException(RbacBusinessError.RBAC_00002);
         }
         Menu menu = mapperFacade.map(menuDTO, Menu.class);
         menu.setBizType(menuDTO.getSysType());
@@ -108,7 +118,7 @@ public class MenuController {
     public ServerResponseEntity<Void> delete(@RequestParam("menuId") Long menuId, @RequestParam("sysType") Integer sysType) {
         UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
         if (!Objects.equals(userInfoInTokenBO.getTenantId(), 0L)) {
-            throw new Mall4cloudException("无权限操作！");
+            throw new BusinessException(RbacBusinessError.RBAC_00002);
         }
         sysType = Objects.isNull(sysType) ? userInfoInTokenBO.getSysType() : sysType;
         menuService.deleteById(menuId, sysType);

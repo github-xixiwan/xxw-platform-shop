@@ -2,13 +2,13 @@ package com.xxw.shop.entity;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *  实体类。
@@ -26,7 +26,7 @@ public class AuthAccount implements Serializable {
      * 全平台用户唯一id
      */
     @Id
-    private BigInteger uid;
+    private Long uid;
     /**
      * 创建时间
      */

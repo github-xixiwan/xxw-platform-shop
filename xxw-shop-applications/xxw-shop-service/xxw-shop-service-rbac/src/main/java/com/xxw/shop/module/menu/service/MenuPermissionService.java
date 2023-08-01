@@ -40,7 +40,7 @@ public interface MenuPermissionService extends IService<MenuPermission> {
      * @param menuPermission 菜单资源
      * @return
      */
-    boolean save(MenuPermission menuPermission);
+    ServerResponseEntity<Void> insert(MenuPermission menuPermission);
 
     /**
      * 更新菜单资源
