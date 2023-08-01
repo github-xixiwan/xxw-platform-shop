@@ -4,7 +4,7 @@ import com.xxw.shop.module.util.exception.BusinessException;
 import com.xxw.shop.module.util.exception.ElasticsearchException;
 import com.xxw.shop.module.util.exception.SystemException;
 import com.xxw.shop.module.web.constant.SystemErrorEnumError;
-import com.xxw.shop.module.util.rest.Result;
+import com.xxw.shop.module.web.response.ServerResponseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.annotation.Order;
@@ -22,11 +22,11 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 public class DefaultExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public Result<Void> exceptionHandler(Exception ex) {
+    public ServerResponseEntity<Void> exceptionHandler(Exception ex) {
         return internalHandlerException(ex);
     }
 
-    private Result<Void> internalHandlerException(Exception ex) {
+    private ServerResponseEntity<Void> internalHandlerException(Exception ex) {
         if (ex instanceof BusinessException) {
             return handelException((BusinessException) ex);
         } else if (ex instanceof ElasticsearchException) {
@@ -47,48 +47,48 @@ public class DefaultExceptionHandler {
         return handelException(ex);
     }
 
-    private Result<Void> handelException(Exception ex) {
+    private ServerResponseEntity<Void> handelException(Exception ex) {
         log.error("Exception:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.UNKNOWN_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.UNKNOWN_EXCEPTION);
     }
 
-    private Result<Void> handelException(BusinessException ex) {
+    private ServerResponseEntity<Void> handelException(BusinessException ex) {
         log.warn("BusinessException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.BUSINESS_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.BUSINESS_EXCEPTION);
     }
 
-    private Result<Void> handelException(ElasticsearchException ex) {
+    private ServerResponseEntity<Void> handelException(ElasticsearchException ex) {
         log.warn("ElasticsearchException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.ELASTICSEARCH_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.ELASTICSEARCH_EXCEPTION);
     }
 
-    private Result<Void> handelException(SystemException ex) {
+    private ServerResponseEntity<Void> handelException(SystemException ex) {
         log.warn("SystemException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.SYSTEM_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.SYSTEM_EXCEPTION);
     }
 
-    private Result<Void> handelException(RestClientException ex) {
+    private ServerResponseEntity<Void> handelException(RestClientException ex) {
         log.warn("RestClientException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.REST_CLIENT_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.REST_CLIENT_EXCEPTION);
     }
 
-    private Result<Void> handelException(NoHandlerFoundException ex) {
+    private ServerResponseEntity<Void> handelException(NoHandlerFoundException ex) {
         log.warn("NoHandlerFoundException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.NO_HANDLER_FOUND_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.NO_HANDLER_FOUND_EXCEPTION);
     }
 
-    private Result<Void> handelException(MissingServletRequestParameterException ex) {
+    private ServerResponseEntity<Void> handelException(MissingServletRequestParameterException ex) {
         log.warn("MissingServletRequestParameterException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.MISSING_SERVLET_REQUEST_PARAMETER_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.MISSING_SERVLET_REQUEST_PARAMETER_EXCEPTION);
     }
 
-    private Result<Void> handelException(HttpMediaTypeNotSupportedException ex) {
+    private ServerResponseEntity<Void> handelException(HttpMediaTypeNotSupportedException ex) {
         log.warn("HttpMediaTypeNotSupportedException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.HTTP_MEDIA_TYPE_NOT_SUPPORTED_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.HTTP_MEDIA_TYPE_NOT_SUPPORTED_EXCEPTION);
     }
 
-    private Result<Void> handelException(HttpMessageNotReadableException ex) {
+    private ServerResponseEntity<Void> handelException(HttpMessageNotReadableException ex) {
         log.warn("HttpMessageNotReadableException:{}", ExceptionUtils.getStackTrace(ex));
-        return Result.failure(SystemErrorEnumError.HTTP_MESSAGE_NOT_READABLE_EXCEPTION);
+        return ServerResponseEntity.fail(SystemErrorEnumError.HTTP_MESSAGE_NOT_READABLE_EXCEPTION);
     }
 }

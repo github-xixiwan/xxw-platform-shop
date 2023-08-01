@@ -16,10 +16,10 @@ public interface ErrorEnumInterface {
     String getCode();
 
     /**
-     * 获取msg
+     * 获取message
      *
-     * @return 错误msg
+     * @return 错误message
      */
-    String getMsg();
+    String getMessage();
 
 }

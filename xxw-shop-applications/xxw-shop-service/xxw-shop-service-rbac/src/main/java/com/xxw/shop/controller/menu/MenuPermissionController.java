@@ -11,6 +11,7 @@ import com.xxw.shop.module.web.response.ServerResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class MenuPermissionController {
 
     @Resource
     private MenuPermissionService menuPermissionService;
+
+    @Resource
+    private MapperFacade mapperFacade;
 
     @GetMapping("/list_by_menu")
     @Operation(summary = "获取菜单资源列表" , description = "分页获取菜单资源列表")

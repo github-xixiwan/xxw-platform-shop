@@ -2,7 +2,7 @@ package com.xxw.shop.module.util.exception;
 
 public class ElasticsearchException extends BaseException {
 
-    public ElasticsearchException(Integer code, String message) {
+    public ElasticsearchException(String code, String message) {
         super(code, message);
     }
 

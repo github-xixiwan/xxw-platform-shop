@@ -7,6 +7,21 @@ import com.xxw.shop.module.util.exception.ErrorEnumInterface;
  */
 public enum SystemErrorEnumError implements ErrorEnumInterface {
 
+    SENTINEL_FLOW_EXCEPTION("A09001", "流控规则被触发"),
+    SENTINEL_DEGRADE_EXCEPTION("A09002", "熔断规则被触发"),
+    SENTINEL_PARAM_FLOW_EXCEPTION("A09003", "热点规则被触发"),
+    SENTINEL_SYSTEM_BLOCK_EXCEPTION("A09004", "系统规则被触发"),
+    SENTINEL_AUTHORITY_EXCEPTION("A09005", "授权规则被触发"),
+    UNKNOWN_EXCEPTION("A09006", "未知异常"),
+    BUSINESS_EXCEPTION("A09007", "自定义异常"),
+    ELASTICSEARCH_EXCEPTION("A09008", "ELASTICSEARCH异常"),
+    SYSTEM_EXCEPTION("A09009", "系统异常"),
+    NO_HANDLER_FOUND_EXCEPTION("A09010", "未找到该资源"),
+    MISSING_SERVLET_REQUEST_PARAMETER_EXCEPTION("A09011", "请求参数异常"),
+    REST_CLIENT_EXCEPTION("A09012", "业务接口异常"),
+    HTTP_MEDIA_TYPE_NOT_SUPPORTED_EXCEPTION("A09013", "不支持http媒体类型"),
+    HTTP_MESSAGE_NOT_READABLE_EXCEPTION("A09014", "Http消息不可读异常"),
+
     /**
      * ok
      */
@@ -140,26 +155,20 @@ public enum SystemErrorEnumError implements ErrorEnumInterface {
     /**
      * 账号未注册，前端看到这个状态码，弹出选择框，提示用户账号未注册，是否进入注册页面，用户选择是，进入注册页面
      */
-    ACCOUNT_NOT_REGISTER("A04003", "account not register"),
-
-    SENTINEL_FLOW_EXCEPTION("A09001", "流控规则被触发"),
-    SENTINEL_DEGRADE_EXCEPTION("A09002", "熔断规则被触发"),
-    SENTINEL_PARAM_FLOW_EXCEPTION("A09003", "热点规则被触发"),
-    SENTINEL_SYSTEM_BLOCK_EXCEPTION("A09004", "系统规则被触发"),
-    SENTINEL_AUTHORITY_EXCEPTION("A09005", "授权规则被触发");
+    ACCOUNT_NOT_REGISTER("A04003", "account not register");
 
     @Override
     public String toString() {
-        return "CustomBusinessError{" + "code='" + code + '\'' + ", msg='" + msg + '\'' + "} " + super.toString();
+        return "CustomBusinessError{" + "code='" + code + '\'' + ", message='" + message + '\'' + "} " + super.toString();
     }
 
     private String code;
 
-    private String msg;
+    private String message;
 
-    SystemErrorEnumError(String code, String msg) {
+    SystemErrorEnumError(String code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
     @Override
@@ -168,7 +177,7 @@ public enum SystemErrorEnumError implements ErrorEnumInterface {
     }
 
     @Override
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 }

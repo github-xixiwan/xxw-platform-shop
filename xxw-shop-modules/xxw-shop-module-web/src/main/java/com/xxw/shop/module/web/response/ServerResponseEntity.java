@@ -20,7 +20,7 @@ public class ServerResponseEntity<T> implements Serializable {
     /**
      * 信息
      */
-    private String msg;
+    private String message;
 
     /**
      * 数据
@@ -35,12 +35,12 @@ public class ServerResponseEntity<T> implements Serializable {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMsg(String message) {
+        this.message = message;
     }
 
     public T getData() {
@@ -57,13 +57,13 @@ public class ServerResponseEntity<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "ServerResponseEntity{" + "code=" + code + ", msg='" + msg + '\'' + ", data=" + data + '}';
+        return "ServerResponseEntity{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
     }
 
     public static <T> ServerResponseEntity<T> success(T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
-        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMsg());
+        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMessage());
         serverResponseEntity.setData(data);
         return serverResponseEntity;
     }
@@ -71,34 +71,34 @@ public class ServerResponseEntity<T> implements Serializable {
     public static <T> ServerResponseEntity<T> success() {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
-        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMsg());
+        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMessage());
         return serverResponseEntity;
     }
 
     /**
      * 前端显示失败消息
      *
-     * @param msg 失败消息
+     * @param message 失败消息
      * @return
      */
-    public static <T> ServerResponseEntity<T> showFailMsg(String msg) {
+    public static <T> ServerResponseEntity<T> showFailMsg(String message) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(SystemErrorEnumError.SHOW_FAIL.getCode());
-        serverResponseEntity.setMsg(msg);
+        serverResponseEntity.setMsg(message);
         return serverResponseEntity;
     }
 
     public static <T> ServerResponseEntity<T> fail(ErrorEnumInterface errorEnum) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(errorEnum.getCode());
-        serverResponseEntity.setMsg(errorEnum.getMsg());
+        serverResponseEntity.setMsg(errorEnum.getMessage());
         return serverResponseEntity;
     }
 
     public static <T> ServerResponseEntity<T> fail(ErrorEnumInterface errorEnum, T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(errorEnum.getCode());
-        serverResponseEntity.setMsg(errorEnum.getMsg());
+        serverResponseEntity.setMsg(errorEnum.getMessage());
         serverResponseEntity.setData(data);
         return serverResponseEntity;
     }
@@ -106,7 +106,7 @@ public class ServerResponseEntity<T> implements Serializable {
     public static <T> ServerResponseEntity<T> transform(ServerResponseEntity<?> oldServerResponseEntity) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(oldServerResponseEntity.getCode());
-        serverResponseEntity.setMsg(oldServerResponseEntity.getMsg());
+        serverResponseEntity.setMsg(oldServerResponseEntity.getMessage());
         return serverResponseEntity;
     }
 

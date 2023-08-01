@@ -13,7 +13,7 @@ public class BaseException extends RuntimeException {
 
     private String message;
     private String errorName;
-    private Integer code;
+    private String code;
 
     public BaseException(Throwable cause) {
         super(cause);
@@ -39,12 +39,12 @@ public class BaseException extends RuntimeException {
         if (errorEnum.getCode() != null) {
             this.code = errorEnum.getCode();
         } else {
-            this.code = 999999;
+            this.code = "A00001";
         }
 
     }
 
-    public BaseException(Integer code, String message) {
+    public BaseException(String code, String message) {
         super(message);
         this.errorName = message;
         this.message = message;
@@ -60,11 +60,11 @@ public class BaseException extends RuntimeException {
         this.message = message;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return this.code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

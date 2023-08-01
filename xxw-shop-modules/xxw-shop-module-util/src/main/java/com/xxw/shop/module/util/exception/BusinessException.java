@@ -8,7 +8,7 @@ package com.xxw.shop.module.util.exception;
  */
 public class BusinessException extends BaseException {
 
-    public BusinessException(Integer code, String message) {
+    public BusinessException(String code, String message) {
         super(code, message);
     }
 
@@ -16,13 +16,11 @@ public class BusinessException extends BaseException {
         super(error, getErrorMessage(error.getMessage(), args));
     }
 
-    public static void throwException(ErrorEnumInterface error,
-                                      Object... args) throws BusinessException {
+    public static void throwException(ErrorEnumInterface error, Object... args) throws BusinessException {
         throw getException(error, args);
     }
 
-    public static BusinessException getException(ErrorEnumInterface error,
-                                                 Object... args) {
+    public static BusinessException getException(ErrorEnumInterface error, Object... args) {
         return new BusinessException(error, args);
     }
 

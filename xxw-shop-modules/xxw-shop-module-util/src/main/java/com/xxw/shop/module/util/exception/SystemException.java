@@ -7,7 +7,12 @@ package com.xxw.shop.module.util.exception;
  * @since 2019/11/18
  */
 public class SystemException extends BaseException {
-    public SystemException(Integer code, String message) {
+
+    public SystemException(String message) {
+        super(message);
+    }
+
+    public SystemException(String code, String message) {
         super(code, message);
     }
 
@@ -15,13 +20,11 @@ public class SystemException extends BaseException {
         super(error, getErrorMessage(error.getMessage(), args));
     }
 
-    public static void throwException(ErrorEnumInterface error,
-                                      Object... args) throws SystemException {
+    public static void throwException(ErrorEnumInterface error, Object... args) throws SystemException {
         throw getException(error, args);
     }
 
-    public static SystemException getException(ErrorEnumInterface error,
-                                               Object... args) {
+    public static SystemException getException(ErrorEnumInterface error, Object... args) {
         return new SystemException(error, args);
     }
 }

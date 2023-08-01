@@ -11,6 +11,7 @@ import com.xxw.shop.module.web.response.ServerResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private MapperFacade mapperFacade;
 
     @GetMapping("/page")
     @Operation(summary = "分页获取角色列表" , description = "分页获取角色列表")

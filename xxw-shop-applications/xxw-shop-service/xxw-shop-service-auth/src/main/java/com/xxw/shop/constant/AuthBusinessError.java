@@ -11,11 +11,11 @@ public enum AuthBusinessError implements ErrorEnumInterface {
 
     private String code;
 
-    private String msg;
+    private String message;
 
-    AuthBusinessError(String code, String msg) {
+    AuthBusinessError(String code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
     @Override
@@ -24,7 +24,7 @@ public enum AuthBusinessError implements ErrorEnumInterface {
     }
 
     @Override
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 }

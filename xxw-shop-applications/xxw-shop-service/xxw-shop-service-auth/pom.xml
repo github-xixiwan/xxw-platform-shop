@@ -17,6 +17,10 @@
     <dependencies>
         <dependency>
             <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-module-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-auth</artifactId>
         </dependency>
         <dependency>
