@@ -15,6 +15,7 @@
 
     <modules>
         <module>xxw-shop-api-rbac</module>
+        <module>xxw-shop-api-auth</module>
     </modules>
 
     <dependencies>

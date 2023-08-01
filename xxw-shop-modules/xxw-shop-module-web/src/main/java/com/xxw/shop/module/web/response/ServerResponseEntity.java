@@ -1,5 +1,6 @@
 package com.xxw.shop.module.web.response;
 
+import com.xxw.shop.module.util.exception.ErrorEnumInterface;
 import com.xxw.shop.module.web.constant.SystemErrorEnumError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,14 +88,14 @@ public class ServerResponseEntity<T> implements Serializable {
         return serverResponseEntity;
     }
 
-    public static <T> ServerResponseEntity<T> fail(SystemErrorEnumError errorEnum) {
+    public static <T> ServerResponseEntity<T> fail(ErrorEnumInterface errorEnum) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(errorEnum.getCode());
         serverResponseEntity.setMsg(errorEnum.getMsg());
         return serverResponseEntity;
     }
 
-    public static <T> ServerResponseEntity<T> fail(SystemErrorEnumError errorEnum, T data) {
+    public static <T> ServerResponseEntity<T> fail(ErrorEnumInterface errorEnum, T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(errorEnum.getCode());
         serverResponseEntity.setMsg(errorEnum.getMsg());

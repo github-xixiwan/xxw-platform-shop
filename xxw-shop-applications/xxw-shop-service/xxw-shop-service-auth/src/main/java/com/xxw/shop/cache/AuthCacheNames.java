@@ -2,12 +2,12 @@ package com.xxw.shop.cache;
 
 import com.xxw.shop.module.web.cache.CacheNames;
 
-public interface RbacCacheNames extends CacheNames {
+public interface AuthCacheNames extends CacheNames {
 
     /**
      * 前缀
      */
-    String SERVICE_PREFIX = "service_rbac:";
+    String SERVICE_PREFIX = "service_auth:";
 
 
     String SERVICE_MENU_BIZ_TYPE_KEY = SERVICE_PREFIX + "menu_biz_type:";

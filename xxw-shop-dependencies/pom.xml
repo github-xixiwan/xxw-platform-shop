@@ -58,6 +58,11 @@
                 <artifactId>xxw-shop-api-rbac</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-api-auth</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- starter -->
             <dependency>

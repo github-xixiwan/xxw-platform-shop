@@ -3,6 +3,7 @@ package com.xxw.shop.module.menu.service.impl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.RbacCacheNames;
+import com.xxw.shop.constant.RbacBusinessError;
 import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
 import com.xxw.shop.module.menu.mapper.MenuPermissionMapper;
@@ -39,36 +40,36 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#menuPermission.bizType")
+    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#menuPermission.bizType")
     public ServerResponseEntity<Void> save(MenuPermission menuPermission) {
 
         MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(), AuthUserContext.get().getSysType());
         if (dbMenuPermission != null) {
-            return ServerResponseEntity.showFailMsg("权限编码已存在，请勿重复添加");
+            return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
         mapper.save(menuPermission);
         return ServerResponseEntity.success();
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#menuPermission.bizType")
+    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#menuPermission.bizType")
     public ServerResponseEntity<Void> update(MenuPermission menuPermission) {
         MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(), AuthUserContext.get().getSysType());
         if (dbMenuPermission != null && !Objects.equals(menuPermission.getMenuPermissionId(), dbMenuPermission.getMenuPermissionId())) {
-            return ServerResponseEntity.showFailMsg("权限编码已存在，请勿重复添加");
+            return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
         mapper.update(menuPermission);
         return ServerResponseEntity.success();
     }
 
     @Override
-    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#sysType")
+    @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#sysType")
     public void deleteById(Long menuPermissionId, Integer sysType) {
         mapper.deleteById(menuPermissionId, sysType);
     }
 
     @Override
-    @Caching(evict = {@CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY, key = "#sysType + ':' + #userId"), @CacheEvict(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_USER_ID_KEY, key = "#userId")})
+    @Caching(evict = {@CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY, key = "#sysType + ':' + #userId"), @CacheEvict(cacheNames = RbacCacheNames.SERVICE_MENU_USER_ID_KEY, key = "#userId")})
     public void clearUserPermissionsCache(Long userId, Integer sysType) {
     }
 
@@ -87,7 +88,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @Cacheable(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#sysType")
+    @Cacheable(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_KEY, key = "#sysType")
     public List<UriPermissionVO> listUriPermissionInfo(Integer sysType) {
         return mapper.listUriPermissionInfo(sysType);
     }
@@ -113,7 +114,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
      * @param sysType 系统类型
      * @return 权限列表
      */
-    @Cacheable(cacheNames = RbacCacheNames.SERVICE_RBAC_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY, key = "#sysType + ':' + #userId")
+    @Cacheable(cacheNames = RbacCacheNames.SERVICE_MENU_PERMISSION_BIZ_TYPE_USER_ID_KEY, key = "#sysType + ':' + #userId")
     public List<String> listPermissionByUserIdAndSysType(Long userId, Integer sysType) {
         return mapper.listPermissionByUserIdAndSysType(userId, sysType);
     }
