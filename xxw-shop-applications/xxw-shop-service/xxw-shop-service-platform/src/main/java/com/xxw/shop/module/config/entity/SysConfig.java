@@ -1,9 +1,9 @@
-package com.xxw.shop.module.user.entity;
+package com.xxw.shop.module.config.entity;
 
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,13 +20,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "sys_user")
-public class SysUser implements Serializable {
-    /**
-     * 平台用户id
-     */
-    @Id
-    private BigInteger sysUserId;
+@Table(value = "sys_config")
+public class SysConfig implements Serializable {
+    @Id(keyType = KeyType.Auto)
+    private Long id;
     /**
      * 创建时间
      */
@@ -36,24 +33,16 @@ public class SysUser implements Serializable {
      */
     private LocalDateTime updateTime;
     /**
-     * 昵称
+     * key
      */
-    private String nickName;
+    private String paramKey;
     /**
-     * 头像
+     * value
      */
-    private String avatar;
+    private String paramValue;
     /**
-     * 员工编号
+     * 备注
      */
-    private String code;
-    /**
-     * 联系方式
-     */
-    private String phoneNum;
-    /**
-     * 是否已经设置账号
-     */
-    private Integer hasAccount;
+    private String remark;
 
 }

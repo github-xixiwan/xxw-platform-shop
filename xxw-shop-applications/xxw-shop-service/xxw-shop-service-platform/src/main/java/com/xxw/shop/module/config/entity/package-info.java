@@ -4,4 +4,4 @@
  * @author liaoxiting
  * @since 2023-08-01
  */
- package com.xxw.shop.module.user.entity;
+ package com.xxw.shop.module.config.entity;

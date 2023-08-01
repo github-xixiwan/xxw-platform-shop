@@ -1,4 +1,4 @@
-package com.xxw.shop.controller.user;
+package com.xxw.shop.controller.config;
 
 import com.mybatisflex.core.paginate.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.xxw.shop.module.user.entity.SysUser;
-import com.xxw.shop.module.user.service.SysUserService;
+import com.xxw.shop.module.config.entity.SysConfig;
+import com.xxw.shop.module.config.service.SysConfigService;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 import java.util.List;
@@ -22,21 +22,21 @@ import java.util.List;
  * @since 2023-08-01
  */
 @RestController
-@RequestMapping("/sysUser")
-public class SysUserController {
+@RequestMapping("/sysConfig")
+public class SysConfigController {
 
     @Autowired
-    private SysUserService sysUserService;
+    private SysConfigService sysConfigService;
 
     /**
      * 添加。
      *
-     * @param sysUser 
+     * @param sysConfig 
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody SysUser sysUser) {
-        return sysUserService.save(sysUser);
+    public boolean save(@RequestBody SysConfig sysConfig) {
+        return sysConfigService.save(sysConfig);
     }
 
     /**
@@ -47,18 +47,18 @@ public class SysUserController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Serializable id) {
-        return sysUserService.removeById(id);
+        return sysConfigService.removeById(id);
     }
 
     /**
      * 根据主键更新。
      *
-     * @param sysUser 
+     * @param sysConfig 
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody SysUser sysUser) {
-        return sysUserService.updateById(sysUser);
+    public boolean update(@RequestBody SysConfig sysConfig) {
+        return sysConfigService.updateById(sysConfig);
     }
 
     /**
@@ -67,8 +67,8 @@ public class SysUserController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<SysUser> list() {
-        return sysUserService.list();
+    public List<SysConfig> list() {
+        return sysConfigService.list();
     }
 
     /**
@@ -78,8 +78,8 @@ public class SysUserController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public SysUser getInfo(@PathVariable Serializable id) {
-        return sysUserService.getById(id);
+    public SysConfig getInfo(@PathVariable Serializable id) {
+        return sysConfigService.getById(id);
     }
 
     /**
@@ -89,8 +89,8 @@ public class SysUserController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<SysUser> page(Page<SysUser> page) {
-        return sysUserService.page(page);
+    public Page<SysConfig> page(Page<SysConfig> page) {
+        return sysConfigService.page(page);
     }
 
 }

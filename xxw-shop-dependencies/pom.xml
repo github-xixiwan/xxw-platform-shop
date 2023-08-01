@@ -70,6 +70,11 @@
                 <artifactId>xxw-shop-api-auth</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-api-platform</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- starter -->
             <dependency>

@@ -17,6 +17,10 @@
     <dependencies>
         <dependency>
             <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-module-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-platform</artifactId>
         </dependency>
         <dependency>
@@ -61,7 +65,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.xxw.shop.PlatformApplication</mainClass>
+                    <mainClass>com.xxw.shop.AuthApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

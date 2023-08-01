@@ -7,7 +7,7 @@ import com.mybatisflex.core.table.TableDef;
  *  表定义层。
  *
  * @author liaoxiting
- * @since 2023-07-31
+ * @since 2023-08-01
  */
 public class SysUserTableDef extends TableDef {
 

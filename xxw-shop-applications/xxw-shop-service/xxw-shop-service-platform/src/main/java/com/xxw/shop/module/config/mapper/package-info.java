@@ -4,4 +4,4 @@
  * @author liaoxiting
  * @since 2023-08-01
  */
- package com.xxw.shop.module.user.mapper;
+ package com.xxw.shop.module.config.mapper;
