@@ -1,7 +1,5 @@
 package com.xxw.shop.filter;
 
-import com.alibaba.nacos.api.model.v2.Result;
-import com.xxw.shop.module.util.json.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -46,8 +44,8 @@ public class AuthGlobalFilter implements GlobalFilter {
         boolean flag = isWhiteList(path);
         if (!flag) {
             ServerHttpResponse response = exchange.getResponse();
-            ServerResponseEntity<Object> failure = Result.failure(0, "需要鉴权");
-            byte[] bytes = JsonUtil.toJson(failure).getBytes(StandardCharsets.UTF_8);
+            String json = "{\"code\":\"A00001\",\"message\":\"需要鉴权\",\"data\":null,\"success\":false}";
+            byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = response.bufferFactory().wrap(bytes);
             // 指定编码，否则在浏览器中会中文乱码
             response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");

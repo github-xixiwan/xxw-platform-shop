@@ -1,11 +1,51 @@
 spring:
   application:
     name: shop-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true #开启自动发现
-          lower-case-service-id: true #转小写
   profiles:
     active: @profileActive@
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allow-credentials: true
+            allowed-headers: "*"
+            # 半个月内都允许
+            max-age: 1296000
+            # 测试环境，全部允许
+            allowedOriginPatterns: "*"
+              # allowedOrigins:
+              # - "http://localhost:9527"
+              # - "http://localhost:9527"
+              # - "http://localhost:9528"
+              # - "http://localhost:9529"
+            # - "http://:9527"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - OPTIONS
+              - DELETE
+      discovery:
+        locator:
+          # 开启服务注册和发现
+          enabled: true
+          # 转小写
+          lower-case-service-id: true 
+      routes:
+        - id: shop-rbac
+          uri: lb://shop-rbac
+          predicates:
+            - Path=/shop_rbac/**
+          filters:
+            - RewritePath=/shop_rbac(?<segment>/?.*), $\{segment}
+        - id: shop-auth
+          uri: lb://shop-auth
+          predicates:
+            - Path=/shop_auth/**
+          filters:
+            - RewritePath=/shop_auth(?<segment>/?.*), $\{segment}
+        - id: shop-platform
+          uri: lb://shop-platform
+          predicates:
+            - Path=/shop_platform/**
