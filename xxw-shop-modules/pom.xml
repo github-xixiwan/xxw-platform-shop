@@ -20,5 +20,6 @@
         <module>xxw-shop-module-nacos</module>
         <module>xxw-shop-module-mybatis</module>
         <module>xxw-shop-module-security</module>
+        <module>xxw-shop-module-cache</module>
     </modules>
 </project>

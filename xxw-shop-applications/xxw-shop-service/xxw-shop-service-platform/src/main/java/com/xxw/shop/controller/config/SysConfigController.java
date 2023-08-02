@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-08-01
  */
 @RestController
-@RequestMapping("/sysConfig")
+@RequestMapping("/sys_config")
 public class SysConfigController {
 
     @Resource

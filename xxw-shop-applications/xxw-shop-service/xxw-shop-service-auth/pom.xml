@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
-            <artifactId>xxw-shop-starter-redisson</artifactId>
+            <artifactId>xxw-shop-module-cache</artifactId>
         </dependency>
         <dependency>
             <groupId>com.anji-plus</groupId>

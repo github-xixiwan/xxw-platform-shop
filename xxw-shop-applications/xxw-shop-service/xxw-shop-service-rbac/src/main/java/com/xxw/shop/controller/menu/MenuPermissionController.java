@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 @Tag(name = "权限接口")
 @RestController
-@RequestMapping("/menuPermission")
+@RequestMapping("/menu_permission")
 public class MenuPermissionController {
 
     @Resource

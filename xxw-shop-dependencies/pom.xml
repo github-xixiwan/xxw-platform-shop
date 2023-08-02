@@ -58,6 +58,11 @@
                 <artifactId>xxw-shop-module-security</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-module-cache</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- api -->
             <dependency>
@@ -79,11 +84,6 @@
             <!-- starter -->
             <dependency>
                 <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-starter-redisson</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xxw.shop</groupId>
                 <artifactId>xxw-shop-starter-elasticsearch</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -98,11 +98,6 @@
                 <groupId>com.mybatis-flex</groupId>
                 <artifactId>mybatis-flex-codegen</artifactId>
                 <version>${mybatis-flex.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>

@@ -14,7 +14,6 @@
     </parent>
 
     <modules>
-        <module>xxw-shop-starter-redisson</module>
         <module>xxw-shop-starter-elasticsearch</module>
     </modules>
 
