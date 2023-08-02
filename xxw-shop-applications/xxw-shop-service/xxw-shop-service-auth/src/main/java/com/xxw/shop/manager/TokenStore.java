@@ -5,16 +5,17 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.xxw.shop.api.auth.vo.TokenInfoVO;
 import com.xxw.shop.cache.AuthCacheNames;
 import com.xxw.shop.constant.AuthBusinessError;
-import com.xxw.shop.module.web.security.bo.TokenInfoBO;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
-import com.xxw.shop.module.web.constant.SysTypeEnum;
 import com.xxw.shop.module.util.exception.BusinessException;
 import com.xxw.shop.module.util.string.PrincipalUtil;
+import com.xxw.shop.module.web.constant.SysTypeEnum;
 import com.xxw.shop.module.web.constant.SystemErrorEnumError;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
-import com.xxw.shop.api.auth.vo.TokenInfoVO;
+import com.xxw.shop.module.web.security.bo.TokenInfoBO;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -41,17 +42,11 @@ public class TokenStore {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenStore.class);
 
-    private final RedisTemplate<Object, Object> redisTemplate;
+    @Resource
+    private RedisTemplate<Object, Object> redisTemplate;
 
-    private final RedisSerializer<Object> redisSerializer;
-
-    private final StringRedisTemplate stringRedisTemplate;
-
-    public TokenStore(RedisTemplate<Object, Object> redisTemplate, RedisSerializer<Object> redisSerializer, StringRedisTemplate stringRedisTemplate) {
-        this.redisTemplate = redisTemplate;
-        this.redisSerializer = redisSerializer;
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 将用户的部分信息存储在token中，并返回token信息
@@ -110,7 +105,8 @@ public class TokenStore {
             connection.setEx(refreshKey, expiresIn, accessToken.getBytes(StandardCharsets.UTF_8));
 
             // 通过access_token保存用户的租户id，用户id，uid
-            connection.setEx(accessKey, expiresIn, Objects.requireNonNull(redisSerializer.serialize(userInfoInToken)));
+            connection.setEx(accessKey, expiresIn,
+                    Objects.requireNonNull(RedisSerializer.json().serialize(userInfoInToken)));
 
             return null;
         });
@@ -131,7 +127,8 @@ public class TokenStore {
             expiresIn = expiresIn * 24 * 30;
         }
         // 系统管理员的token过期时间 2小时
-        if (Objects.equals(sysType, SysTypeEnum.MULTISHOP.value()) || Objects.equals(sysType, SysTypeEnum.PLATFORM.value())) {
+        if (Objects.equals(sysType, SysTypeEnum.MULTISHOP.value()) || Objects.equals(sysType,
+                SysTypeEnum.PLATFORM.value())) {
             expiresIn = expiresIn * 24 * 30;
         }
         return expiresIn;
@@ -158,7 +155,8 @@ public class TokenStore {
         } else {
             realAccessToken = accessToken;
         }
-        UserInfoInTokenBO userInfoInTokenBO = (UserInfoInTokenBO) redisTemplate.opsForValue().get(getAccessKey(realAccessToken));
+        UserInfoInTokenBO userInfoInTokenBO =
+                (UserInfoInTokenBO) redisTemplate.opsForValue().get(getAccessKey(realAccessToken));
 
         if (userInfoInTokenBO == null) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00002);
@@ -186,7 +184,8 @@ public class TokenStore {
         if (StrUtil.isBlank(accessToken)) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00002);
         }
-        ServerResponseEntity<UserInfoInTokenBO> userInfoByAccessTokenEntity = getUserInfoByAccessToken(accessToken, false);
+        ServerResponseEntity<UserInfoInTokenBO> userInfoByAccessTokenEntity = getUserInfoByAccessToken(accessToken,
+                false);
 
         if (!userInfoByAccessTokenEntity.isSuccess()) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00002);
@@ -308,7 +307,8 @@ public class TokenStore {
                 continue;
             }
             BeanUtils.copyProperties(userInfoInTokenBO, oldUserInfoInTokenBO);
-            redisTemplate.opsForValue().set(accessKey, Objects.requireNonNull(userInfoInTokenBO), getExpiresIn(userInfoInTokenBO.getSysType()), TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(accessKey, Objects.requireNonNull(userInfoInTokenBO),
+                    getExpiresIn(userInfoInTokenBO.getSysType()), TimeUnit.SECONDS);
         }
     }
 }

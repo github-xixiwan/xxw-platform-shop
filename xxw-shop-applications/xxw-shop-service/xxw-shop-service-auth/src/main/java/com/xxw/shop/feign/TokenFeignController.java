@@ -2,8 +2,8 @@ package com.xxw.shop.feign;
 
 import com.xxw.shop.api.auth.feign.TokenFeignClient;
 import com.xxw.shop.manager.TokenStore;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

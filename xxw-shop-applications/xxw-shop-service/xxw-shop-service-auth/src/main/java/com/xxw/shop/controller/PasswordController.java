@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,11 +36,13 @@ public class PasswordController {
     @Operation(summary = "更新密码", description = "更新当前用户的密码, 更新密码之后要退出登录，清理token")
     public ServerResponseEntity<TokenInfoVO> updatePassword(@Valid @RequestBody UpdatePasswordDTO updatePasswordDTO) {
         UserInfoInTokenBO userInfoInToken = AuthUserContext.get();
-        AuthAccount authAccount = authAccountService.getByUserIdAndType(userInfoInToken.getUserId(), userInfoInToken.getSysType());
+        AuthAccount authAccount = authAccountService.getByUserIdAndType(userInfoInToken.getUserId(),
+                userInfoInToken.getSysType());
         if (!passwordEncoder.matches(updatePasswordDTO.getOldPassword(), authAccount.getPassword())) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00007);
         }
-        authAccountService.updatePassword(userInfoInToken.getUserId(), userInfoInToken.getSysType(), updatePasswordDTO.getNewPassword());
+        authAccountService.updatePassword(userInfoInToken.getUserId(), userInfoInToken.getSysType(),
+                updatePasswordDTO.getNewPassword());
         tokenStore.deleteAllToken(userInfoInToken.getSysType().toString(), userInfoInToken.getUid());
         return ServerResponseEntity.success();
     }

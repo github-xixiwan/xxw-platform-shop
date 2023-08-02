@@ -10,16 +10,17 @@ import com.xxw.shop.entity.AuthAccount;
 import com.xxw.shop.manager.TokenStore;
 import com.xxw.shop.mapper.AuthAccountMapper;
 import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.security.constant.InputUserNameEnum;
-import com.xxw.shop.module.web.constant.SysTypeEnum;
 import com.xxw.shop.module.util.exception.BusinessException;
 import com.xxw.shop.module.util.string.PrincipalUtil;
+import com.xxw.shop.module.web.constant.SysTypeEnum;
 import com.xxw.shop.module.web.constant.SystemErrorEnumError;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,7 +111,9 @@ public class AccountFeignController implements AccountFeignClient {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00004);
         }
 
-        AuthAccountInVerifyBO userNameBo = authAccountMapper.getAuthAccountInVerifyByInputUserName(InputUserNameEnum.USERNAME.value(), authAccountDTO.getUsername(), authAccountDTO.getSysType());
+        AuthAccountInVerifyBO userNameBo =
+                authAccountMapper.getAuthAccountInVerifyByInputUserName(InputUserNameEnum.USERNAME.value(),
+                        authAccountDTO.getUsername(), authAccountDTO.getSysType());
         if (userNameBo != null && !Objects.equals(userNameBo.getUserId(), authAccountDTO.getUserId())) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00005);
         }
@@ -126,7 +129,8 @@ public class AccountFeignController implements AccountFeignClient {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ServerResponseEntity<Void> updateUserInfoByUserIdAndSysType(UserInfoInTokenBO userInfoInTokenBO, Long userId, Integer sysType) {
+    public ServerResponseEntity<Void> updateUserInfoByUserIdAndSysType(UserInfoInTokenBO userInfoInTokenBO,
+                                                                       Long userId, Integer sysType) {
         AuthAccount byUserIdAndType = authAccountMapper.getByUserIdAndType(userId, sysType);
         userInfoInTokenBO.setUid(byUserIdAndType.getUid());
         tokenStore.updateUserInfoByUidAndAppId(byUserIdAndType.getUid(), sysType.toString(), userInfoInTokenBO);

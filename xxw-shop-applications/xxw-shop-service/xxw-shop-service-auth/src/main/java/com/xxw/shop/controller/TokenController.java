@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import ma.glasnost.orika.MapperFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +26,13 @@ public class TokenController {
 
     @PostMapping("/ua/token/refresh")
     public ServerResponseEntity<TokenInfoVO> refreshToken(@Valid @RequestBody RefreshTokenDTO refreshTokenDTO) {
-        ServerResponseEntity<TokenInfoBO> tokenInfoServerResponseEntity = tokenStore.refreshToken(refreshTokenDTO.getRefreshToken());
+        ServerResponseEntity<TokenInfoBO> tokenInfoServerResponseEntity =
+                tokenStore.refreshToken(refreshTokenDTO.getRefreshToken());
         if (!tokenInfoServerResponseEntity.isSuccess()) {
             return ServerResponseEntity.transform(tokenInfoServerResponseEntity);
         }
-        return ServerResponseEntity.success(mapperFacade.map(tokenInfoServerResponseEntity.getData(), TokenInfoVO.class));
+        return ServerResponseEntity.success(mapperFacade.map(tokenInfoServerResponseEntity.getData(),
+                TokenInfoVO.class));
     }
 
 }
