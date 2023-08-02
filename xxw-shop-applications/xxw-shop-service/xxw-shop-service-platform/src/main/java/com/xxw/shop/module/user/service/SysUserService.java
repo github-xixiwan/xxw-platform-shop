@@ -2,10 +2,13 @@ package com.xxw.shop.module.user.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
+import com.xxw.shop.api.auth.vo.AuthAccountVO;
+import com.xxw.shop.module.user.dto.ChangeAccountDTO;
 import com.xxw.shop.module.user.dto.SysUserQueryDTO;
 import com.xxw.shop.module.user.entity.SysUser;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
 import com.xxw.shop.module.user.vo.SysUserVO;
+import com.xxw.shop.module.web.response.ServerResponseEntity;
 
 import java.util.List;
 
@@ -64,4 +67,29 @@ public interface SysUserService extends IService<SysUser> {
      * @param sysUserId 平台用户id
      */
     void deleteById(Long sysUserId);
+
+    /**
+     * 添加账户
+     *
+     * @param changeAccountDTO 账户信息
+     * @return void
+     */
+    ServerResponseEntity<Void> save(ChangeAccountDTO changeAccountDTO);
+
+    /**
+     * 更新账户
+     *
+     * @param changeAccountDTO 账户信息
+     * @return
+     */
+    ServerResponseEntity<Void> update(ChangeAccountDTO changeAccountDTO);
+
+    /**
+     * 根据用户id和系统类型获取用户信息
+     *
+     * @param userId  用户id
+     * @param sysType 系统类型
+     * @return void
+     */
+    ServerResponseEntity<AuthAccountVO> getByUserIdAndSysType(Long userId, Integer sysType);
 }

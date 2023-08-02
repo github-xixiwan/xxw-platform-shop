@@ -7,7 +7,8 @@ import com.xxw.shop.module.util.exception.ErrorEnumInterface;
  */
 public enum PlatformBusinessError implements ErrorEnumInterface {
 
-    PLATFORM_00001("AUTH_00001", "accessToken is blank");
+    PLATFORM_00001("PLATFORM_00001", "无法获取账户信息"),
+    PLATFORM_00002("PLATFORM_00002", "已有账号，无需重复添加");
 
     private String code;
 

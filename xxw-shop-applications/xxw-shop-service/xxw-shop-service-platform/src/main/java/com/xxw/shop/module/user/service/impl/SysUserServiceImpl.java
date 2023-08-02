@@ -2,10 +2,14 @@ package com.xxw.shop.module.user.service.impl;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.auth.dto.AuthAccountDTO;
 import com.xxw.shop.api.auth.feign.AccountFeignClient;
+import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import com.xxw.shop.api.rbac.dto.UserRoleDTO;
 import com.xxw.shop.api.rbac.feign.UserRoleFeignClient;
 import com.xxw.shop.cache.PlatformCacheNames;
+import com.xxw.shop.module.security.AuthUserContext;
+import com.xxw.shop.module.user.dto.ChangeAccountDTO;
 import com.xxw.shop.module.user.dto.SysUserQueryDTO;
 import com.xxw.shop.module.user.entity.SysUser;
 import com.xxw.shop.module.user.mapper.SysUserMapper;
@@ -13,6 +17,8 @@ import com.xxw.shop.module.user.service.SysUserService;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
 import com.xxw.shop.module.user.vo.SysUserVO;
 import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.web.util.IpHelper;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.CacheEvict;
@@ -87,5 +93,55 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         accountFeignClient.deleteByUserIdAndSysType(sysUserId);
         userRoleFeignClient.deleteByUserIdAndSysType(sysUserId);
         mapper.deleteById(sysUserId);
+    }
+
+
+    @Override
+    @GlobalTransactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
+    public ServerResponseEntity<Void> save(ChangeAccountDTO changeAccountDTO) {
+        AuthAccountDTO authAccountDTO = getAuthAccountDTO(changeAccountDTO);
+        authAccountDTO.setCreateIp(IpHelper.getIpAddr());
+        authAccountDTO.setIsAdmin(0);
+        // 保存
+        ServerResponseEntity<Long> serverResponseEntity = accountFeignClient.save(authAccountDTO);
+        if (!serverResponseEntity.isSuccess()) {
+            return ServerResponseEntity.transform(serverResponseEntity);
+        }
+        SysUser sysUser = new SysUser();
+        sysUser.setSysUserId(changeAccountDTO.getUserId());
+        sysUser.setHasAccount(1);
+        mapper.update(sysUser);
+        return ServerResponseEntity.success();
+    }
+
+    @Override
+    public ServerResponseEntity<Void> update(ChangeAccountDTO changeAccountDTO) {
+
+        AuthAccountDTO authAccountDTO = getAuthAccountDTO(changeAccountDTO);
+        // 更新，不涉及分布式事务
+        ServerResponseEntity<Void> serverResponseEntity = accountFeignClient.update(authAccountDTO);
+        if (!serverResponseEntity.isSuccess()) {
+            return serverResponseEntity;
+        }
+
+        return ServerResponseEntity.success();
+    }
+
+    @Override
+    public ServerResponseEntity<AuthAccountVO> getByUserIdAndSysType(Long userId, Integer sysType) {
+        return accountFeignClient.getByUserIdAndSysType(userId, sysType);
+    }
+
+    private AuthAccountDTO getAuthAccountDTO(ChangeAccountDTO changeAccountDTO) {
+        AuthAccountDTO authAccountDTO = new AuthAccountDTO();
+        UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
+        authAccountDTO.setPassword(changeAccountDTO.getPassword());
+        authAccountDTO.setUsername(changeAccountDTO.getUsername());
+        authAccountDTO.setStatus(changeAccountDTO.getStatus());
+        authAccountDTO.setSysType(userInfoInTokenBO.getSysType());
+        authAccountDTO.setTenantId(userInfoInTokenBO.getTenantId());
+        authAccountDTO.setUserId(changeAccountDTO.getUserId());
+        return authAccountDTO;
     }
 }
