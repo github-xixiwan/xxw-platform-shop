@@ -56,7 +56,7 @@ public interface MenuPermissionService extends IService<MenuPermission> {
      * @param menuPermissionId
      * @param sysType
      */
-    void deleteById(Long menuPermissionId, Integer sysType);
+    void removeById(Long menuPermissionId, Integer sysType);
 
     /**
      * 根据用户所在系统的用户id，用户所在系统类型，获取用户的权限列表

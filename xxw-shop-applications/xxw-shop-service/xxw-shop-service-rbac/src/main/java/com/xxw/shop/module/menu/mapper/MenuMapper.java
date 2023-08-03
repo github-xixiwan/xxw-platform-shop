@@ -44,7 +44,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param menuId
      * @param sysType
      */
-    void deleteById(@Param("menuId") Long menuId, @Param("sysType") Integer sysType);
+    void removeById(@Param("menuId") Long menuId, @Param("sysType") Integer sysType);
 
     /**
      * 根据系统类型获取该系统的菜单列表

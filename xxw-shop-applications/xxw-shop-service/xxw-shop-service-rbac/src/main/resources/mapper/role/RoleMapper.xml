@@ -45,7 +45,7 @@
         </set>
         where role_id = #{role.roleId}
     </update>
-    <delete id="deleteById">
+    <delete id="removeById">
         delete from role where role_id = #{roleId} and biz_type = #{sysType}
     </delete>
     <select id="getBizType" resultType="java.lang.Integer">

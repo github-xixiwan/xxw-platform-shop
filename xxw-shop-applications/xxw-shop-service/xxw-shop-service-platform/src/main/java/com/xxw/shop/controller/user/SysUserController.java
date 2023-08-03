@@ -77,7 +77,7 @@ public class SysUserController {
     @DeleteMapping
     @Operation(summary = "删除平台用户信息", description = "根据平台用户id删除平台用户信息")
     public ServerResponseEntity<Void> delete(@RequestParam Long sysUserId) {
-        sysUserService.deleteById(sysUserId);
+        sysUserService.removeById(sysUserId);
         return ServerResponseEntity.success();
     }
 

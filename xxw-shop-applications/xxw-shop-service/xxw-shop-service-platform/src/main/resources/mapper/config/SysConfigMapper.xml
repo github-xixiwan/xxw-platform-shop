@@ -43,7 +43,7 @@
         </set>
         where param_key = #{sysConfig.paramKey}
     </update>
-    <delete id="deleteById">
+    <delete id="removeById">
         delete from sys_config where param_key = #{paramKey}
     </delete>
 

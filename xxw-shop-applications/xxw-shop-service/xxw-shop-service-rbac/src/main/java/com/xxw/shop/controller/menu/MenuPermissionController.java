@@ -72,7 +72,7 @@ public class MenuPermissionController {
     @Operation(summary = "删除菜单资源", description = "根据菜单资源id删除菜单资源")
     public ServerResponseEntity<Void> delete(@RequestParam Long menuPermissionId) {
         UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
-        menuPermissionService.deleteById(menuPermissionId, userInfoInTokenBO.getSysType());
+        menuPermissionService.removeById(menuPermissionId, userInfoInTokenBO.getSysType());
         return ServerResponseEntity.success();
     }
 

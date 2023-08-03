@@ -121,7 +121,7 @@ public class MenuController {
             throw new BusinessException(RbacBusinessError.RBAC_00002);
         }
         sysType = Objects.isNull(sysType) ? userInfoInTokenBO.getSysType() : sysType;
-        menuService.deleteById(menuId, sysType);
+        menuService.removeById(menuId, sysType);
         return ServerResponseEntity.success();
     }
 

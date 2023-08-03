@@ -62,7 +62,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param roleId  角色id
      * @param sysType 系统类型
      */
-    void deleteById(@Param("roleId") Long roleId, @Param("sysType") Integer sysType);
+    void removeById(@Param("roleId") Long roleId, @Param("sysType") Integer sysType);
 
     /**
      * 根据角色id获取该角色所在系统

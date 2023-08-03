@@ -60,5 +60,5 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      *
      * @param sysUserId
      */
-    void deleteById(@Param("sysUserId") Long sysUserId);
+    void removeById(@Param("sysUserId") Long sysUserId);
 }

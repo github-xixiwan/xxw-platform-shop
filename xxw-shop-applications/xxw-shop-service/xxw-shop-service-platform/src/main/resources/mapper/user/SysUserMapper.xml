@@ -66,7 +66,7 @@
         where sys_user_id = #{sysUser.sysUserId}
     </update>
 
-    <delete id="deleteById">
+    <delete id="removeById">
         delete
         from sys_user
         where sys_user_id = #{sysUserId}

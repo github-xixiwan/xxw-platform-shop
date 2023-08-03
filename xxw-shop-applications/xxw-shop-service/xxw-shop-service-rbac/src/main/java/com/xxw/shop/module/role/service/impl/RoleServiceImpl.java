@@ -93,8 +93,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public void deleteById(Long roleId, Integer sysType) {
-        mapper.deleteById(roleId, sysType);
+    public void removeById(Long roleId, Integer sysType) {
+        mapper.removeById(roleId, sysType);
         roleMenuMapper.deleteByRoleId(roleId);
         userRoleMapper.deleteByRoleId(roleId);
     }

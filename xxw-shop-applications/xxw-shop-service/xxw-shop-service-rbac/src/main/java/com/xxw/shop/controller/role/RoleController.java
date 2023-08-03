@@ -102,7 +102,7 @@ public class RoleController {
         if (!Objects.equals(dbRole.getBizType(), userInfoInTokenBO.getSysType()) || !Objects.equals(dbRole.getTenantId(), userInfoInTokenBO.getTenantId())) {
             return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
         }
-        roleService.deleteById(roleId, userInfoInTokenBO.getSysType());
+        roleService.removeById(roleId, userInfoInTokenBO.getSysType());
         return ServerResponseEntity.success();
     }
 

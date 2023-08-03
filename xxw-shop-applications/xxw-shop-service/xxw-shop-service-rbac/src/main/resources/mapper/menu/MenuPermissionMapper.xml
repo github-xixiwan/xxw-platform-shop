@@ -90,7 +90,7 @@
         where menu_permission_id = #{menuPermission.menuPermissionId}
 
     </update>
-    <delete id="deleteById">
+    <delete id="removeById">
 
         delete
         from menu_permission

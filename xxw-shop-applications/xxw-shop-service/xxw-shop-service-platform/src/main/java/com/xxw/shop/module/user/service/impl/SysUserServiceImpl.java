@@ -89,10 +89,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @GlobalTransactional(rollbackFor = Exception.class)
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(cacheNames = PlatformCacheNames.PLATFORM_SIMPLE_INFO_KEY, key = "#sysUserId")
-    public void deleteById(Long sysUserId) {
+    public void removeById(Long sysUserId) {
         accountFeignClient.deleteByUserIdAndSysType(sysUserId);
         userRoleFeignClient.deleteByUserIdAndSysType(sysUserId);
-        mapper.deleteById(sysUserId);
+        mapper.removeById(sysUserId);
     }
 
 

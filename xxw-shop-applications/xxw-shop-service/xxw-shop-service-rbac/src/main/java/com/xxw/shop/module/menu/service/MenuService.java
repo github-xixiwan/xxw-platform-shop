@@ -44,7 +44,7 @@ public interface MenuService extends IService<Menu> {
      * @param menuId  菜单id
      * @param sysType 系统类型
      */
-    void deleteById(Long menuId, Integer sysType);
+    void removeById(Long menuId, Integer sysType);
 
     /**
      * 根据系统类型获取该系统的菜单列表

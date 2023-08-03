@@ -55,7 +55,7 @@ public interface MenuPermissionMapper extends BaseMapper<MenuPermission> {
      * @param menuPermissionId
      * @param sysType
      */
-    void deleteById(@Param("menuPermissionId") Long menuPermissionId, @Param("sysType") Integer sysType);
+    void removeById(@Param("menuPermissionId") Long menuPermissionId, @Param("sysType") Integer sysType);
 
     /**
      * 获取某个类型用户的所有权限列表

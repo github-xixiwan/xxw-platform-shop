@@ -65,7 +65,7 @@ public interface RoleService extends IService<Role> {
      * @param roleId
      * @param sysType
      */
-    void deleteById(Long roleId, Integer sysType);
+    void removeById(Long roleId, Integer sysType);
 
     /**
      * 根据角色id获取该角色所在系统

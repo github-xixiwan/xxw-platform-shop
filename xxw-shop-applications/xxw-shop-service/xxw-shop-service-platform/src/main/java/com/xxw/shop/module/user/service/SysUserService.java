@@ -66,7 +66,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @param sysUserId 平台用户id
      */
-    void deleteById(Long sysUserId);
+    void removeById(Long sysUserId);
 
     /**
      * 添加账户

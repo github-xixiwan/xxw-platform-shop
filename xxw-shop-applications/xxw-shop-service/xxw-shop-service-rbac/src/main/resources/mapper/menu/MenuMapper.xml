@@ -112,7 +112,7 @@
         where menu_id = #{menu.menuId}
 
     </update>
-    <delete id="deleteById">
+    <delete id="removeById">
         delete from menu where menu_id = #{menuId} and biz_type = #{sysType}
     </delete>
     <select id="listBySysType" resultMap="BaseResultMap">

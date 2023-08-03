@@ -64,8 +64,8 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
 
     @Override
     @CacheEvict(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#sysType")
-    public void deleteById(Long menuPermissionId, Integer sysType) {
-        mapper.deleteById(menuPermissionId, sysType);
+    public void removeById(Long menuPermissionId, Integer sysType) {
+        mapper.removeById(menuPermissionId, sysType);
     }
 
     @Override
