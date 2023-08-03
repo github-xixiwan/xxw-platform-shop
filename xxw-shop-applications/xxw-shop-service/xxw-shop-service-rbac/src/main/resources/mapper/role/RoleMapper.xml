@@ -27,7 +27,7 @@
         insert into role (`role_name`,`remark`,`create_user_id`,`biz_type`, `tenant_id`)
         values (#{role.roleName},#{role.remark},#{role.createUserId},#{role.bizType}, #{role.tenantId});
     </insert>
-    <update id="update">
+    <update id="modify">
         update role
         <set>
             <if test="role.roleName != null">

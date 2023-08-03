@@ -37,7 +37,7 @@ public interface AuthAccountService extends IService<AuthAccount> {
      * @param sysType 系统类型
      * @param newPassWord 新密码
      */
-    void updatePassword(Long userId, Integer sysType, String newPassWord);
+    void modifyPassword(Long userId, Integer sysType, String newPassWord);
 
     /**
      * 根据getByUid获取平台唯一用户

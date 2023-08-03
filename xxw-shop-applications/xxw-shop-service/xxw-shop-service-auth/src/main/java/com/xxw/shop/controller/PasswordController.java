@@ -41,7 +41,7 @@ public class PasswordController {
         if (!passwordEncoder.matches(updatePasswordDTO.getOldPassword(), authAccount.getPassword())) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00007);
         }
-        authAccountService.updatePassword(userInfoInToken.getUserId(), userInfoInToken.getSysType(),
+        authAccountService.modifyPassword(userInfoInToken.getUserId(), userInfoInToken.getSysType(),
                 updatePasswordDTO.getNewPassword());
         tokenStore.deleteAllToken(userInfoInToken.getSysType().toString(), userInfoInToken.getUid());
         return ServerResponseEntity.success();

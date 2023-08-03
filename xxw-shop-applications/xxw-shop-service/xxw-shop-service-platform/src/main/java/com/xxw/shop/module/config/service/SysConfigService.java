@@ -17,7 +17,7 @@ public interface SysConfigService extends IService<SysConfig> {
      * @param key   参数key
      * @param value 参数value
      */
-    void updateValueByKey(String key, String value);
+    void modifyValueByKey(String key, String value);
 
     /**
      * 删除配置信息

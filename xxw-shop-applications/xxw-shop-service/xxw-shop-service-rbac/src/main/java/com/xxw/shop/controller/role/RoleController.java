@@ -88,7 +88,7 @@ public class RoleController {
         Role role = mapperFacade.map(roleDTO, Role.class);
         role.setBizType(userInfoInTokenBO.getSysType());
 
-        roleService.update(role, roleDTO.getMenuIds(), roleDTO.getMenuPermissionIds());
+        roleService.modify(role, roleDTO.getMenuIds(), roleDTO.getMenuPermissionIds());
         return ServerResponseEntity.success();
     }
 

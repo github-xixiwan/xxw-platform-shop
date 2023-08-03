@@ -42,14 +42,14 @@
                `status`, sys_type, user_id, tenant_id, is_admin from auth_account where uid = #{uid}
     </select>
 
-    <update id="updatePassword">
+    <update id="modifyPassword">
         update auth_account set password = #{newPassWord} where sys_type = #{sysType} and user_id = #{userId}
     </update>
     <insert id="save">
         insert into auth_account (`uid`,`username`,`password`,`create_ip`,`status`,`sys_type`,`user_id`,`tenant_id`,`is_admin`)
         values (#{authAccount.uid},#{authAccount.username},#{authAccount.password},#{authAccount.createIp},#{authAccount.status},#{authAccount.sysType},#{authAccount.userId},#{authAccount.tenantId},#{authAccount.isAdmin});
     </insert>
-    <update id="updateAccountInfo">
+    <update id="modifyAccountInfo">
         update auth_account
         <set>
             <if test="authAccount.username != null">
@@ -67,7 +67,7 @@
     <update id="deleteByUserIdAndSysType">
         update auth_account set status = -1 where user_id = #{userId} and sys_type = #{sysType}
     </update>
-    <update id="updateUserInfoByUserId">
+    <update id="modifyUserInfoByUserId">
         update auth_account
         <set>
             <if test="authAccount.tenantId != null">

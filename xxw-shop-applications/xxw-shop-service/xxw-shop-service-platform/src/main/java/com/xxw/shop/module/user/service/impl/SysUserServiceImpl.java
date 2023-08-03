@@ -77,11 +77,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @GlobalTransactional(rollbackFor = Exception.class)
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(cacheNames = PlatformCacheNames.PLATFORM_SIMPLE_INFO_KEY, key = "#sysUser.sysUserId")
-    public void update(SysUser sysUser, List<Long> roleIds) {
+    public void modify(SysUser sysUser, List<Long> roleIds) {
         UserRoleDTO userRoleDTO = new UserRoleDTO();
         userRoleDTO.setRoleIds(roleIds);
         userRoleDTO.setUserId(sysUser.getSysUserId());
-        mapper.update(sysUser);
+        mapper.modify(sysUser);
         userRoleFeignClient.updateByUserIdAndSysType(userRoleDTO);
     }
 
@@ -111,7 +111,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = new SysUser();
         sysUser.setSysUserId(changeAccountDTO.getUserId());
         sysUser.setHasAccount(1);
-        mapper.update(sysUser);
+        mapper.modify(sysUser);
         return ServerResponseEntity.success();
     }
 

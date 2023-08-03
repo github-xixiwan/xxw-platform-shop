@@ -49,7 +49,7 @@ public interface AuthAccountMapper extends BaseMapper<AuthAccount> {
      * @param sysType     系统类型
      * @param newPassWord 新密码
      */
-    void updatePassword(@Param("userId") Long userId, @Param("sysType") Integer sysType, @Param("newPassWord") String newPassWord);
+    void modifyPassword(@Param("userId") Long userId, @Param("sysType") Integer sysType, @Param("newPassWord") String newPassWord);
 
     /**
      * 保存
@@ -63,7 +63,7 @@ public interface AuthAccountMapper extends BaseMapper<AuthAccount> {
      *
      * @param authAccount authAccount
      */
-    void updateAccountInfo(@Param("authAccount") AuthAccount authAccount);
+    void modifyAccountInfo(@Param("authAccount") AuthAccount authAccount);
 
     /**
      * 根据用户id和系统类型删除用户
@@ -96,7 +96,8 @@ public interface AuthAccountMapper extends BaseMapper<AuthAccount> {
      * @param sysType
      * @return
      */
-    int updateUserInfoByUserId(@Param("authAccount") AuthAccount authAccount, @Param("userId") Long userId, @Param("sysType") Integer sysType);
+    int modifyUserInfoByUserId(@Param("authAccount") AuthAccount authAccount, @Param("userId") Long userId, @Param(
+            "sysType") Integer sysType);
 
     /**
      * 根据租户id获取商家信息

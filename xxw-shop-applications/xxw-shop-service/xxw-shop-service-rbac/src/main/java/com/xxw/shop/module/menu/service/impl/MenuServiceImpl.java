@@ -36,8 +36,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
     @Override
     @CacheEvict(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#menu.bizType")
-    public void update(Menu menu) {
-        mapper.update(menu);
+    public void modify(Menu menu) {
+        mapper.modify(menu);
     }
 
     @Override

@@ -115,7 +115,7 @@ public abstract class BaseElasticsearchService {
      * @param object request object
      * @author xxw
      */
-    protected void updateRequest(String index, String id, Object object) {
+    protected void modifyRequest(String index, String id, Object object) {
         try {
             UpdateRequest updateRequest = new UpdateRequest(index, id).doc(BeanUtil.beanToMap(object), XContentType.JSON);
             client.update(updateRequest, COMMON_OPTIONS);

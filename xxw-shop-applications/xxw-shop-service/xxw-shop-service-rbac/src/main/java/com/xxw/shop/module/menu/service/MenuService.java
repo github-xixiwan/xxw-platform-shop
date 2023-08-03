@@ -36,7 +36,7 @@ public interface MenuService extends IService<Menu> {
      *
      * @param menu 菜单管理
      */
-    void update(Menu menu);
+    void modify(Menu menu);
 
     /**
      * 根据菜单管理id删除菜单管理

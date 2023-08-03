@@ -53,7 +53,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param sysUser
      * @return
      */
-    int update(@Param("sysUser") SysUser sysUser);
+    void modify(@Param("sysUser") SysUser sysUser);
 
     /**
      * 根据平台用户id删除平台用户

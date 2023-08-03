@@ -3,7 +3,7 @@ package com.xxw.shop.module.web.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 阿里java开发手册： 【强制】表必备三字段：id, create_time, update_time。 说明：其中 id 必为主键，类型为 bigint
@@ -18,27 +18,27 @@ public class BaseVO implements Serializable {
      * 创建时间
      */
     @Schema(description = "创建时间")
-    protected Date createTime;
+    protected LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @Schema(description = "更新时间")
-    protected Date updateTime;
+    protected LocalDateTime updateTime;
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 

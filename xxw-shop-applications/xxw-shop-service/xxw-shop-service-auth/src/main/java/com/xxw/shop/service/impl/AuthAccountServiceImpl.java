@@ -90,8 +90,8 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    public void updatePassword(Long userId, Integer sysType, String newPassWord) {
-        mapper.updatePassword(userId, sysType, passwordEncoder.encode(newPassWord));
+    public void modifyPassword(Long userId, Integer sysType, String newPassWord) {
+        mapper.modifyPassword(userId, sysType, passwordEncoder.encode(newPassWord));
     }
 
     @Override

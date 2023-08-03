@@ -43,7 +43,7 @@ public interface SysConfigMapper extends BaseMapper<SysConfig> {
      * @param sysConfig 系统配置信息表
      * @return
      */
-    int update(@Param("sysConfig") SysConfig sysConfig);
+    void modify(@Param("sysConfig") SysConfig sysConfig);
 
     /**
      * 根据系统配置key获取对应数量

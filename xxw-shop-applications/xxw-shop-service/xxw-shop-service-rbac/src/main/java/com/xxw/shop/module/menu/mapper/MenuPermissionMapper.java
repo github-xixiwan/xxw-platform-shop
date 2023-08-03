@@ -47,7 +47,7 @@ public interface MenuPermissionMapper extends BaseMapper<MenuPermission> {
      * @param menuPermission 菜单资源
      * @return
      */
-    int update(@Param("menuPermission") MenuPermission menuPermission);
+    void modify(@Param("menuPermission") MenuPermission menuPermission);
 
     /**
      * 根据菜单资源id删除菜单资源

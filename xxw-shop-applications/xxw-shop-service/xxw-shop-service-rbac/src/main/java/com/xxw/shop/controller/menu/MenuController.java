@@ -109,7 +109,7 @@ public class MenuController {
     @Operation(summary = "更新菜单管理", description = "更新菜单管理")
     public ServerResponseEntity<Void> update(@Valid @RequestBody MenuDTO menuDTO) {
         Menu menu = checkAndGenerate(menuDTO);
-        menuService.update(menu);
+        menuService.modify(menu);
         return ServerResponseEntity.success();
     }
 

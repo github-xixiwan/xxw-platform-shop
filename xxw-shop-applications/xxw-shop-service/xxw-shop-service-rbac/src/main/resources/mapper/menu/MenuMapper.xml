@@ -55,7 +55,7 @@
         values (#{menu.parentId},#{menu.bizType},#{menu.permission},#{menu.path},#{menu.component},#{menu.redirect},#{menu.alwaysShow},#{menu.hidden},#{menu.name},#{menu.title},#{menu.icon},#{menu.noCache},#{menu.breadcrumb},#{menu.affix},#{menu.activeMenu},#{menu.seq});
 
     </insert>
-    <update id="update">
+    <update id="modify">
 
         update menu
 

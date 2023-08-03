@@ -44,7 +44,7 @@
         values (#{sysUser.sysUserId}, #{sysUser.nickName}, #{sysUser.avatar}, #{sysUser.code}, #{sysUser.phoneNum},
                 #{sysUser.hasAccount});
     </insert>
-    <update id="update">
+    <update id="modify">
         update sys_user
         <set>
             <if test="sysUser.nickName != null">

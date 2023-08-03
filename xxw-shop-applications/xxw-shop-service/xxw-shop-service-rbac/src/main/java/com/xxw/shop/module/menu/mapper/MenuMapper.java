@@ -36,7 +36,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      *
      * @param menu 菜单管理
      */
-    int update(@Param("menu") Menu menu);
+    void modify(@Param("menu") Menu menu);
 
     /**
      * 根据菜单管理id删除菜单管理

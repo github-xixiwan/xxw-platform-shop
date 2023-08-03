@@ -20,7 +20,6 @@ import com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO;
 import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,7 +63,7 @@ public class AccountFeignController implements AccountFeignClient {
         if (!verify.isSuccess()) {
             return ServerResponseEntity.transform(verify);
         }
-        authAccountMapper.updateAccountInfo(verify.getData());
+        authAccountMapper.modifyAccountInfo(verify.getData());
         return ServerResponseEntity.success();
     }
 
@@ -75,7 +74,7 @@ public class AccountFeignController implements AccountFeignClient {
             throw new BusinessException(SystemErrorEnumError.EXCEPTION);
         }
         AuthAccount authAccount = mapperFacade.map(authAccountDTO, AuthAccount.class);
-        authAccountMapper.updateAccountInfo(authAccount);
+        authAccountMapper.modifyAccountInfo(authAccount);
         return ServerResponseEntity.success();
     }
 
@@ -133,9 +132,9 @@ public class AccountFeignController implements AccountFeignClient {
                                                                        Long userId, Integer sysType) {
         AuthAccount byUserIdAndType = authAccountMapper.getByUserIdAndType(userId, sysType);
         userInfoInTokenBO.setUid(byUserIdAndType.getUid());
-        tokenStore.updateUserInfoByUidAndAppId(byUserIdAndType.getUid(), sysType.toString(), userInfoInTokenBO);
+        tokenStore.modifyUserInfoByUidAndAppId(byUserIdAndType.getUid(), sysType.toString(), userInfoInTokenBO);
         AuthAccount authAccount = mapperFacade.map(userInfoInTokenBO, AuthAccount.class);
-        int res = authAccountMapper.updateUserInfoByUserId(authAccount, userId, sysType);
+        int res = authAccountMapper.modifyUserInfoByUserId(authAccount, userId, sysType);
         if (res != 1) {
             throw new BusinessException(AuthBusinessError.AUTH_00006);
         }

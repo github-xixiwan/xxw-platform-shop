@@ -64,8 +64,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
 
     @Override
-    public void update(Role role, List<Long> menuIds, List<Long> menuPermissionIds) {
-        mapper.update(role);
+    public void modify(Role role, List<Long> menuIds, List<Long> menuPermissionIds) {
+        mapper.modify(role);
         roleMenuMapper.deleteByRoleId(role.getRoleId());
         insertMenuAndPermission(role.getRoleId(), menuIds, menuPermissionIds);
     }

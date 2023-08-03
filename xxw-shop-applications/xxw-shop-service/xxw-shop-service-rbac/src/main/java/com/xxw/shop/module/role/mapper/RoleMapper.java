@@ -54,7 +54,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param role 角色
      * @return
      */
-    int update(@Param("role") Role role);
+    void modify(@Param("role") Role role);
 
     /**
      * 根据角色id删除角色

@@ -57,7 +57,7 @@ public interface RoleService extends IService<Role> {
      * @param menuIds           菜单id列表
      * @param menuPermissionIds 权限id列表
      */
-    void update(Role role, List<Long> menuIds, List<Long> menuPermissionIds);
+    void modify(Role role, List<Long> menuIds, List<Long> menuPermissionIds);
 
     /**
      * 根据角色id删除角色

@@ -58,7 +58,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
         if (dbMenuPermission != null && !Objects.equals(menuPermission.getMenuPermissionId(), dbMenuPermission.getMenuPermissionId())) {
             return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
-        mapper.update(menuPermission);
+        mapper.modify(menuPermission);
         return ServerResponseEntity.success();
     }
 

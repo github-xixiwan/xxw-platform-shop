@@ -52,7 +52,7 @@
                 #{menuPermission.name}, #{menuPermission.uri}, #{menuPermission.method});
 
     </insert>
-    <update id="update">
+    <update id="modify">
 
         update menu_permission
 

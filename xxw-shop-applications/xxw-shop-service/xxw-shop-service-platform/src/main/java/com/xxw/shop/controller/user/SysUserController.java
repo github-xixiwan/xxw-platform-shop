@@ -70,7 +70,7 @@ public class SysUserController {
     @Operation(summary = "更新平台用户信息", description = "更新平台用户信息")
     public ServerResponseEntity<Void> update(@Valid @RequestBody SysUserDTO sysUserDTO) {
         SysUser sysUser = mapperFacade.map(sysUserDTO, SysUser.class);
-        sysUserService.update(sysUser, sysUserDTO.getRoleIds());
+        sysUserService.modify(sysUser, sysUserDTO.getRoleIds());
         return ServerResponseEntity.success();
     }
 

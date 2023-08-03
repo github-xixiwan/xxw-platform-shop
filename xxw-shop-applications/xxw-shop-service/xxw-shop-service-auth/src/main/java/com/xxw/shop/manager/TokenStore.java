@@ -95,17 +95,17 @@ public class TokenStore {
             byte[] accessKey = accessKeyStr.getBytes(StandardCharsets.UTF_8);
 
             for (String existsAccessToken : existsAccessTokens) {
-                connection.sAdd(uidKey, existsAccessToken.getBytes(StandardCharsets.UTF_8));
+                connection.commands().sAdd(uidKey, existsAccessToken.getBytes(StandardCharsets.UTF_8));
             }
 
             // 通过uid + sysType 保存access_token，当需要禁用用户的时候，可以根据uid + sysType 禁用用户
-            connection.expire(uidKey, expiresIn);
+            connection.commands().expire(uidKey, expiresIn);
 
             // 通过refresh_token获取用户的access_token从而刷新token
-            connection.setEx(refreshKey, expiresIn, accessToken.getBytes(StandardCharsets.UTF_8));
+            connection.commands().setEx(refreshKey, expiresIn, accessToken.getBytes(StandardCharsets.UTF_8));
 
             // 通过access_token保存用户的租户id，用户id，uid
-            connection.setEx(accessKey, expiresIn,
+            connection.commands().setEx(accessKey, expiresIn,
                     Objects.requireNonNull(RedisSerializer.json().serialize(userInfoInToken)));
 
             return null;
@@ -290,13 +290,13 @@ public class TokenStore {
         return tokenInfoVO;
     }
 
-    public void updateUserInfoByUidAndAppId(Long uid, String appId, UserInfoInTokenBO userInfoInTokenBO) {
+    public void modifyUserInfoByUidAndAppId(Long uid, String appId, UserInfoInTokenBO userInfoInTokenBO) {
         if (userInfoInTokenBO == null) {
             return;
         }
         String uidKey = getUidToAccessKey(getApprovalKey(appId, uid));
         Set<String> tokenInfoBoList = stringRedisTemplate.opsForSet().members(uidKey);
-        if (tokenInfoBoList == null || tokenInfoBoList.size() == 0) {
+        if (tokenInfoBoList == null || tokenInfoBoList.isEmpty()) {
             throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         for (String accessTokenWithRefreshToken : tokenInfoBoList) {

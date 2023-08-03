@@ -26,8 +26,8 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     @Override
     @Caching(evict = {@CacheEvict(cacheNames = PlatformCacheNames.SYS_CONFIG_OBJECT, key = "#key"),
             @CacheEvict(cacheNames = PlatformCacheNames.SYS_CONFIG, key = "#key")})
-    public void updateValueByKey(String key, String value) {
-//        mapper.updateValueByKey(key, value);
+    public void modifyValueByKey(String key, String value) {
+//        mapper.modifyValueByKey(key, value);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             @CacheEvict(cacheNames = PlatformCacheNames.SYS_CONFIG, key = "#sysConfig.paramKey")})
     public void saveOrUpdateSysConfig(SysConfig sysConfig) {
         if (mapper.countByKey(sysConfig.getParamKey()) > 0) {
-            mapper.update(sysConfig);
+            mapper.modify(sysConfig);
         } else {
             mapper.save(sysConfig);
         }

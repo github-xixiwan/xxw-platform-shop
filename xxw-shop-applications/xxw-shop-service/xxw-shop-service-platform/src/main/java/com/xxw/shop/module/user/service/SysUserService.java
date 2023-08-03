@@ -59,7 +59,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param sysUser 平台用户id
      * @param roleIds 角色id列表
      */
-    void update(SysUser sysUser, List<Long> roleIds);
+    void modify(SysUser sysUser, List<Long> roleIds);
 
     /**
      * 根据平台用户id删除平台用户信息

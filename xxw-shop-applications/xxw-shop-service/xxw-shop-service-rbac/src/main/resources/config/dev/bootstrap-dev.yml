@@ -6,6 +6,9 @@ spring:
         namespace: dev
         group: xxw-shop
         file-extension: properties
+        shared-configs:
+          - data-id: shop-application-${spring.profiles.active}.yml
+            group: xxw-shop
     sentinel:
       transport:
         dashboard: 10.66.70.183:8080
@@ -13,6 +16,20 @@ spring:
     url: jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: xxw-shop
     password: xxw-shop
+  data:
+    redis:
+      database: 0
+      host: 10.66.70.183
+      port: 6379
+      password: xxw
+      timeout: 1000
+      client-type: lettuce
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
 seata:
   enable-auto-data-source-proxy: false
   application-id: ${spring.application.name}  # seata 应用编号，默认为 ${spring.application.name}
