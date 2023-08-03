@@ -4,16 +4,16 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xxw.shop.api.auth.feign.TokenFeignClient;
 import com.xxw.shop.api.rbac.feign.PermissionFeignClient;
+import com.xxw.shop.module.common.constant.SysTypeEnum;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.security.adapter.AuthConfigAdapter;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
-import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
-import com.xxw.shop.module.web.security.Auth;
 import com.xxw.shop.module.security.constant.HttpMethodEnum;
-import com.xxw.shop.module.web.constant.SysTypeEnum;
 import com.xxw.shop.module.security.handler.HttpHandler;
-import com.xxw.shop.module.web.constant.SystemErrorEnumError;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.web.security.Auth;
+import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
+import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.web.util.IpHelper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.*;
@@ -52,7 +52,8 @@ public class AuthFilter implements Filter {
     private FeignInsideAuthConfig feignInsideAuthConfig;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
@@ -88,7 +89,8 @@ public class AuthFilter implements Filter {
         }
 
         // 校验token，并返回用户信息
-        ServerResponseEntity<UserInfoInTokenBO> userInfoInTokenVoServerResponseEntity = tokenFeignClient.checkToken(accessToken);
+        ServerResponseEntity<UserInfoInTokenBO> userInfoInTokenVoServerResponseEntity =
+                tokenFeignClient.checkToken(accessToken);
         if (!userInfoInTokenVoServerResponseEntity.isSuccess()) {
             httpHandler.printServerResponseToWeb(ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED));
             return;
@@ -121,7 +123,8 @@ public class AuthFilter implements Filter {
         String feignInsideSecret = req.getHeader(feignInsideAuthConfig.getKey());
 
         // 校验feign 请求携带的key 和 value是否正确
-        if (StrUtil.isBlank(feignInsideSecret) || !Objects.equals(feignInsideSecret, feignInsideAuthConfig.getSecret())) {
+        if (StrUtil.isBlank(feignInsideSecret) || !Objects.equals(feignInsideSecret,
+                feignInsideAuthConfig.getSecret())) {
             return false;
         }
         // ip白名单
@@ -148,7 +151,9 @@ public class AuthFilter implements Filter {
             return true;
         }
 
-        ServerResponseEntity<Boolean> booleanServerResponseEntity = permissionFeignClient.checkPermission(userInfoInToken.getUserId(), userInfoInToken.getSysType(), uri, userInfoInToken.getIsAdmin(), HttpMethodEnum.valueOf(method.toUpperCase()).value());
+        ServerResponseEntity<Boolean> booleanServerResponseEntity =
+                permissionFeignClient.checkPermission(userInfoInToken.getUserId(), userInfoInToken.getSysType(), uri,
+                        userInfoInToken.getIsAdmin(), HttpMethodEnum.valueOf(method.toUpperCase()).value());
 
         if (!booleanServerResponseEntity.isSuccess()) {
             return false;

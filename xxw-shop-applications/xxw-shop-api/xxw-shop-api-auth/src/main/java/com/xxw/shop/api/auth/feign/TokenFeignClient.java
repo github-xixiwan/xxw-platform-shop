@@ -1,6 +1,6 @@
 package com.xxw.shop.api.auth.feign;
 
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.security.Auth;
 import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import org.springframework.cloud.openfeign.FeignClient;

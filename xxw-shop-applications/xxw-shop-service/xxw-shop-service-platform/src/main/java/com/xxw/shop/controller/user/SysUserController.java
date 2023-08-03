@@ -8,7 +8,7 @@ import com.xxw.shop.module.user.entity.SysUser;
 import com.xxw.shop.module.user.service.SysUserService;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
 import com.xxw.shop.module.user.vo.SysUserVO;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;

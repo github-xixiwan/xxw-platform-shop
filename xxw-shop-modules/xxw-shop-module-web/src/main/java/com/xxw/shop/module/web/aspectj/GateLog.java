@@ -1,7 +1,7 @@
 package com.xxw.shop.module.web.aspectj;
 
 import com.google.common.collect.Maps;
-import com.xxw.shop.module.util.json.JsonUtil;
+import com.xxw.shop.module.common.json.JsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

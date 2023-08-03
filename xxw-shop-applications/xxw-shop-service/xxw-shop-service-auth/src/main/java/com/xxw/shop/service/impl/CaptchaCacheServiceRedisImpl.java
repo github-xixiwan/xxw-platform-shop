@@ -1,6 +1,7 @@
 package com.xxw.shop.service.impl;
 
 import com.anji.captcha.service.CaptchaCacheService;
+import com.xxw.shop.module.web.util.SpringContextUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.concurrent.TimeUnit;
@@ -16,16 +17,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class CaptchaCacheServiceRedisImpl implements CaptchaCacheService {
 
+    private static final StringRedisTemplate stringRedisTemplate = SpringContextUtils.getBean("stringRedisTemplate",
+            StringRedisTemplate.class);
+
     @Override
     public String type() {
         return "redis";
     }
-
-    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
-
-    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public void set(String key, String value, long expiresInSeconds) {

@@ -32,8 +32,8 @@
             <artifactId>xxw-shop-module-cache</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.anji-plus</groupId>
-            <artifactId>spring-boot-starter-captcha</artifactId>
+            <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-starter-captcha</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

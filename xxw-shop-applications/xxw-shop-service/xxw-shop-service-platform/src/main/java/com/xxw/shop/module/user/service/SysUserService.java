@@ -8,7 +8,7 @@ import com.xxw.shop.module.user.dto.SysUserQueryDTO;
 import com.xxw.shop.module.user.entity.SysUser;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
 import com.xxw.shop.module.user.vo.SysUserVO;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 
 import java.util.List;
 

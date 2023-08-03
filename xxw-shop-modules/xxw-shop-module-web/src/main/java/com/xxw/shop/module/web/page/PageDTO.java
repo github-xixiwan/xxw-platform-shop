@@ -1,6 +1,6 @@
 package com.xxw.shop.module.web.page;
 
-import com.xxw.shop.module.util.string.PrincipalUtil;
+import com.xxw.shop.module.common.string.PrincipalUtil;
 import lombok.Data;
 
 import java.io.Serializable;

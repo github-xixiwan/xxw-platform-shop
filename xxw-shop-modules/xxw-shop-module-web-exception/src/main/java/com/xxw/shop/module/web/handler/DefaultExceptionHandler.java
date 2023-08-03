@@ -1,10 +1,10 @@
 package com.xxw.shop.module.web.handler;
 
-import com.xxw.shop.module.util.exception.BusinessException;
-import com.xxw.shop.module.util.exception.ElasticsearchException;
-import com.xxw.shop.module.util.exception.SystemException;
-import com.xxw.shop.module.web.constant.SystemErrorEnumError;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.exception.ElasticsearchException;
+import com.xxw.shop.module.common.exception.SystemException;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.annotation.Order;

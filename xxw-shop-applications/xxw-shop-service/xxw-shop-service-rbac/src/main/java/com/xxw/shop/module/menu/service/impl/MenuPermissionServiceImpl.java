@@ -11,7 +11,7 @@ import com.xxw.shop.module.menu.service.MenuPermissionService;
 import com.xxw.shop.module.menu.vo.MenuPermissionVO;
 import com.xxw.shop.module.menu.vo.UriPermissionVO;
 import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

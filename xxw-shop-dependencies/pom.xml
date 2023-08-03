@@ -13,7 +13,8 @@
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
 
-        <mybatis-flex.version>1.5.3</mybatis-flex.version>
+        <mybatis-flex.version>1.5.5</mybatis-flex.version>
+        <mybatis.version>3.0.2</mybatis.version>
         <redisson.version>3.23.1</redisson.version>
         <knife4j.version>4.1.0</knife4j.version>
         <elasticsearch.version>7.17.12</elasticsearch.version>
@@ -30,7 +31,7 @@
             <!-- basic -->
             <dependency>
                 <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-module-util</artifactId>
+                <artifactId>xxw-shop-module-common</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -84,6 +85,11 @@
             <!-- starter -->
             <dependency>
                 <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-starter-captcha</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
                 <artifactId>xxw-shop-starter-elasticsearch</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -92,12 +98,23 @@
             <dependency>
                 <groupId>com.mybatis-flex</groupId>
                 <artifactId>mybatis-flex-spring-boot-starter</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mybatis</groupId>
+                        <artifactId>mybatis-spring</artifactId>
+                    </exclusion>
+                </exclusions>
                 <version>${mybatis-flex.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.mybatis-flex</groupId>
                 <artifactId>mybatis-flex-codegen</artifactId>
                 <version>${mybatis-flex.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>

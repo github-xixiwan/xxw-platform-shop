@@ -36,16 +36,16 @@ spring:
         - id: shop-rbac
           uri: lb://shop-rbac
           predicates:
-            - Path=/shop_rbac/**
+            - Path=/xxw_shop_rbac/**
           filters:
-            - RewritePath=/shop_rbac(?<segment>/?.*), $\{segment}
+            - RewritePath=/xxw_shop_rbac(?<segment>/?.*), $\{segment}
         - id: shop-auth
           uri: lb://shop-auth
           predicates:
-            - Path=/shop_auth/**
+            - Path=/xxw_shop_auth/**
           filters:
-            - RewritePath=/shop_auth(?<segment>/?.*), $\{segment}
+            - RewritePath=/xxw_shop_auth(?<segment>/?.*), $\{segment}
         - id: shop-platform
           uri: lb://shop-platform
           predicates:
-            - Path=/shop_platform/**
+            - Path=/xxw_shop_platform/**

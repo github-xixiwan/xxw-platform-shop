@@ -1,7 +1,7 @@
 package com.xxw.shop.starter.elasticsearch.service;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.xxw.shop.module.util.exception.ElasticsearchException;
+import com.xxw.shop.module.common.exception.ElasticsearchException;
 import com.xxw.shop.starter.elasticsearch.config.ElasticsearchProperties;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

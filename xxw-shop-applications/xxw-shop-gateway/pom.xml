@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.xxw.shop</groupId>
-            <artifactId>xxw-shop-module-util</artifactId>
+            <artifactId>xxw-shop-module-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>

@@ -6,7 +6,7 @@ import com.xxw.shop.cache.PlatformCacheNames;
 import com.xxw.shop.module.config.entity.SysConfig;
 import com.xxw.shop.module.config.mapper.SysConfigMapper;
 import com.xxw.shop.module.config.service.SysConfigService;
-import com.xxw.shop.module.util.json.JsonUtil;
+import com.xxw.shop.module.common.json.JsonUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;

@@ -2,7 +2,7 @@ package com.xxw.shop.controller.config;
 
 import com.xxw.shop.module.config.entity.SysConfig;
 import com.xxw.shop.module.config.service.SysConfigService;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

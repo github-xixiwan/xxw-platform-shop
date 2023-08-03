@@ -1,6 +1,6 @@
 package com.xxw.shop.api.platform.feign;
 
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -5,7 +5,7 @@ import com.xxw.shop.api.rbac.dto.UserRoleDTO;
 import com.xxw.shop.api.rbac.feign.UserRoleFeignClient;
 import com.xxw.shop.cache.RbacCacheNames;
 import com.xxw.shop.module.user.mapper.UserRoleMapper;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;

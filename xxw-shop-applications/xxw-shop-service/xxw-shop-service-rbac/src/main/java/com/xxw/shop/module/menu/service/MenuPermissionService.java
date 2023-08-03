@@ -6,7 +6,7 @@ import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.vo.UriPermissionVO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
 import com.xxw.shop.module.menu.vo.MenuPermissionVO;
-import com.xxw.shop.module.web.response.ServerResponseEntity;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 
 import java.util.List;
 

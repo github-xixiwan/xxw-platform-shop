@@ -1,6 +1,6 @@
 package com.xxw.shop.constant;
 
-import com.xxw.shop.module.util.exception.ErrorEnumInterface;
+import com.xxw.shop.module.common.exception.ErrorEnumInterface;
 
 /**
  * RBAC业务级抛错
