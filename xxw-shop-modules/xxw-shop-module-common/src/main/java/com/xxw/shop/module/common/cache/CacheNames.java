@@ -1,4 +1,4 @@
-package com.xxw.shop.module.web.cache;
+package com.xxw.shop.module.common.cache;
 
 public interface CacheNames {
 

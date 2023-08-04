@@ -2,8 +2,8 @@ package com.xxw.shop.api.rbac.feign;
 
 import com.xxw.shop.api.rbac.dto.ClearUserPermissionsCacheDTO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.Auth;
-import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
+import com.xxw.shop.module.web.constant.Auth;
+import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

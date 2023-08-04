@@ -1,6 +1,6 @@
-package com.xxw.shop.module.web.security;
+package com.xxw.shop.module.web.constant;
 
-import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
+import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 
 public interface Auth {
 

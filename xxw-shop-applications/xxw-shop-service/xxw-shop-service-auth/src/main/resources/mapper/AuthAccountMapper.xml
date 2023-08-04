@@ -25,7 +25,7 @@
         `status`, sys_type, user_id, tenant_id, is_admin
     </sql>
 
-    <select id="getAuthAccountInVerifyByInputUserName" resultType="com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO">
+    <select id="getAuthAccountInVerifyByInputUserName" resultType="com.xxw.shop.module.common.bo.AuthAccountInVerifyBO">
         select user_id, sys_type,uid,password,is_admin,tenant_id, status from auth_account
         where sys_type = #{sysType} and status != -1
         <if test="inputUserNameType == 1">

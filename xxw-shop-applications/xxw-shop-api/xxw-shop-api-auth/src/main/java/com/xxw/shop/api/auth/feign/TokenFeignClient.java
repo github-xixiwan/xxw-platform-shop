@@ -1,8 +1,8 @@
 package com.xxw.shop.api.auth.feign;
 
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.Auth;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.web.constant.Auth;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

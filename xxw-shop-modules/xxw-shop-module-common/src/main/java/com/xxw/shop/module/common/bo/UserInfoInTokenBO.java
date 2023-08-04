@@ -1,4 +1,4 @@
-package com.xxw.shop.module.web.security.bo;
+package com.xxw.shop.module.common.bo;
 
 import java.io.Serializable;
 

@@ -7,10 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-/**
- * @author FrozenWatermelon
- * @date 2020/9/10
- */
 @RefreshScope
 @Configuration
 @ConfigurationProperties("feign.inside")
@@ -56,10 +52,6 @@ public class FeignInsideAuthConfig {
 
     @Override
     public String toString() {
-        return "FeignInsideAuthConfig{" +
-                "key='" + key + '\'' +
-                ", secret='" + secret + '\'' +
-                ", ips=" + ips +
-                '}';
+        return "FeignInsideAuthConfig{" + "key='" + key + '\'' + ", secret='" + secret + '\'' + ", ips=" + ips + '}';
     }
 }

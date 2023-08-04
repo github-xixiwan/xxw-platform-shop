@@ -11,7 +11,7 @@ import com.xxw.shop.module.menu.vo.RouteVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

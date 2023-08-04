@@ -1,4 +1,4 @@
-package com.xxw.shop.module.security.constant;
+package com.xxw.shop.module.common.constant;
 
 /**
  * 输入的用户名类型枚举 1.username 2.mobile 3.email

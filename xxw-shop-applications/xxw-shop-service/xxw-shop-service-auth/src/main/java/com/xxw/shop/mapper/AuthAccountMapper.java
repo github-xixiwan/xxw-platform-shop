@@ -2,7 +2,7 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.AuthAccount;
-import com.xxw.shop.module.web.security.bo.AuthAccountInVerifyBO;
+import com.xxw.shop.module.common.bo.AuthAccountInVerifyBO;
 import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import org.apache.ibatis.annotations.Param;
 

@@ -7,10 +7,6 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author FrozenWatermelon
- * @date 2020/12/11
- */
 @Configuration
 public class FeignHttpClientConfig {
 

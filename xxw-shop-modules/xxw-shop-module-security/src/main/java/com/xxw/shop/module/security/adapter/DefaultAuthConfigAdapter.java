@@ -1,6 +1,6 @@
 package com.xxw.shop.module.security.adapter;
 
-import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
+import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

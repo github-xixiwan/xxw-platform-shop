@@ -8,7 +8,7 @@ import com.xxw.shop.manager.TokenStore;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.service.AuthAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

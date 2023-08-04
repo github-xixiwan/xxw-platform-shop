@@ -9,7 +9,7 @@ import com.xxw.shop.module.role.vo.RoleVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

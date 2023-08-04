@@ -1,6 +1,6 @@
 package com.xxw.shop.module.user.dto;
 
-import com.xxw.shop.module.web.page.PageDTO;
+import com.xxw.shop.module.common.page.PageDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -4,7 +4,7 @@ import com.xxw.shop.api.auth.vo.TokenInfoVO;
 import com.xxw.shop.dto.RefreshTokenDTO;
 import com.xxw.shop.manager.TokenStore;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.bo.TokenInfoBO;
+import com.xxw.shop.module.common.bo.TokenInfoBO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;

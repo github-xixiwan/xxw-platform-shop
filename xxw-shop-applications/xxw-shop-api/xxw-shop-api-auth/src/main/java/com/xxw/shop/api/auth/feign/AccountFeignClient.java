@@ -3,10 +3,10 @@ package com.xxw.shop.api.auth.feign;
 import com.xxw.shop.api.auth.dto.AuthAccountDTO;
 import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import com.xxw.shop.api.auth.vo.TokenInfoVO;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.common.constant.SysTypeEnum;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.web.security.FeignInsideAuthConfig;
-import com.xxw.shop.module.web.security.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +57,8 @@ public interface AccountFeignClient {
      * @return void
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/account/getByUserIdAndSysType")
-    ServerResponseEntity<AuthAccountVO> getByUserIdAndSysType(@RequestParam("userId") Long userId, @RequestParam("sysType") Integer sysType);
+    ServerResponseEntity<AuthAccountVO> getByUserIdAndSysType(@RequestParam("userId") Long userId, @RequestParam(
+            "sysType") Integer sysType);
 
     /**
      * 保存用户信息，生成token，返回前端
@@ -76,7 +77,8 @@ public interface AccountFeignClient {
      * @return
      */
     @PostMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/getByUsernameAndSysType")
-    ServerResponseEntity<AuthAccountVO> getByUsernameAndSysType(@RequestParam("userName") String username, @RequestParam("sysType") SysTypeEnum sysType);
+    ServerResponseEntity<AuthAccountVO> getByUsernameAndSysType(@RequestParam("userName") String username,
+                                                                @RequestParam("sysType") SysTypeEnum sysType);
 
     /**
      * 根据用户id与用户类型更新用户信息
@@ -86,8 +88,11 @@ public interface AccountFeignClient {
      * @param sysType           用户类型
      * @return
      */
-    @PutMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/accout/updateTenantIdByUserIdAndSysType")
-    ServerResponseEntity<Void> updateUserInfoByUserIdAndSysType(@RequestBody UserInfoInTokenBO userInfoInTokenBO, @RequestParam("userId") Long userId, @RequestParam("sysType") Integer sysType);
+    @PutMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/accout" +
+            "/updateTenantIdByUserIdAndSysType")
+    ServerResponseEntity<Void> updateUserInfoByUserIdAndSysType(@RequestBody UserInfoInTokenBO userInfoInTokenBO,
+                                                                @RequestParam("userId") Long userId, @RequestParam(
+                                                                        "sysType") Integer sysType);
 
     /**
      * 根据租户id查询商家信息

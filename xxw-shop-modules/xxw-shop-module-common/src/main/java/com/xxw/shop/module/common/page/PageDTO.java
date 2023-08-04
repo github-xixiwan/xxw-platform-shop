@@ -1,4 +1,4 @@
-package com.xxw.shop.module.web.page;
+package com.xxw.shop.module.common.page;
 
 import com.xxw.shop.module.common.string.PrincipalUtil;
 import lombok.Data;
