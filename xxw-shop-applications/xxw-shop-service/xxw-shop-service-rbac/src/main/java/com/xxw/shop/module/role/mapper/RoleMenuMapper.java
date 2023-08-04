@@ -20,7 +20,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      * @param roleMenus 角色菜单对象列表
      * @return
      */
-    int insertBatch(@Param("roleMenus") List<RoleMenu> roleMenus);
+//    int insertBatch(@Param("roleMenus") List<RoleMenu> roleMenus);
 
     /**
      * 根据角色id删除角色与菜单的关联关系

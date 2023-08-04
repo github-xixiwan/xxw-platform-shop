@@ -2,16 +2,20 @@ package com.xxw.shop.module.role.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.module.role.dto.RoleQueryDTO;
 import com.xxw.shop.module.role.entity.Role;
 import com.xxw.shop.module.role.entity.RoleMenu;
+import com.xxw.shop.module.role.entity.table.RoleTableDef;
 import com.xxw.shop.module.role.mapper.RoleMapper;
 import com.xxw.shop.module.role.mapper.RoleMenuMapper;
+import com.xxw.shop.module.role.service.RoleMenuService;
 import com.xxw.shop.module.role.service.RoleService;
 import com.xxw.shop.module.role.vo.RoleVO;
 import com.xxw.shop.module.user.mapper.UserRoleMapper;
 import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,12 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Resource
+    private MapperFacade mapperFacade;
+
+    @Resource
+    private RoleMenuService roleMenuService;
+
+    @Resource
     private RoleMenuMapper roleMenuMapper;
 
     @Resource
@@ -35,7 +45,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public Page<RoleVO> page(RoleQueryDTO dto) {
-        return mapper.list(new Page<>(dto.getPageNumber(), dto.getPageSize()), dto);
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.where(RoleTableDef.ROLE.BIZ_TYPE.eq(dto.getSysType())).and(RoleTableDef.ROLE.TENANT_ID.eq(dto.getTenantId()));
+        queryWrapper.orderBy(RoleTableDef.ROLE.ROLE_ID.desc());
+        Page<Role> paginate = mapper.paginate(dto.getPageNumber(), dto.getPageSize(), queryWrapper);
+        List<RoleVO> list = mapperFacade.mapAsList(paginate.getRecords(), RoleVO.class);
+        return new Page<>(list, dto.getPageNumber(), dto.getPageSize(), paginate.getTotalRow());
     }
 
     @Override
@@ -78,7 +93,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 roleMenu.setMenuId(menuId);
                 return roleMenu;
             }).collect(Collectors.toList());
-            roleMenuMapper.insertBatch(roleMenus);
+            roleMenuService.saveBatchSelective(roleMenus);
         }
 
         if (CollectionUtil.isNotEmpty(menuPermissionIds)) {
@@ -88,7 +103,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 roleMenu.setMenuPermissionId(menuPermissionId);
                 return roleMenu;
             }).collect(Collectors.toList());
-            roleMenuMapper.insertBatch(roleMenus);
+            roleMenuService.saveBatchSelective(roleMenus);
         }
     }
 

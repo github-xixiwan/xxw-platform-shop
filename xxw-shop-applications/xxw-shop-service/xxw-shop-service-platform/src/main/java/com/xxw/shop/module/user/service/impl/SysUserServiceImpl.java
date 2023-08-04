@@ -1,6 +1,7 @@
 package com.xxw.shop.module.user.service.impl;
 
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.api.auth.dto.AuthAccountDTO;
 import com.xxw.shop.api.auth.feign.AccountFeignClient;
@@ -8,19 +9,21 @@ import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import com.xxw.shop.api.rbac.dto.UserRoleDTO;
 import com.xxw.shop.api.rbac.feign.UserRoleFeignClient;
 import com.xxw.shop.cache.PlatformCacheNames;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.user.dto.ChangeAccountDTO;
 import com.xxw.shop.module.user.dto.SysUserQueryDTO;
 import com.xxw.shop.module.user.entity.SysUser;
+import com.xxw.shop.module.user.entity.table.SysUserTableDef;
 import com.xxw.shop.module.user.mapper.SysUserMapper;
 import com.xxw.shop.module.user.service.SysUserService;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
 import com.xxw.shop.module.user.vo.SysUserVO;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.web.util.IpHelper;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,9 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Resource
+    private MapperFacade mapperFacade;
+
+    @Resource
     private AccountFeignClient accountFeignClient;
 
     @Resource
@@ -51,7 +57,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUserVO> pageByShopId(SysUserQueryDTO dto) {
-        return mapper.listByShopId(new Page<>(dto.getPageNumber(), dto.getPageSize()), dto);
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.orderBy(SysUserTableDef.SYS_USER.SYS_USER_ID.desc());
+        Page<SysUser> paginate = mapper.paginate(dto.getPageNumber(), dto.getPageSize(), queryWrapper);
+        List<SysUserVO> list = mapperFacade.mapAsList(paginate.getRecords(), SysUserVO.class);
+        return new Page<>(list, dto.getPageNumber(), dto.getPageSize(), paginate.getTotalRow());
     }
 
     @Override

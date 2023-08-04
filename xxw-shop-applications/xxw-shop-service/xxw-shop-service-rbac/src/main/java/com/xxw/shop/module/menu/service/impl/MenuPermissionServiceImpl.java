@@ -4,6 +4,7 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.RbacCacheNames;
 import com.xxw.shop.constant.RbacBusinessError;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
 import com.xxw.shop.module.menu.mapper.MenuPermissionMapper;
@@ -11,8 +12,7 @@ import com.xxw.shop.module.menu.service.MenuPermissionService;
 import com.xxw.shop.module.menu.vo.MenuPermissionVO;
 import com.xxw.shop.module.menu.vo.UriPermissionVO;
 import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
-import org.springframework.aop.framework.AopContext;
+import com.xxw.shop.module.web.util.SpringContextUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -43,7 +43,8 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     @Override
     @CacheEvict(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#menuPermission.bizType")
     public ServerResponseEntity<Void> insert(MenuPermission menuPermission) {
-        MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(), AuthUserContext.get().getSysType());
+        MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(),
+                AuthUserContext.get().getSysType());
         if (dbMenuPermission != null) {
             return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
@@ -54,8 +55,10 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     @Override
     @CacheEvict(cacheNames = RbacCacheNames.URI_PERMISSION_KEY, key = "#menuPermission.bizType")
     public ServerResponseEntity<Void> update(MenuPermission menuPermission) {
-        MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(), AuthUserContext.get().getSysType());
-        if (dbMenuPermission != null && !Objects.equals(menuPermission.getMenuPermissionId(), dbMenuPermission.getMenuPermissionId())) {
+        MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(),
+                AuthUserContext.get().getSysType());
+        if (dbMenuPermission != null && !Objects.equals(menuPermission.getMenuPermissionId(),
+                dbMenuPermission.getMenuPermissionId())) {
             return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
         mapper.modify(menuPermission);
@@ -69,13 +72,15 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     }
 
     @Override
-    @Caching(evict = {@CacheEvict(cacheNames = RbacCacheNames.USER_PERMISSIONS_KEY, key = "#sysType + ':' + #userId"), @CacheEvict(cacheNames = RbacCacheNames.MENU_ID_LIST_KEY, key = "#userId")})
+    @Caching(evict = {@CacheEvict(cacheNames = RbacCacheNames.USER_PERMISSIONS_KEY, key = "#sysType + ':' + #userId")
+            , @CacheEvict(cacheNames = RbacCacheNames.MENU_ID_LIST_KEY, key = "#userId")})
     public void clearUserPermissionsCache(Long userId, Integer sysType) {
     }
 
     @Override
     public List<String> listUserPermissions(Long userId, Integer sysType, boolean isAdmin) {
-        MenuPermissionServiceImpl menuPermissionService = (MenuPermissionServiceImpl) AopContext.currentProxy();
+        MenuPermissionServiceImpl menuPermissionService = (MenuPermissionServiceImpl) SpringContextUtils.getBean(
+                "menuPermissionServiceImpl");
         List<String> permsList;
 
         // 系统管理员，拥有最高权限

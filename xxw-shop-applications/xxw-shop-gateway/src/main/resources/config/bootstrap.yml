@@ -49,3 +49,5 @@ spring:
           uri: lb://shop-platform
           predicates:
             - Path=/xxw_shop_platform/**
+          filters:
+            - RewritePath=/xxw_shop_platform(?<segment>/?.*), $\{segment}

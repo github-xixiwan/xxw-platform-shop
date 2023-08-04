@@ -1,7 +1,6 @@
 package com.xxw.shop.module.role.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.mybatisflex.core.paginate.Page;
 import com.xxw.shop.module.role.dto.RoleQueryDTO;
 import com.xxw.shop.module.role.entity.Role;
 import com.xxw.shop.module.role.vo.RoleVO;
@@ -16,14 +15,6 @@ import java.util.List;
  * @since 2023-07-31
  */
 public interface RoleMapper extends BaseMapper<Role> {
-
-    /**
-     * 获取角色列表
-     *
-     * @param dto
-     * @return 角色列表
-     */
-    Page<RoleVO> list(Page<RoleVO> page, @Param("dto") RoleQueryDTO dto);
 
     /**
      * 获取角色列表

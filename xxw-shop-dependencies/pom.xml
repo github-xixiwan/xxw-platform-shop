@@ -15,6 +15,7 @@
 
         <mybatis-flex.version>1.5.5</mybatis-flex.version>
         <mybatis.version>3.0.2</mybatis.version>
+        <pagehelper.version>1.4.7</pagehelper.version>
         <redisson.version>3.23.1</redisson.version>
         <knife4j.version>4.1.0</knife4j.version>
         <elasticsearch.version>7.17.12</elasticsearch.version>

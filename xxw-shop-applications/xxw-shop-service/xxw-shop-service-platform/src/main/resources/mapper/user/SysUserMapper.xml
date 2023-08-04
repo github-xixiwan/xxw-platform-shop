@@ -31,10 +31,11 @@
         from sys_user
         where sys_user_id = #{userId}
     </select>
-    <select id="listByShopId" resultType="com.xxw.shop.module.user.vo.SysUserVO">
+    <select id="listByShopId" resultType="com.xxw.shop.module.user.vo.SysUserVO"
+            parameterType="com.xxw.shop.module.user.dto.SysUserQueryDTO">
         select sys_user_id,nick_name, avatar,`code`,phone_num,has_account from sys_user order by sys_user_id desc
         <where>
-            <if test="nickName != null and nickName != ''">
+            <if test="dto.nickName != null and dto.nickName != ''">
                 nick_name like concat('%', #{dto.nickName}, '%')
             </if>
         </where>

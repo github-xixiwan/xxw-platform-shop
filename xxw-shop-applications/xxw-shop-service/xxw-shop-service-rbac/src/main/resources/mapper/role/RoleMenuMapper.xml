@@ -12,12 +12,12 @@
         <result column="menu_id" property="menuId"/>
         <result column="menu_permission_id" property="menuPermissionId"/>
     </resultMap>
-    <insert id="insertBatch">
-        insert into role_menu (role_id, menu_id, menu_permission_id) values
-        <foreach collection="roleMenus" item="roleMenu" separator=",">
-            (#{roleMenu.roleId},#{roleMenu.menuId},#{roleMenu.menuPermissionId})
-        </foreach>
-    </insert>
+<!--    <insert id="insertBatch">-->
+<!--        insert into role_menu (role_id, menu_id, menu_permission_id) values-->
+<!--        <foreach collection="roleMenus" item="roleMenu" separator=",">-->
+<!--            (#{roleMenu.roleId},#{roleMenu.menuId},#{roleMenu.menuPermissionId})-->
+<!--        </foreach>-->
+<!--    </insert>-->
     <delete id="deleteByRoleId">
         delete from role_menu where role_id = #{roleId}
     </delete>
