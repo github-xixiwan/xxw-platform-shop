@@ -29,7 +29,7 @@ public interface MenuService extends IService<Menu> {
      * @param menu 菜单管理
      * @return
      */
-    boolean save(Menu menu);
+    boolean saveMenu(Menu menu);
 
     /**
      * 更新菜单管理

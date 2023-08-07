@@ -42,7 +42,6 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     public ServerResponseEntity<UserInfoInTokenBO> getUserInfoInTokenByInputUserNameAndPassword(String inputUserName,
                                                                                                 String password,
                                                                                                 Integer sysType) {
-
         if (StrUtil.isBlank(inputUserName)) {
             return ServerResponseEntity.fail(AuthBusinessError.AUTH_00008);
         }
@@ -92,11 +91,6 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Override
     public void modifyPassword(Long userId, Integer sysType, String newPassWord) {
         mapper.modifyPassword(userId, sysType, passwordEncoder.encode(newPassWord));
-    }
-
-    @Override
-    public AuthAccount getByUid(Long uid) {
-        return mapper.getByUid(uid);
     }
 
     @Override

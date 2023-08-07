@@ -32,34 +32,4 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 平台用户列表
      */
     List<SysUserVO> listByShopId(@Param("dto") SysUserQueryDTO dto);
-
-    /**
-     * 根据用户id获取商家用户信息
-     *
-     * @param userId 用户id
-     * @return 商家用户信息
-     */
-    SysUserVO getByUserId(@Param("userId") Long userId);
-
-    /**
-     * 保存商家用户信息
-     *
-     * @param sysUser
-     */
-    void save(@Param("sysUser") SysUser sysUser);
-
-    /**
-     * 更新平台用户信息
-     *
-     * @param sysUser
-     * @return
-     */
-    void modify(@Param("sysUser") SysUser sysUser);
-
-    /**
-     * 根据平台用户id删除平台用户
-     *
-     * @param sysUserId
-     */
-    void removeById(@Param("sysUserId") Long sysUserId);
 }

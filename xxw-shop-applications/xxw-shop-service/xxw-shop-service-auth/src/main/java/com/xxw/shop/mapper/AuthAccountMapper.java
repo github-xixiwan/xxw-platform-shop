@@ -35,14 +35,6 @@ public interface AuthAccountMapper extends BaseMapper<AuthAccount> {
     AuthAccount getByUserIdAndType(@Param("userId") Long userId, @Param("sysType") Integer sysType);
 
     /**
-     * 根据getByUid获取平台唯一用户
-     *
-     * @param uid uid
-     * @return 平台唯一用户
-     */
-    AuthAccount getByUid(@Param("uid") Long uid);
-
-    /**
      * 更新密码 根据用户id 和系统类型
      *
      * @param userId      用户id
@@ -50,13 +42,6 @@ public interface AuthAccountMapper extends BaseMapper<AuthAccount> {
      * @param newPassWord 新密码
      */
     void modifyPassword(@Param("userId") Long userId, @Param("sysType") Integer sysType, @Param("newPassWord") String newPassWord);
-
-    /**
-     * 保存
-     *
-     * @param authAccount
-     */
-    void save(@Param("authAccount") AuthAccount authAccount);
 
     /**
      * 更新

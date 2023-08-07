@@ -35,14 +35,13 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
 
     @Override
     public Page<MenuPermissionVO> page(MenuPermissionQueryDTO dto) {
-        QueryWrapper queryWrapper = QueryWrapper.create()
-                .select(MenuPermissionTableDef.MENU_PERMISSION.ALL_COLUMNS)
-                .select(MenuTableDef.MENU.TITLE)
-                .from(MenuPermissionTableDef.MENU_PERMISSION)
-                .leftJoin(MenuTableDef.MENU)
-                .on(MenuPermissionTableDef.MENU_PERMISSION.MENU_ID.eq(MenuTableDef.MENU.MENU_ID))
-                .where(MenuPermissionTableDef.MENU_PERMISSION.BIZ_TYPE.eq(dto.getSysType()))
-                .orderBy(MenuPermissionTableDef.MENU_PERMISSION.MENU_PERMISSION_ID.desc());
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.select(MenuPermissionTableDef.MENU_PERMISSION.ALL_COLUMNS);
+        queryWrapper.select(MenuTableDef.MENU.TITLE);
+        queryWrapper.from(MenuPermissionTableDef.MENU_PERMISSION);
+        queryWrapper.leftJoin(MenuTableDef.MENU).on(MenuPermissionTableDef.MENU_PERMISSION.MENU_ID.eq(MenuTableDef.MENU.MENU_ID));
+        queryWrapper.where(MenuPermissionTableDef.MENU_PERMISSION.BIZ_TYPE.eq(dto.getSysType()));
+        queryWrapper.orderBy(MenuPermissionTableDef.MENU_PERMISSION.MENU_PERMISSION_ID.desc());
         return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, MenuPermissionVO.class);
     }
 
@@ -59,7 +58,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
         if (dbMenuPermission != null) {
             return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
-        mapper.save(menuPermission);
+        this.save(menuPermission);
         return ServerResponseEntity.success();
     }
 
@@ -72,7 +71,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
                 dbMenuPermission.getMenuPermissionId())) {
             return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
         }
-        mapper.modify(menuPermission);
+        this.updateById(menuPermission);
         return ServerResponseEntity.success();
     }
 

@@ -33,21 +33,6 @@ public interface MenuPermissionMapper extends BaseMapper<MenuPermission> {
     MenuPermissionVO getByMenuPermissionId(@Param("menuPermissionId") Long menuPermissionId);
 
     /**
-     * 保存菜单资源
-     *
-     * @param menuPermission 菜单资源
-     */
-    void save(@Param("menuPermission") MenuPermission menuPermission);
-
-    /**
-     * 更新菜单资源
-     *
-     * @param menuPermission 菜单资源
-     * @return
-     */
-    void modify(@Param("menuPermission") MenuPermission menuPermission);
-
-    /**
      * 根据菜单资源id删除菜单资源
      *
      * @param menuPermissionId

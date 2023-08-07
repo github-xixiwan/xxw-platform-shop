@@ -3,7 +3,6 @@ package com.xxw.shop.module.menu.mapper;
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.module.menu.entity.Menu;
 import com.xxw.shop.module.menu.vo.MenuSimpleVO;
-import com.xxw.shop.module.menu.vo.MenuVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,28 +14,6 @@ import java.util.List;
  * @since 2023-07-31
  */
 public interface MenuMapper extends BaseMapper<Menu> {
-
-    /**
-     * 根据菜单管理id获取菜单管理
-     *
-     * @param menuId 菜单管理id
-     * @return 菜单管理
-     */
-    MenuVO getByMenuId(@Param("menuId") Long menuId);
-
-    /**
-     * 保存菜单管理
-     *
-     * @param menu 菜单管理
-     */
-    void save(@Param("menu") Menu menu);
-
-    /**
-     * 更新菜单管理
-     *
-     * @param menu 菜单管理
-     */
-    void modify(@Param("menu") Menu menu);
 
     /**
      * 根据菜单管理id删除菜单管理

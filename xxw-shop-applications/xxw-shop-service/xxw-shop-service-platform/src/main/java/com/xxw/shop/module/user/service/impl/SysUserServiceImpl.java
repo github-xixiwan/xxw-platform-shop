@@ -55,12 +55,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Page<SysUserVO> pageByShopId(SysUserQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.orderBy(SysUserTableDef.SYS_USER.SYS_USER_ID.desc());
-        return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, SysUserVO.class);
+        return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, SysUserVO.class);
     }
 
     @Override
     public SysUserVO getByUserId(Long userId) {
-        SysUserVO sysUser = mapper.getByUserId(userId);
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.where(SysUserTableDef.SYS_USER.SYS_USER_ID.eq(userId));
+        SysUserVO sysUser = this.getOneAs(queryWrapper, SysUserVO.class);
         ServerResponseEntity<List<Long>> roleIds = userRoleFeignClient.getRoleIds(sysUser.getSysUserId());
         sysUser.setRoleIds(roleIds.getData());
         return sysUser;
@@ -72,7 +74,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void save(SysUser sysUser, List<Long> roleIds) {
         UserRoleDTO userRoleDTO = new UserRoleDTO();
         userRoleDTO.setRoleIds(roleIds);
-        mapper.save(sysUser);
+        this.save(sysUser);
         userRoleDTO.setUserId(sysUser.getSysUserId());
         userRoleFeignClient.saveByUserIdAndSysType(userRoleDTO);
     }
@@ -85,7 +87,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         UserRoleDTO userRoleDTO = new UserRoleDTO();
         userRoleDTO.setRoleIds(roleIds);
         userRoleDTO.setUserId(sysUser.getSysUserId());
-        mapper.modify(sysUser);
+        this.updateById(sysUser);
         userRoleFeignClient.updateByUserIdAndSysType(userRoleDTO);
     }
 
@@ -93,10 +95,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @GlobalTransactional(rollbackFor = Exception.class)
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(cacheNames = PlatformCacheNames.PLATFORM_SIMPLE_INFO_KEY, key = "#sysUserId")
-    public void removeById(Long sysUserId) {
+    public void deleteById(Long sysUserId) {
         accountFeignClient.deleteByUserIdAndSysType(sysUserId);
         userRoleFeignClient.deleteByUserIdAndSysType(sysUserId);
-        mapper.removeById(sysUserId);
+        this.removeById(sysUserId);
     }
 
 
@@ -115,20 +117,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = new SysUser();
         sysUser.setSysUserId(changeAccountDTO.getUserId());
         sysUser.setHasAccount(1);
-        mapper.modify(sysUser);
+        this.updateById(sysUser);
         return ServerResponseEntity.success();
     }
 
     @Override
-    public ServerResponseEntity<Void> update(ChangeAccountDTO changeAccountDTO) {
-
+    public ServerResponseEntity<Void> updateAccount(ChangeAccountDTO changeAccountDTO) {
         AuthAccountDTO authAccountDTO = getAuthAccountDTO(changeAccountDTO);
         // 更新，不涉及分布式事务
         ServerResponseEntity<Void> serverResponseEntity = accountFeignClient.update(authAccountDTO);
         if (!serverResponseEntity.isSuccess()) {
             return serverResponseEntity;
         }
-
         return ServerResponseEntity.success();
     }
 

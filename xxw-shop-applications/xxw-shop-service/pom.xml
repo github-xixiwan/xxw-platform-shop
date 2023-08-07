@@ -14,6 +14,7 @@
     </parent>
 
     <modules>
+        <module>xxw-shop-service-support</module>
         <module>xxw-shop-service-rbac</module>
         <module>xxw-shop-service-auth</module>
         <module>xxw-shop-service-platform</module>

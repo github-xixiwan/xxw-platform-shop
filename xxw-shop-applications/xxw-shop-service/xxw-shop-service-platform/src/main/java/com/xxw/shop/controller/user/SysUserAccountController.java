@@ -50,6 +50,6 @@ public class SysUserAccountController {
         if (sysUserVO == null || Objects.equals(sysUserVO.getHasAccount(), 0)) {
             return ServerResponseEntity.fail(PlatformBusinessError.PLATFORM_00001);
         }
-        return sysUserService.update(changeAccountDTO);
+        return sysUserService.updateAccount(changeAccountDTO);
     }
 }

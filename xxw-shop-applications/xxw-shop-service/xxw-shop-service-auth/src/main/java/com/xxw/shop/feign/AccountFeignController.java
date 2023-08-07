@@ -18,6 +18,7 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.common.string.PrincipalUtil;
 import com.xxw.shop.module.security.AuthUserContext;
+import com.xxw.shop.service.AuthAccountService;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,9 @@ import java.util.Objects;
 
 @RestController
 public class AccountFeignController implements AccountFeignClient {
+
+    @Resource
+    private AuthAccountService authAccountService;
 
     @Resource
     private AuthAccountMapper authAccountMapper;
@@ -51,8 +55,7 @@ public class AccountFeignController implements AccountFeignClient {
         AuthAccount data = verify.getData();
         //TODO id
         data.setUid(System.currentTimeMillis());
-        authAccountMapper.save(data);
-
+        authAccountService.save(data);
         return ServerResponseEntity.success(data.getUid());
     }
 

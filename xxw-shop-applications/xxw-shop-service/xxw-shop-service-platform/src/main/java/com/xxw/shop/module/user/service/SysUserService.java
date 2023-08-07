@@ -66,7 +66,7 @@ public interface SysUserService extends IService<SysUser> {
      *
      * @param sysUserId 平台用户id
      */
-    void removeById(Long sysUserId);
+    void deleteById(Long sysUserId);
 
     /**
      * 添加账户
@@ -82,7 +82,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param changeAccountDTO 账户信息
      * @return
      */
-    ServerResponseEntity<Void> update(ChangeAccountDTO changeAccountDTO);
+    ServerResponseEntity<Void> updateAccount(ChangeAccountDTO changeAccountDTO);
 
     /**
      * 根据用户id和系统类型获取用户信息

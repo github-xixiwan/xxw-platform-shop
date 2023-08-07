@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: shop-support
+  profiles:
+    active: @profileActive@

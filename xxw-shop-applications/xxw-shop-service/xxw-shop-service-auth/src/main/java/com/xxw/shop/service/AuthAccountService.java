@@ -40,14 +40,6 @@ public interface AuthAccountService extends IService<AuthAccount> {
     void modifyPassword(Long userId, Integer sysType, String newPassWord);
 
     /**
-     * 根据getByUid获取平台唯一用户
-     *
-     * @param uid  uid
-     * @return 平台唯一用户
-     */
-    AuthAccount getByUid(Long uid);
-
-    /**
      * 根据用户名获取用户信息
      * @param username 用户名
      * @param systemType 系统类型

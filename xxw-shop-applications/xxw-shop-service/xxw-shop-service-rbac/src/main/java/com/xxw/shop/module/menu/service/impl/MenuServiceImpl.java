@@ -1,8 +1,10 @@
 package com.xxw.shop.module.menu.service.impl;
 
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.RbacCacheNames;
 import com.xxw.shop.module.menu.entity.Menu;
+import com.xxw.shop.module.menu.entity.table.MenuTableDef;
 import com.xxw.shop.module.menu.mapper.MenuMapper;
 import com.xxw.shop.module.menu.service.MenuService;
 import com.xxw.shop.module.menu.vo.MenuSimpleVO;
@@ -24,20 +26,22 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
     @Override
     public MenuVO getByMenuId(Long menuId) {
-        return mapper.getByMenuId(menuId);
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.where(MenuTableDef.MENU.MENU_ID.eq(menuId));
+        return this.getOneAs(queryWrapper, MenuVO.class);
     }
 
     @Override
     @CacheEvict(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#menu.bizType")
-    public boolean save(Menu menu) {
-        mapper.save(menu);
+    public boolean saveMenu(Menu menu) {
+        this.save(menu);
         return true;
     }
 
     @Override
     @CacheEvict(cacheNames = RbacCacheNames.MENU_LIST_KEY, key = "#menu.bizType")
     public void modify(Menu menu) {
-        mapper.modify(menu);
+        this.updateById(menu);
     }
 
     @Override

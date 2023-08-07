@@ -85,10 +85,10 @@ public class MenuController {
 
     @PostMapping
     @Operation(summary = "保存菜单管理", description = "保存菜单管理")
-    public ServerResponseEntity<Void> save(@Valid @RequestBody MenuDTO menuDTO) {
+    public ServerResponseEntity<Void> saveMenu(@Valid @RequestBody MenuDTO menuDTO) {
         Menu menu = checkAndGenerate(menuDTO);
         menu.setMenuId(null);
-        menuService.save(menu);
+        menuService.saveMenu(menu);
         return ServerResponseEntity.success();
     }
 
