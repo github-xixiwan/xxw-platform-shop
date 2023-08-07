@@ -15,7 +15,6 @@ import com.xxw.shop.module.role.service.RoleService;
 import com.xxw.shop.module.role.vo.RoleVO;
 import com.xxw.shop.module.user.mapper.UserRoleMapper;
 import jakarta.annotation.Resource;
-import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +31,6 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Resource
-    private MapperFacade mapperFacade;
-
-    @Resource
     private RoleMenuService roleMenuService;
 
     @Resource
@@ -48,9 +44,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(RoleTableDef.ROLE.BIZ_TYPE.eq(dto.getSysType())).and(RoleTableDef.ROLE.TENANT_ID.eq(dto.getTenantId()));
         queryWrapper.orderBy(RoleTableDef.ROLE.ROLE_ID.desc());
-        Page<Role> paginate = mapper.paginate(dto.getPageNumber(), dto.getPageSize(), queryWrapper);
-        List<RoleVO> list = mapperFacade.mapAsList(paginate.getRecords(), RoleVO.class);
-        return new Page<>(list, dto.getPageNumber(), dto.getPageSize(), paginate.getTotalRow());
+        return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, RoleVO.class);
     }
 
     @Override

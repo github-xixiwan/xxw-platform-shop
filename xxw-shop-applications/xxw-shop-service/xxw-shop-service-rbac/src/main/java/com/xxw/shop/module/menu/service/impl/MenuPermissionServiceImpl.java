@@ -1,12 +1,15 @@
 package com.xxw.shop.module.menu.service.impl;
 
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.RbacCacheNames;
 import com.xxw.shop.constant.RbacBusinessError;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
+import com.xxw.shop.module.menu.entity.table.MenuPermissionTableDef;
+import com.xxw.shop.module.menu.entity.table.MenuTableDef;
 import com.xxw.shop.module.menu.mapper.MenuPermissionMapper;
 import com.xxw.shop.module.menu.service.MenuPermissionService;
 import com.xxw.shop.module.menu.vo.MenuPermissionVO;
@@ -32,7 +35,15 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
 
     @Override
     public Page<MenuPermissionVO> page(MenuPermissionQueryDTO dto) {
-        return mapper.list(new Page<>(dto.getPageNumber(), dto.getPageSize()), dto);
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .select(MenuPermissionTableDef.MENU_PERMISSION.ALL_COLUMNS)
+                .select(MenuTableDef.MENU.TITLE)
+                .from(MenuPermissionTableDef.MENU_PERMISSION)
+                .leftJoin(MenuTableDef.MENU)
+                .on(MenuPermissionTableDef.MENU_PERMISSION.MENU_ID.eq(MenuTableDef.MENU.MENU_ID))
+                .where(MenuPermissionTableDef.MENU_PERMISSION.BIZ_TYPE.eq(dto.getSysType()))
+                .orderBy(MenuPermissionTableDef.MENU_PERMISSION.MENU_PERMISSION_ID.desc());
+        return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, MenuPermissionVO.class);
     }
 
     @Override

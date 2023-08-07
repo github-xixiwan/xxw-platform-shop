@@ -1,5 +1,6 @@
 package com.xxw.shop.module.user.vo;
 
+import com.mybatisflex.annotation.Column;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -47,6 +48,7 @@ public class SysUserVO implements Serializable {
     @Schema(description = "平台id")
     private Long shopId;
 
+    @Column(ignore = true)
     @Schema(description = "角色id列表")
     private List<Long> roleIds;
 }

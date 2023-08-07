@@ -23,7 +23,6 @@ import com.xxw.shop.module.user.vo.SysUserVO;
 import com.xxw.shop.module.web.util.IpHelper;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
-import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -41,9 +40,6 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Resource
-    private MapperFacade mapperFacade;
-
-    @Resource
     private AccountFeignClient accountFeignClient;
 
     @Resource
@@ -59,9 +55,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Page<SysUserVO> pageByShopId(SysUserQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.orderBy(SysUserTableDef.SYS_USER.SYS_USER_ID.desc());
-        Page<SysUser> paginate = mapper.paginate(dto.getPageNumber(), dto.getPageSize(), queryWrapper);
-        List<SysUserVO> list = mapperFacade.mapAsList(paginate.getRecords(), SysUserVO.class);
-        return new Page<>(list, dto.getPageNumber(), dto.getPageSize(), paginate.getTotalRow());
+        return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, SysUserVO.class);
     }
 
     @Override

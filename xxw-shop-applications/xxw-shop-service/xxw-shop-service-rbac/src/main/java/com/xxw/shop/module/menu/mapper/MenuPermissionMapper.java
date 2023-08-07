@@ -1,11 +1,9 @@
 package com.xxw.shop.module.menu.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.mybatisflex.core.paginate.Page;
-import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
-import com.xxw.shop.module.menu.vo.UriPermissionVO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
 import com.xxw.shop.module.menu.vo.MenuPermissionVO;
+import com.xxw.shop.module.menu.vo.UriPermissionVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,13 +16,13 @@ import java.util.List;
  */
 public interface MenuPermissionMapper extends BaseMapper<MenuPermission> {
 
-    /**
-     * 获取菜单资源列表
-     *
-     * @param dto
-     * @return 菜单资源列表
-     */
-    Page<MenuPermissionVO> list(Page<MenuPermissionVO> page, @Param("dto") MenuPermissionQueryDTO dto);
+//    /**
+//     * 获取菜单资源列表
+//     *
+//     * @param dto
+//     * @return 菜单资源列表
+//     */
+//    Page<MenuPermissionVO> list(Page<MenuPermissionVO> page, @Param("dto") MenuPermissionQueryDTO dto);
 
     /**
      * 根据菜单资源id获取菜单资源

@@ -1,5 +1,6 @@
 package com.xxw.shop.module.role.vo;
 
+import com.mybatisflex.annotation.Column;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -32,9 +33,11 @@ public class RoleVO extends BaseVO implements Serializable {
     @Schema(description = "类型")
     private Integer bizType;
 
+    @Column(ignore = true)
     @Schema(description = "菜单id列表")
     private List<Long> menuIds;
 
+    @Column(ignore = true)
     @Schema(description = "菜单资源id列表")
     private List<Long> menuPermissionIds;
 }
