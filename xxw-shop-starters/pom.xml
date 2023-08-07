@@ -15,6 +15,7 @@
 
     <modules>
         <module>xxw-shop-starter-captcha</module>
+        <module>xxw-shop-starter-minio</module>
         <module>xxw-shop-starter-elasticsearch</module>
     </modules>
 
