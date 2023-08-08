@@ -40,3 +40,8 @@ seata:
       server-addr: 10.66.70.183:8848 # Nacos 服务地址
       namespace: seata
       group: SEATA_GROUP
+minio:
+  endpoint: http://10.66.70.183:9000
+  access-key: xxw
+  secret-key: 13875470948
+  bucketName: xxw-shop

@@ -3,12 +3,13 @@ package com.xxw.shop.module.minio.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  *  实体类。
@@ -45,10 +46,5 @@ public class AttachFileGroup implements Serializable {
      * 分组名称
      */
     private String name;
-
-    /**
-     * 1:图片 2:视频 3:文件
-     */
-    private Integer type;
 
 }

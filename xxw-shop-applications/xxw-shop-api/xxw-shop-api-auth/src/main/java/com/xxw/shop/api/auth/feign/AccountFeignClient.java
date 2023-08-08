@@ -10,7 +10,7 @@ import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "shop-auth", contextId = "account")
+@FeignClient(value = "shop-auth", contextId = "accountFeign")
 public interface AccountFeignClient {
 
     /**
@@ -92,7 +92,7 @@ public interface AccountFeignClient {
             "/updateTenantIdByUserIdAndSysType")
     ServerResponseEntity<Void> updateUserInfoByUserIdAndSysType(@RequestBody UserInfoInTokenBO userInfoInTokenBO,
                                                                 @RequestParam("userId") Long userId, @RequestParam(
-                                                                        "sysType") Integer sysType);
+            "sysType") Integer sysType);
 
     /**
      * 根据租户id查询商家信息

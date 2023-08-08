@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "shop-rbac", contextId = "permission")
+@FeignClient(value = "shop-rbac", contextId = "permissionFeign")
 public interface PermissionFeignClient {
 
     /**
@@ -24,8 +24,10 @@ public interface PermissionFeignClient {
      * @return 是否有某个uri的权限
      */
     @GetMapping(value = Auth.CHECK_RBAC_URI)
-    ServerResponseEntity<Boolean> checkPermission(@RequestParam("userId") Long userId, @RequestParam("sysType") Integer sysType,
-                                                  @RequestParam("uri") String uri, @RequestParam("isAdmin") Integer isAdmin,
+    ServerResponseEntity<Boolean> checkPermission(@RequestParam("userId") Long userId,
+                                                  @RequestParam("sysType") Integer sysType,
+                                                  @RequestParam("uri") String uri,
+                                                  @RequestParam("isAdmin") Integer isAdmin,
                                                   @RequestParam("method") Integer method);
 
     /**
@@ -34,7 +36,8 @@ public interface PermissionFeignClient {
      * @param clearUserPermissionsCacheDTO
      * @return 是否调用成功
      */
-    @PostMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/permission/clearUserPermissionsCache")
+    @PostMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/permission" +
+            "/clearUserPermissionsCache")
     ServerResponseEntity<Void> clearUserPermissionsCache(@RequestBody ClearUserPermissionsCacheDTO clearUserPermissionsCacheDTO);
 
 }

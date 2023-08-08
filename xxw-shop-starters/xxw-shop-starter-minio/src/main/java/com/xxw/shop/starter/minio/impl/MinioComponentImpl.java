@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component("minioComponent")
@@ -78,9 +79,11 @@ public class MinioComponentImpl implements MinioComponent {
     }
 
     @Override
-    public boolean upload(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
+    public boolean upload(MultipartFile file, String fileName) {
         try {
+            if (!bucketExists(bucketName)) {
+                makeBucket(bucketName);
+            }
             PutObjectArgs objectArgs =
                     PutObjectArgs.builder().bucket(bucketName).object(fileName).stream(file.getInputStream(),
                             file.getSize(), -1).contentType(file.getContentType()).build();
@@ -102,6 +105,16 @@ public class MinioComponentImpl implements MinioComponent {
             return minioClient.getPresignedObjectUrl(build);
         } catch (Exception e) {
             logger.error("minio_preview_exception", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPresignedObjectUrl(String fileName) {
+        try {
+            return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().bucket(bucketName).object(fileName).expiry(10, TimeUnit.MINUTES).method(Method.PUT).build());
+        } catch (Exception e) {
+            logger.error("minio_get_presigned_object_Url_exception", e);
             return null;
         }
     }

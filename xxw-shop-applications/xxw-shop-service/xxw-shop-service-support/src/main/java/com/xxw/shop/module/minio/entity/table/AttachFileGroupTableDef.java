@@ -22,11 +22,6 @@ public class AttachFileGroupTableDef extends TableDef {
     public final QueryColumn NAME = new QueryColumn(this, "name");
 
     /**
-     * 1:图片 2:视频 3:文件
-     */
-    public final QueryColumn TYPE = new QueryColumn(this, "type");
-
-    /**
      * 店铺id
      */
     public final QueryColumn SHOP_ID = new QueryColumn(this, "shop_id");
@@ -52,7 +47,7 @@ public class AttachFileGroupTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ATTACH_FILE_GROUP_ID, CREATE_TIME, UPDATE_TIME, SHOP_ID, NAME, TYPE};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ATTACH_FILE_GROUP_ID, CREATE_TIME, UPDATE_TIME, SHOP_ID, NAME};
 
     public AttachFileGroupTableDef() {
         super("", "attach_file_group");

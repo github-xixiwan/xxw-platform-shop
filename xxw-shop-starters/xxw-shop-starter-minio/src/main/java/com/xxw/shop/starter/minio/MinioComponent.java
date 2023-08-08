@@ -40,10 +40,11 @@ public interface MinioComponent {
     /**
      * 文件上传
      *
-     * @param file 文件
+     * @param file     文件
+     * @param filePath 文件名
      * @return Boolean
      */
-    boolean upload(MultipartFile file);
+    boolean upload(MultipartFile file, String fileName);
 
     /**
      * 预览图片
@@ -52,6 +53,14 @@ public interface MinioComponent {
      * @return
      */
     String preview(String fileName);
+
+    /**
+     * 获取预处理url
+     *
+     * @param fileName
+     * @return
+     */
+    String getPresignedObjectUrl(String fileName);
 
     /**
      * 文件下载
