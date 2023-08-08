@@ -1,6 +1,8 @@
 package com.xxw.shop.controller.user;
 
 import com.mybatisflex.core.paginate.Page;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.user.dto.SysUserDTO;
 import com.xxw.shop.module.user.dto.SysUserQueryDTO;
@@ -8,8 +10,6 @@ import com.xxw.shop.module.user.entity.SysUser;
 import com.xxw.shop.module.user.service.SysUserService;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
 import com.xxw.shop.module.user.vo.SysUserVO;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -60,7 +60,7 @@ public class SysUserController {
     @Operation(summary = "保存平台用户信息", description = "保存平台用户信息")
     public ServerResponseEntity<Void> save(@Valid @RequestBody SysUserDTO sysUserDTO) {
         SysUser sysUser = mapperFacade.map(sysUserDTO, SysUser.class);
-        sysUser.setSysUserId(null);
+        sysUser.setSysUserId(System.currentTimeMillis());
         sysUser.setHasAccount(0);
         sysUserService.save(sysUser, sysUserDTO.getRoleIds());
         return ServerResponseEntity.success();
