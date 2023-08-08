@@ -44,7 +44,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(RoleTableDef.ROLE.BIZ_TYPE.eq(dto.getSysType())).and(RoleTableDef.ROLE.TENANT_ID.eq(dto.getTenantId()));
         queryWrapper.orderBy(RoleTableDef.ROLE.ROLE_ID.desc());
-        return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, RoleVO.class);
+        return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, RoleVO.class);
     }
 
     @Override

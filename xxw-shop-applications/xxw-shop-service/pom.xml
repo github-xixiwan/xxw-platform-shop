@@ -18,6 +18,7 @@
         <module>xxw-shop-service-rbac</module>
         <module>xxw-shop-service-auth</module>
         <module>xxw-shop-service-platform</module>
+        <module>xxw-shop-service-goods</module>
     </modules>
 
     <dependencies>

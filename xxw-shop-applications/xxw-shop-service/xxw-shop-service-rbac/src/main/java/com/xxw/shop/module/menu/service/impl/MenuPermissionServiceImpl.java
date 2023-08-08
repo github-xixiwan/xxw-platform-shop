@@ -42,7 +42,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
         queryWrapper.leftJoin(MenuTableDef.MENU).on(MenuPermissionTableDef.MENU_PERMISSION.MENU_ID.eq(MenuTableDef.MENU.MENU_ID));
         queryWrapper.where(MenuPermissionTableDef.MENU_PERMISSION.BIZ_TYPE.eq(dto.getSysType()));
         queryWrapper.orderBy(MenuPermissionTableDef.MENU_PERMISSION.MENU_PERMISSION_ID.desc());
-        return mapper.paginateAs(dto.getPageNumber(), dto.getPageSize(), queryWrapper, MenuPermissionVO.class);
+        return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, MenuPermissionVO.class);
     }
 
     @Override

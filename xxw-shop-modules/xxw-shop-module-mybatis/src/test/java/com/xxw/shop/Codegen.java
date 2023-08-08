@@ -10,7 +10,8 @@ public class Codegen {
     public static void main(String[] args) {
         //配置数据源
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai");
+        dataSource.setJdbcUrl("jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL" +
+                "=false&serverTimezone=Asia/Shanghai");
         dataSource.setUsername("xxw-shop");
         dataSource.setPassword("xxw-shop");
 
@@ -30,13 +31,15 @@ public class Codegen {
         GlobalConfig globalConfig = new GlobalConfig();
 
         //设置根包
-        globalConfig.setBasePackage("com.xxw.shop.module.minio");
+        globalConfig.setBasePackage("com.xxw.shop");
 
         //设置表前缀和只生成哪些表
 //        globalConfig.setGenerateSchema("schema");
 //        globalConfig.setTablePrefix("tb_");
 //        globalConfig.setGenerateTable("menu","menu_permission","role","role_menu","user_role");
-        globalConfig.setGenerateTable("attach_file","attach_file_group");
+        globalConfig.setGenerateTable("attr", "attr_category", "attr_value", "brand", "category", "category_brand",
+                "shop_cart_item", "sku", "sku_stock", "sku_stock_lock", "spu", "spu_attr_value", "spu_detail",
+                "spu_extension", "spu_sku_attr_value", "spu_tag", "spu_tag_reference");
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
         globalConfig.setEntityWithLombok(true);
@@ -69,7 +72,8 @@ public class Codegen {
         globalConfig.getPackageConfig().setBasePackage("com.test");
 
         //设置表前缀和只生成哪些表，setGenerateTable 未配置时，生成所有表
-        globalConfig.getStrategyConfig().setGenerateSchema("schema").setTablePrefix("tb_").setGenerateTable("account", "account_session");
+        globalConfig.getStrategyConfig().setGenerateSchema("schema").setTablePrefix("tb_").setGenerateTable("account"
+                , "account_session");
 
         //设置生成 entity 并启用 Lombok
         globalConfig.enableEntity().setWithLombok(true);

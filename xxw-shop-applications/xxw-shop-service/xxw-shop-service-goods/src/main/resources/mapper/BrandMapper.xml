@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.BrandMapper">
+    <resultMap id="brandInfo" type="com.xxw.shop.vo.BrandVO">
+        <id column="brand_id" property="brandId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="first_letter" property="firstLetter"/>
+        <result column="seq" property="seq"/>
+        <result column="status" property="status"/>
+        <collection property="categories" ofType="com.xxw.shop.vo.CategoryVO">
+            <id column="category_id" property="categoryId"/>
+            <result column="parent_id" property="parentId"/>
+            <result column="category_name" property="name"/>
+            <result column="path" property="path"/>
+        </collection>
+    </resultMap>
+
+    <select id="getByBrandId" resultMap="brandInfo">
+        SELECT b.*, c.category_id, c.parent_id, c.name as category_name, c.path
+        FROM brand b
+                 JOIN category_brand cb ON b.brand_id = cb.brand_id
+                 JOIN category c ON c.category_id = cb.category_id
+        WHERE b.brand_id = #{brandId}
+    </select>
+
+    <select id="getBrandByCategoryId" resultType="com.xxw.shop.vo.BrandVO">
+        SELECT b.*
+        FROM brand AS b
+                 JOIN category_brand AS cb ON b.brand_id = cb.brand_id AND cb.category_id = #{categoryId}
+    </select>
+
+    <select id="listByCategory" resultMap="brandInfo">
+        SELECT b.brand_id, b.name, b.img_url
+        FROM brand AS b
+                 JOIN category_brand AS cb ON b.brand_id = cb.brand_id
+            AND cb.category_id IN
+                (SELECT category_id
+                 FROM category
+                 WHERE parent_id IN (SELECT category_id FROM category WHERE parent_id = #{categoryId}))
+        GROUP BY b.brand_id LIMIT 8
+    </select>
+
+    <select id="topBrandList" resultMap="brandInfo">
+        select brand_id, name, img_url
+        from brand
+        where status = 1
+        order by update_time desc limit 24
+    </select>
+</mapper>

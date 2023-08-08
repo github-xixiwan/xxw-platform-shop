@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.CategoryMapper">
+    <select id="getCategoryUseNum" parameterType="java.lang.Long" resultType="int">
+        SELECT SUM(c.num)
+        FROM (SELECT COUNT(*) AS num
+              FROM category
+              WHERE parent_id = #{categoryId}
+              UNION ALL
+              SELECT COUNT(*) AS num
+              FROM attr_category
+              WHERE category_id = #{categoryId}
+              UNION ALL
+              SELECT COUNT(*) AS num
+              FROM category_brand
+              WHERE category_id = #{categoryId}
+              UNION ALL
+              SELECT COUNT(*) AS num
+              FROM spu
+              WHERE category_id = #{categoryId}) AS c
+    </select>
+
+    <select id="listCategoryId" resultType="java.lang.Long">
+        SELECT category_id FROM category WHERE parent_id IN (SELECT category_id FROM category WHERE parent_id = 2)
+        <where>
+            <if test="shopId == 0 and parentId ==0">
+                parent_id IN (SELECT category_id FROM category WHERE parent_id = #{parentId})
+            </if>
+            <if test="parentId != 0">
+                AND parent_id = #{parentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getChildCategory" resultType="com.xxw.shop.entity.Category">
+        SELECT `category_id`, `level`
+        FROM category
+        WHERE parent_id = #{categoryId}
+        UNION
+        SELECT `category_id`, `level`
+        FROM category
+        WHERE parent_id IN (SELECT category_id FROM category WHERE parent_id = #{categoryId})
+    </select>
+
+    <update id="updateBatchOfStatus">
+        UPDATE category SET `status` = #{status} WHERE `category_id` in
+        <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+            #{categoryId}
+        </foreach>
+    </update>
+</mapper>

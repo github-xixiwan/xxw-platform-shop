@@ -1,6 +1,8 @@
 package com.xxw.shop.module.cache.config;
 
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
+import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
+import com.xxw.shop.module.cache.tool.impl.GlobalRedisCacheManagerTool;
 import com.xxw.shop.module.cache.tool.impl.GlobalRedisCacheTool;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -37,5 +39,10 @@ public class CacheConfig {
     @Bean
     public IGlobalRedisCache cache(RedisTemplate<String, Object> redisTemplate) {
         return new GlobalRedisCacheTool(redisTemplate);
+    }
+
+    @Bean
+    public IGlobalRedisCacheManager cache(CacheManager cacheManager) {
+        return new GlobalRedisCacheManagerTool(cacheManager);
     }
 }

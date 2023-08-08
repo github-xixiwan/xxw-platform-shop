@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.SkuMapper">
+    <resultMap id="skuMap" type="com.xxw.shop.entity.Sku">
+        <id column="sku_id" property="skuId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="sku_name" property="skuName"/>
+        <result column="attrs" property="attrs"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="price_fee" property="priceFee"/>
+        <result column="market_price_fee" property="marketPriceFee"/>
+        <result column="status" property="status"/>
+        <result column="party_code" property="partyCode"/>
+        <result column="model_id" property="modelId"/>
+        <result column="weight" property="weight"/>
+        <result column="volume" property="volume"/>
+    </resultMap>
+
+    <resultMap id="skuAndAttrMap" type="com.xxw.shop.vo.SkuVO" extends="skuMap">
+        <result column="stock" property="stock"/>
+        <collection property="spuSkuAttrValues" ofType="com.xxw.shop.vo.SpuSkuAttrValueVO">
+            <id column="spu_sku_attr_id" property="spuSkuAttrId"/>
+            <result column="create_time" property="createTime"/>
+            <result column="update_time" property="updateTime"/>
+            <result column="spu_id" property="spuId"/>
+            <result column="sku_id" property="skuId"/>
+            <result column="attr_id" property="attrId"/>
+            <result column="attr_name" property="attrName"/>
+            <result column="attr_value_id" property="attrValueId"/>
+            <result column="attr_value_name" property="attrValueName"/>
+            <result column="status" property="status"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Vo_Column_List">
+        sku
+        .
+        `sku_id`
+        ,sku.`create_time`,sku.`update_time`,sku.sku_name,sku.`spu_id`,sku.`attrs`,sku.`img_url`,sku.`price_fee`,sku.`market_price_fee`,sku.`status`
+    ,sku.weight,sku.volume,sku.party_code,sku.model_id
+    </sql>
+
+    <select id="listBySpuId" resultMap="skuAndAttrMap">
+        SELECT<include refid="Vo_Column_List"/>
+        ,sav.spu_sku_attr_id,sav.`attr_id`,sav.`attr_name`,sav.`attr_value_id`,sav.`attr_value_name`,stock
+        FROM sku sku
+        LEFT JOIN `spu_sku_attr_value` sav ON sav.`sku_id` = sku.`sku_id`
+        LEFT JOIN `sku_stock` ss ON ss.`sku_id` = sku.`sku_id`
+        WHERE sku.`spu_id` = #{spuId} and sku.status <![CDATA[<>]]> -1
+    </select>
+
+    <select id="listBySpuIdAndExtendInfo" resultMap="skuAndAttrMap">
+        select <include refid="Vo_Column_List"/>,ss.spu_sku_attr_id,ss.`attr_id`,ss.`attr_name`,
+        ss.`attr_value_id`,ss.`attr_value_name`,st.`stock`
+        from sku
+        LEFT JOIN `sku_stock` st ON st.`sku_id` = sku.`sku_id`
+        LEFT JOIN `spu_sku_attr_value` ss ON ss.`sku_id` = sku.`sku_id`
+        WHERE sku.`spu_id` = #{spuId} and sku.status <![CDATA[<>]]> -1
+    </select>
+
+    <select id="getSkuBySpuId" resultMap="skuAndAttrMap">
+        SELECT <include refid="Vo_Column_List"/>,sav.spu_sku_attr_id,sav.`attr_id`,sav.`attr_name`,sav.`attr_value_id`,sav.`attr_value_name`,stock
+        FROM sku sku
+        LEFT JOIN `spu_sku_attr_value` sav ON sav.`sku_id` = sku.`sku_id`
+        LEFT JOIN `sku_stock` ss ON ss.`sku_id` = sku.`sku_id`
+        WHERE sku.`spu_id` = #{spuId} and sku.status = 1
+    </select>
+</mapper>
