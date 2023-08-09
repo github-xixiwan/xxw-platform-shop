@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxw.shop.mapper.BrandMapper">
-    <resultMap id="brandInfo" type="com.xxw.shop.vo.BrandVO">
+    <resultMap id="brandInfo" type="com.xxw.shop.api.goods.vo.BrandVO">
         <id column="brand_id" property="brandId"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -13,7 +13,7 @@
         <result column="first_letter" property="firstLetter"/>
         <result column="seq" property="seq"/>
         <result column="status" property="status"/>
-        <collection property="categories" ofType="com.xxw.shop.vo.CategoryVO">
+        <collection property="categories" ofType="com.xxw.shop.api.goods.vo.CategoryVO">
             <id column="category_id" property="categoryId"/>
             <result column="parent_id" property="parentId"/>
             <result column="category_name" property="name"/>
@@ -29,7 +29,7 @@
         WHERE b.brand_id = #{brandId}
     </select>
 
-    <select id="getBrandByCategoryId" resultType="com.xxw.shop.vo.BrandVO">
+    <select id="getBrandByCategoryId" resultType="com.xxw.shop.api.goods.vo.BrandVO">
         SELECT b.*
         FROM brand AS b
                  JOIN category_brand AS cb ON b.brand_id = cb.brand_id AND cb.category_id = #{categoryId}

@@ -1,5 +1,6 @@
 package com.xxw.shop.vo;
 
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

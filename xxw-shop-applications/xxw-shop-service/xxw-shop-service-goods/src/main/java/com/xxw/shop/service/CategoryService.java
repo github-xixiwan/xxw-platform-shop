@@ -1,8 +1,9 @@
 package com.xxw.shop.service;
 
 import com.mybatisflex.core.service.IService;
+import com.xxw.shop.dto.CategoryDTO;
 import com.xxw.shop.entity.Category;
-import com.xxw.shop.vo.CategoryVO;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ public interface CategoryService extends IService<Category> {
 
     CategoryVO getCategoryId(Long categoryId);
 
-    void saveCategory(Category category);
+    void saveCategory(CategoryDTO dto);
 
-    void updateCategory(Category category);
+    void updateCategory(CategoryDTO dto);
 
     void deleteById(Long categoryId);
 
@@ -41,4 +42,6 @@ public interface CategoryService extends IService<Category> {
     List<Category> getChildCategory(Long categoryId);
 
     void updateBatchOfStatus(List<Long> updateList, Integer status);
+
+    boolean categoryEnableOrDisable(CategoryDTO categoryDTO);
 }

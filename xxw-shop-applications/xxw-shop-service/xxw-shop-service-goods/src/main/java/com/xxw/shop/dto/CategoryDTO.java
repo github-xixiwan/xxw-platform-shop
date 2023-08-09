@@ -1,13 +1,13 @@
-package com.xxw.shop.vo;
+package com.xxw.shop.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
-public class CategoryVO implements Serializable {
+public class CategoryDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,9 +17,11 @@ public class CategoryVO implements Serializable {
     @Schema(description = "店铺id")
     private Long shopId;
 
+    @NotNull(message = "请选择上级分类")
     @Schema(description = "父ID")
     private Long parentId;
 
+    @NotNull(message = "分类名称不能为空")
     @Schema(description = "分类名称")
     private String name;
 
@@ -29,6 +31,7 @@ public class CategoryVO implements Serializable {
     @Schema(description = "分类地址{parent_id}-{child_id},...")
     private String path;
 
+    @NotNull(message = "状态不能为空")
     @Schema(description = "状态 1:enable, 0:disable, -1:deleted")
     private Integer status;
 
@@ -43,10 +46,4 @@ public class CategoryVO implements Serializable {
 
     @Schema(description = "排序")
     private Integer seq;
-
-    @Schema(description = "上级分类名称")
-    private List<String> pathNames;
-
-    @Schema(description = "子分类列表")
-    private List<CategoryVO> categories;
 }

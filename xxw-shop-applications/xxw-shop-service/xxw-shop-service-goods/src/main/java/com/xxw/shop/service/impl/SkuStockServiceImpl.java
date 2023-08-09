@@ -8,7 +8,7 @@ import com.xxw.shop.entity.SkuStock;
 import com.xxw.shop.mapper.SkuStockMapper;
 import com.xxw.shop.service.SkuStockService;
 import com.xxw.shop.vo.SkuStockVO;
-import com.xxw.shop.vo.SkuVO;
+import com.xxw.shop.api.goods.vo.SkuVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

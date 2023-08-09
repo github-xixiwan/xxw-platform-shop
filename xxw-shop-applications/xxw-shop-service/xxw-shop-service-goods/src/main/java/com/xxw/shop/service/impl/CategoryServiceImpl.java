@@ -7,17 +7,23 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.CategoryLevel;
 import com.xxw.shop.constant.GoodsBusinessError;
+import com.xxw.shop.dto.CategoryDTO;
 import com.xxw.shop.entity.Category;
 import com.xxw.shop.mapper.CategoryMapper;
 import com.xxw.shop.module.common.constant.Constant;
+import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.CategoryService;
-import com.xxw.shop.vo.CategoryVO;
+import com.xxw.shop.service.SpuService;
+import com.xxw.shop.api.goods.vo.CategoryVO;
+import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,6 +38,12 @@ import static com.xxw.shop.entity.table.CategoryTableDef.CATEGORY;
  */
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
+
+    @Resource
+    private MapperFacade mapperFacade;
+
+    @Resource
+    private SpuService spuService;
 
     private CategoryVO getById(Long categoryId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
@@ -52,7 +64,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public void saveCategory(Category category) {
+    public void saveCategory(CategoryDTO dto) {
+        Category category = mapperFacade.map(dto, Category.class);
         existCategoryName(category);
         category.setShopId(AuthUserContext.get().getTenantId());
         String path = "";
@@ -70,7 +83,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public void updateCategory(Category category) {
+    public void updateCategory(CategoryDTO dto) {
+        Category category = mapperFacade.map(dto, Category.class);
         CategoryVO dbCategory = getById(category.getCategoryId());
         if (Objects.equals(dbCategory.getCategoryId(), category.getParentId())) {
             throw new BusinessException(GoodsBusinessError.GOODS_00004);
@@ -244,5 +258,49 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         if (countByName > 0) {
             throw new BusinessException(GoodsBusinessError.GOODS_00003);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean categoryEnableOrDisable(CategoryDTO categoryDTO) {
+        CategoryVO categoryDb = getById(categoryDTO.getCategoryId());
+        // 如果是重复提交，则直接返回
+        if (Objects.equals(categoryDb.getStatus(), categoryDTO.getStatus())) {
+            return true;
+        }
+        List<Long> updateList = new ArrayList<>();
+        List<Long> thirdIdList = new ArrayList<>();
+        if (!categoryDb.getLevel().equals(CategoryLevel.THIRD.value())) {
+            // 如果是店铺的二级分类需要将分类id放进去
+            if (!Objects.equals(categoryDb.getShopId(), Constant.PLATFORM_SHOP_ID) && Objects.equals(categoryDb.getLevel(), CategoryLevel.SECOND.value())) {
+                thirdIdList.add(categoryDb.getCategoryId());
+            }
+
+            List<Category> categoryList = getChildCategory(categoryDb.getCategoryId());
+            categoryList.forEach(category -> {
+                updateList.add(category.getCategoryId());
+                if (Objects.equals(categoryDb.getShopId(), Constant.PLATFORM_SHOP_ID) && Objects.equals(category.getLevel(), CategoryLevel.THIRD.value())) {
+                    thirdIdList.add(category.getCategoryId());
+                } else if (!Objects.equals(categoryDb.getShopId(), Constant.PLATFORM_SHOP_ID) && Objects.equals(category.getLevel(), CategoryLevel.SECOND.value())) {
+                    thirdIdList.add(category.getCategoryId());
+                }
+            });
+        } else {
+            updateList.add(categoryDb.getCategoryId());
+            thirdIdList.add(categoryDb.getCategoryId());
+        }
+        updateList.add(categoryDb.getCategoryId());
+        updateBatchOfStatus(updateList, categoryDTO.getStatus());
+
+        removeCategoryCache(AuthUserContext.get().getTenantId(), null);
+
+        // 分类下架后，下架分类中的商品
+        if (Objects.equals(categoryDTO.getStatus(), StatusEnum.DISABLE.value())) {
+            if (CollUtil.isEmpty(thirdIdList)) {
+                return true;
+            }
+            spuService.batchChangeSpuStatusByCids(thirdIdList, categoryDb.getShopId(), StatusEnum.DISABLE.value());
+        }
+        return true;
     }
 }

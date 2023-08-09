@@ -13,15 +13,15 @@ import com.xxw.shop.mapper.SkuMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.StatusEnum;
+import com.xxw.shop.module.web.util.SpringContextUtils;
 import com.xxw.shop.service.SkuService;
 import com.xxw.shop.service.SkuStockService;
 import com.xxw.shop.service.SpuSkuAttrValueService;
-import com.xxw.shop.vo.SkuAppVO;
-import com.xxw.shop.vo.SkuVO;
-import com.xxw.shop.vo.SpuSkuAttrValueVO;
+import com.xxw.shop.vo.SkuConsumerVO;
+import com.xxw.shop.api.goods.vo.SkuVO;
+import com.xxw.shop.api.goods.vo.SpuSkuAttrValueVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -139,7 +139,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         // 根据spuId删除缓存
         if (CollUtil.isEmpty(skuIds)) {
             // 获取当前类的代理，这样就可以利用spring的方法获取缓存了，不要删了
-            SkuServiceImpl skuService = (SkuServiceImpl) AopContext.currentProxy();
+            SkuServiceImpl skuService = (SkuServiceImpl) SpringContextUtils.getBean("skuServiceImpl");
             List<SkuVO> skuList = skuService.listBySpuId(spuId);
             skuIds = skuList.stream().map(SkuVO::getSkuId).collect(Collectors.toList());
         }
@@ -198,13 +198,13 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 
     @Override
     @Cacheable(cacheNames = GoodsCacheNames.SKU_OF_SPU_DETAIL_KEY, key = "#spuId", sync = true)
-    public List<SkuAppVO> getSkuBySpuId(Long spuId) {
+    public List<SkuConsumerVO> getSkuBySpuId(Long spuId) {
         String attrUnionAttrValue = ":";
         String attrUnionAttr = ";";
-        List<SkuAppVO> skuAppList = new ArrayList<>();
+        List<SkuConsumerVO> skuAppList = new ArrayList<>();
         List<SkuVO> skuData = mapper.getSkuBySpuId(spuId);
         for (SkuVO sku : skuData) {
-            SkuAppVO skuAppVO = mapperFacade.map(sku, SkuAppVO.class);
+            SkuConsumerVO skuAppVO = mapperFacade.map(sku, SkuConsumerVO.class);
             StringBuilder properties = new StringBuilder();
             for (SpuSkuAttrValueVO spuSkuAttrValue : sku.getSpuSkuAttrValues()) {
                 properties.append(spuSkuAttrValue.getAttrName()).append(attrUnionAttrValue).append(spuSkuAttrValue.getAttrValueName()).append(attrUnionAttr);

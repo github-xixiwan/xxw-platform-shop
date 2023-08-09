@@ -43,7 +43,7 @@
         </foreach>
     </update>
 
-    <select id="getSpuAttrsBySpuId" resultType="com.xxw.shop.vo.SpuAttrValueVO">
+    <select id="getSpuAttrsBySpuId" resultType="com.xxw.shop.api.goods.vo.SpuAttrValueVO">
         SELECT sav.attr_id,sav.attr_name,sav.attr_value_id,sav.attr_value_name,a.search_type
         FROM spu_attr_value sav
                  LEFT JOIN attr a ON a.attr_id = sav.attr_id

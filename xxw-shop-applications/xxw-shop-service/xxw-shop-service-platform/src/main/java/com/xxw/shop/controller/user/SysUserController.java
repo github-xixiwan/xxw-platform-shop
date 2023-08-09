@@ -60,6 +60,7 @@ public class SysUserController {
     @Operation(summary = "保存平台用户信息", description = "保存平台用户信息")
     public ServerResponseEntity<Void> save(@Valid @RequestBody SysUserDTO sysUserDTO) {
         SysUser sysUser = mapperFacade.map(sysUserDTO, SysUser.class);
+        //TODO
         sysUser.setSysUserId(System.currentTimeMillis());
         sysUser.setHasAccount(0);
         sysUserService.save(sysUser, sysUserDTO.getRoleIds());

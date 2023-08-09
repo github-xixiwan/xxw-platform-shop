@@ -4,7 +4,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.SkuDTO;
 import com.xxw.shop.entity.SkuStock;
 import com.xxw.shop.vo.SkuStockVO;
-import com.xxw.shop.vo.SkuVO;
+import com.xxw.shop.api.goods.vo.SkuVO;
 
 import java.util.List;
 

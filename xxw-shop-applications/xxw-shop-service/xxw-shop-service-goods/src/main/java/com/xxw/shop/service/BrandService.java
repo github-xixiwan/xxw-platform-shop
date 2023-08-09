@@ -5,7 +5,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.BrandDTO;
 import com.xxw.shop.dto.BrandQueryDTO;
 import com.xxw.shop.entity.Brand;
-import com.xxw.shop.vo.BrandVO;
+import com.xxw.shop.api.goods.vo.BrandVO;
 
 import java.util.List;
 

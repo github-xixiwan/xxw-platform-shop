@@ -3,8 +3,8 @@ package com.xxw.shop.service;
 import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.SpuDTO;
 import com.xxw.shop.entity.Spu;
-import com.xxw.shop.vo.EsGoodsVO;
-import com.xxw.shop.vo.SpuVO;
+import com.xxw.shop.api.goods.vo.EsGoodsVO;
+import com.xxw.shop.api.goods.vo.SpuVO;
 
 import java.util.List;
 

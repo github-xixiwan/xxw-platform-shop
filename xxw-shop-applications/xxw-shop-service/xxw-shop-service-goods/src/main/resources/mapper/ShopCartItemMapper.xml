@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxw.shop.mapper.ShopCartItemMapper">
-    <select id="getShopCartItems" resultType="com.xxw.shop.vo.ShopCartItemVO">
+    <select id="getShopCartItems" resultType="com.xxw.shop.api.goods.vo.ShopCartItemVO">
         SELECT sci.*,
         spu.name spuName,
         spu.category_id,

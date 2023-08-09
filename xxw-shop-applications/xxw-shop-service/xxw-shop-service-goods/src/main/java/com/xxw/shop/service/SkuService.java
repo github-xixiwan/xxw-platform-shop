@@ -4,8 +4,8 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.SkuDTO;
 import com.xxw.shop.dto.SpuDTO;
 import com.xxw.shop.entity.Sku;
-import com.xxw.shop.vo.SkuAppVO;
-import com.xxw.shop.vo.SkuVO;
+import com.xxw.shop.vo.SkuConsumerVO;
+import com.xxw.shop.api.goods.vo.SkuVO;
 
 import java.util.List;
 
@@ -33,5 +33,5 @@ public interface SkuService extends IService<Sku> {
 
     void updateAmountOrStock(SpuDTO spuDTO);
 
-    List<SkuAppVO> getSkuBySpuId(Long spuId);
+    List<SkuConsumerVO> getSkuBySpuId(Long spuId);
 }

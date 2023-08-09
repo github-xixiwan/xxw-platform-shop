@@ -53,7 +53,7 @@ public class AccountFeignController implements AccountFeignClient {
             return ServerResponseEntity.transform(verify);
         }
         AuthAccount data = verify.getData();
-        //TODO id
+        //TODO
         data.setUid(System.currentTimeMillis());
         authAccountService.save(data);
         return ServerResponseEntity.success(data.getUid());

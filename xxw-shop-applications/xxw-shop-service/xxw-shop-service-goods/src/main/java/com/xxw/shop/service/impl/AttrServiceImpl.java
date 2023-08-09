@@ -18,7 +18,7 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.*;
 import com.xxw.shop.vo.AttrVO;
-import com.xxw.shop.vo.CategoryVO;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.Cacheable;

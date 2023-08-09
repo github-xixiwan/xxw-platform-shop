@@ -2,7 +2,7 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.SpuAttrValue;
-import com.xxw.shop.vo.SpuAttrValueVO;
+import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

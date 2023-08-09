@@ -22,10 +22,10 @@
         <result column="has_sku_img" property="hasSkuImg"/>
     </resultMap>
 
-    <resultMap id="spuDetailMap" type="com.xxw.shop.vo.SpuVO" extends="spuMap">
+    <resultMap id="spuDetailMap" type="com.xxw.shop.api.goods.vo.SpuVO" extends="spuMap">
         <result column="detail" property="detail"/>
         <result column="total_stock" property="totalStock"/>
-        <collection property="spuAttrValues" ofType="com.xxw.shop.vo.SpuAttrValueVO">
+        <collection property="spuAttrValues" ofType="com.xxw.shop.api.goods.vo.SpuAttrValueVO">
             <id column="spu_attr_value_id" property="spuAttrValueId"/>
             <result column="attr_id" property="attrId"/>
             <result column="attr_name" property="attrName"/>
@@ -68,7 +68,7 @@
         </where>
     </update>
 
-    <select id="loadEsGoodsVO" resultType="com.xxw.shop.vo.EsGoodsVO">
+    <select id="loadEsGoodsVO" resultType="com.xxw.shop.api.goods.vo.EsGoodsVO">
         SELECT s.spu_id,s.name AS spu_name,s.shop_id,s.selling_point,s.price_fee,s.market_price_fee,s.img_urls,s.status AS spu_status,
                s.seq, IF(se.stock>0,1,0) AS has_stock,se.sale_num,s.create_time,s.category_id,s.main_img_url,s.category_id,
                s.shop_category_id, se.actual_stock AS stock, s.brand_id,b.name AS brand_name,b.img_url AS brand_img, s.shop_category_id AS  shop_secondary_category_id,

@@ -2,8 +2,8 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.Spu;
-import com.xxw.shop.vo.EsGoodsVO;
-import com.xxw.shop.vo.SpuVO;
+import com.xxw.shop.api.goods.vo.EsGoodsVO;
+import com.xxw.shop.api.goods.vo.SpuVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

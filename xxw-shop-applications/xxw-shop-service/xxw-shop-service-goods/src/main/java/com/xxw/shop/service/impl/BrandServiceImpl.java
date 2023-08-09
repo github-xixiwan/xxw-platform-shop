@@ -17,7 +17,7 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.service.BrandService;
 import com.xxw.shop.service.CategoryBrandService;
 import com.xxw.shop.service.SpuService;
-import com.xxw.shop.vo.BrandVO;
+import com.xxw.shop.api.goods.vo.BrandVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;

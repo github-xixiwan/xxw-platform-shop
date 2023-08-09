@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
-            <artifactId>xxw-shop-api-platform</artifactId>
+            <artifactId>xxw-shop-api-goods</artifactId>
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>

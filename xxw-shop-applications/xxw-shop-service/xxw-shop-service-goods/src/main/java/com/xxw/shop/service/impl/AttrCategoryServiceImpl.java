@@ -6,7 +6,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.entity.AttrCategory;
 import com.xxw.shop.mapper.AttrCategoryMapper;
 import com.xxw.shop.service.AttrCategoryService;
-import com.xxw.shop.vo.CategoryVO;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

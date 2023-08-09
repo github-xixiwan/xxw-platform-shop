@@ -2,7 +2,7 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.Sku;
-import com.xxw.shop.vo.SkuVO;
+import com.xxw.shop.api.goods.vo.SkuVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

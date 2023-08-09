@@ -20,9 +20,9 @@
         <result column="volume" property="volume"/>
     </resultMap>
 
-    <resultMap id="skuAndAttrMap" type="com.xxw.shop.vo.SkuVO" extends="skuMap">
+    <resultMap id="skuAndAttrMap" type="com.xxw.shop.api.goods.vo.SkuVO" extends="skuMap">
         <result column="stock" property="stock"/>
-        <collection property="spuSkuAttrValues" ofType="com.xxw.shop.vo.SpuSkuAttrValueVO">
+        <collection property="spuSkuAttrValues" ofType="com.xxw.shop.api.goods.vo.SpuSkuAttrValueVO">
             <id column="spu_sku_attr_id" property="spuSkuAttrId"/>
             <result column="create_time" property="createTime"/>
             <result column="update_time" property="updateTime"/>

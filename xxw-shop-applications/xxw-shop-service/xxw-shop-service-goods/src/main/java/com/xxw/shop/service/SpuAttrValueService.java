@@ -2,7 +2,7 @@ package com.xxw.shop.service;
 
 import com.mybatisflex.core.service.IService;
 import com.xxw.shop.entity.SpuAttrValue;
-import com.xxw.shop.vo.SpuAttrValueVO;
+import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
 
 import java.util.List;
 

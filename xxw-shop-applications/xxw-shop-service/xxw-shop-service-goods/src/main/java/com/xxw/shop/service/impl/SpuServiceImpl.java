@@ -3,6 +3,7 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.*;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.SpuDTO;
@@ -17,12 +18,11 @@ import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
+import com.xxw.shop.module.web.util.SpringContextUtils;
 import com.xxw.shop.service.*;
-import com.xxw.shop.vo.*;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -99,7 +99,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         this.updateById(spu);
         if (!Objects.equals(status, StatusEnum.ENABLE.value())) {
             SpuVO spuVO = mapper.getBySpuId(spuId);
-//            ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuVO.getSpuId(), spuVO.getShopId());
+            //TODO
+//            ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuVO.getSpuId(), spuVO.getShopId
+//            ());
 //            if (!imgRes.isSuccess()) {
 //                throw new BusinessException(SystemErrorEnumError.EXCEPTION);
 //            }
@@ -143,7 +145,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     @Transactional(rollbackFor = Exception.class)
     public void updateSpu(SpuDTO spuDTO) {
         Spu spu = mapperFacade.map(spuDTO, Spu.class);
-        SpuServiceImpl spuService = (SpuServiceImpl) AopContext.currentProxy();
+        SpuServiceImpl spuService = (SpuServiceImpl) SpringContextUtils.getBean("spuServiceImpl");
         SpuVO dbSpu = spuService.getBySpuId(spu.getSpuId());
         // 1.修改商品信息
         this.updateById(spu);
@@ -183,6 +185,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         this.updateById(spu);
 
         skuService.deleteBySpuId(spuId);
+        //TODO
         // 把轮播图中关联了该商品的数据删除
 //        ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuId, spuVO.getShopId());
 //        if (!imgRes.isSuccess()) {

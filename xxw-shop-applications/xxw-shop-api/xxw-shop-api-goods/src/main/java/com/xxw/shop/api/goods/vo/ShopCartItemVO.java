@@ -1,4 +1,4 @@
-package com.xxw.shop.vo;
+package com.xxw.shop.api.goods.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

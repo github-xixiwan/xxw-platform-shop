@@ -10,7 +10,7 @@ import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.service.SpuAttrValueService;
 import com.xxw.shop.service.SpuService;
-import com.xxw.shop.vo.SpuAttrValueVO;
+import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

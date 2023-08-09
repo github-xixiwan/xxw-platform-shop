@@ -2,7 +2,7 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.Brand;
-import com.xxw.shop.vo.BrandVO;
+import com.xxw.shop.api.goods.vo.BrandVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

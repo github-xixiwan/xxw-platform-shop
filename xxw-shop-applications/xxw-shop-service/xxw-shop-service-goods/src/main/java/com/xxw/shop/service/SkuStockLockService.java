@@ -2,7 +2,7 @@ package com.xxw.shop.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import com.xxw.shop.dto.SkuStockLockDTO;
+import com.xxw.shop.api.goods.dto.SkuStockLockDTO;
 import com.xxw.shop.dto.SkuStockLockQueryDTO;
 import com.xxw.shop.entity.SkuStockLock;
 import com.xxw.shop.module.common.response.ServerResponseEntity;

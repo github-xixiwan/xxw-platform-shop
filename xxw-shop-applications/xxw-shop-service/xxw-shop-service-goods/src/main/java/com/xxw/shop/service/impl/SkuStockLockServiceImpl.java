@@ -3,7 +3,7 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.xxw.shop.dto.SkuStockLockDTO;
+import com.xxw.shop.api.goods.dto.SkuStockLockDTO;
 import com.xxw.shop.dto.SkuStockLockQueryDTO;
 import com.xxw.shop.entity.SkuStockLock;
 import com.xxw.shop.mapper.SkuStockLockMapper;
@@ -91,6 +91,7 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void stockUnlock(List<Long> orderIds) {
+        //TODO
 //        ServerResponseEntity<List<OrderStatusBO>> ordersStatusResponse = orderFeignClient.getOrdersStatus(orderIds);
 //        if (!ordersStatusResponse.isSuccess()) {
 //            throw new Mall4cloudException(ordersStatusResponse.getMsg());

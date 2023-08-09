@@ -2,7 +2,7 @@ package com.xxw.shop.service;
 
 import com.mybatisflex.core.service.IService;
 import com.xxw.shop.entity.AttrCategory;
-import com.xxw.shop.vo.CategoryVO;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 
 import java.util.List;
 
