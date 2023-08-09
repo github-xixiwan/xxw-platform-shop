@@ -7,7 +7,6 @@ import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.dto.ChangeShopCartItemDTO;
 import com.xxw.shop.dto.CheckShopCartItemDTO;
 import com.xxw.shop.entity.ShopCartItem;
-import com.xxw.shop.entity.table.ShopCartItemTableDef;
 import com.xxw.shop.mapper.ShopCartItemMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
 import com.xxw.shop.module.security.AuthUserContext;
@@ -19,6 +18,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.xxw.shop.entity.table.ShopCartItemTableDef.SHOP_CART_ITEM;
 
 /**
  * 服务层实现。
@@ -36,8 +37,8 @@ public class ShopCartItemServiceImpl extends ServiceImpl<ShopCartItemMapper, Sho
     @CacheEvict(cacheNames = GoodsCacheNames.SHOP_CART_ITEM_COUNT, key = "#userId")
     public void deleteShopCartItemsByShopCartItemIds(Long userId, List<Long> shopCartItemIds) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(ShopCartItemTableDef.SHOP_CART_ITEM.USER_ID.eq(userId));
-        queryWrapper.and(ShopCartItemTableDef.SHOP_CART_ITEM.CART_ITEM_ID.in(shopCartItemIds));
+        queryWrapper.where(SHOP_CART_ITEM.USER_ID.eq(userId));
+        queryWrapper.and(SHOP_CART_ITEM.CART_ITEM_ID.in(shopCartItemIds));
         this.remove(queryWrapper);
     }
 
@@ -59,8 +60,8 @@ public class ShopCartItemServiceImpl extends ServiceImpl<ShopCartItemMapper, Sho
     @CacheEvict(cacheNames = GoodsCacheNames.SHOP_CART_ITEM_COUNT, key = "#userId")
     public void updateShopCartItem(Long userId, ShopCartItem shopCartItem) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(ShopCartItemTableDef.SHOP_CART_ITEM.USER_ID.eq(userId));
-        queryWrapper.and(ShopCartItemTableDef.SHOP_CART_ITEM.CART_ITEM_ID.in(shopCartItem.getCartItemId()));
+        queryWrapper.where(SHOP_CART_ITEM.USER_ID.eq(userId));
+        queryWrapper.and(SHOP_CART_ITEM.CART_ITEM_ID.in(shopCartItem.getCartItemId()));
         this.update(shopCartItem, queryWrapper);
     }
 
@@ -68,7 +69,7 @@ public class ShopCartItemServiceImpl extends ServiceImpl<ShopCartItemMapper, Sho
     @CacheEvict(cacheNames = GoodsCacheNames.SHOP_CART_ITEM_COUNT, key = "#userId")
     public void deleteAllShopCartItems(Long userId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(ShopCartItemTableDef.SHOP_CART_ITEM.USER_ID.eq(userId));
+        queryWrapper.where(SHOP_CART_ITEM.USER_ID.eq(userId));
         this.remove(queryWrapper);
     }
 

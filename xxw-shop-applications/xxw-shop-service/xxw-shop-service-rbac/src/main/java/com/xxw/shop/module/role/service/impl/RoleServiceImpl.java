@@ -7,7 +7,6 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.module.role.dto.RoleQueryDTO;
 import com.xxw.shop.module.role.entity.Role;
 import com.xxw.shop.module.role.entity.RoleMenu;
-import com.xxw.shop.module.role.entity.table.RoleTableDef;
 import com.xxw.shop.module.role.mapper.RoleMapper;
 import com.xxw.shop.module.role.mapper.RoleMenuMapper;
 import com.xxw.shop.module.role.service.RoleMenuService;
@@ -20,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.module.role.entity.table.RoleTableDef.ROLE;
 
 /**
  * 服务层实现。
@@ -42,8 +43,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public Page<RoleVO> page(RoleQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(RoleTableDef.ROLE.BIZ_TYPE.eq(dto.getSysType())).and(RoleTableDef.ROLE.TENANT_ID.eq(dto.getTenantId()));
-        queryWrapper.orderBy(RoleTableDef.ROLE.ROLE_ID.desc());
+        queryWrapper.where(ROLE.BIZ_TYPE.eq(dto.getSysType())).and(ROLE.TENANT_ID.eq(dto.getTenantId()));
+        queryWrapper.orderBy(ROLE.ROLE_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, RoleVO.class);
     }
 

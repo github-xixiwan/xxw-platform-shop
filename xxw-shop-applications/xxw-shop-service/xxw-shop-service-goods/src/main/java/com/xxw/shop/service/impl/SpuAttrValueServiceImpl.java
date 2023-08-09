@@ -5,7 +5,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.entity.SpuAttrValue;
-import com.xxw.shop.entity.table.SpuAttrValueTableDef;
 import com.xxw.shop.mapper.SpuAttrValueMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
@@ -19,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.entity.table.SpuAttrValueTableDef.SPU_ATTR_VALUE;
 
 /**
  * 服务层实现。
@@ -79,7 +80,7 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
     @Override
     public void deleteBySpuId(Long spuId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SpuAttrValueTableDef.SPU_ATTR_VALUE.SPU_ID.eq(spuId));
+        queryWrapper.where(SPU_ATTR_VALUE.SPU_ID.eq(spuId));
         this.remove(queryWrapper);
     }
 
@@ -90,8 +91,8 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
         }
         updateSpu(attrValueId, categoryIds);
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SpuAttrValueTableDef.SPU_ATTR_VALUE.ATTR_ID.eq(attrId));
-        queryWrapper.and(SpuAttrValueTableDef.SPU_ATTR_VALUE.ATTR_VALUE_ID.in(attrValueId));
+        queryWrapper.where(SPU_ATTR_VALUE.ATTR_ID.eq(attrId));
+        queryWrapper.and(SPU_ATTR_VALUE.ATTR_VALUE_ID.in(attrValueId));
         this.remove(queryWrapper);
     }
 

@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.entity.AttrCategory;
-import com.xxw.shop.entity.table.AttrCategoryTableDef;
 import com.xxw.shop.mapper.AttrCategoryMapper;
 import com.xxw.shop.service.AttrCategoryService;
 import com.xxw.shop.vo.CategoryVO;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.entity.table.AttrCategoryTableDef.ATTR_CATEGORY;
 
 /**
  * 服务层实现。
@@ -49,8 +50,8 @@ public class AttrCategoryServiceImpl extends ServiceImpl<AttrCategoryMapper, Att
         dbCategoryIds.removeAll(categoryIds);
         if (CollUtil.isNotEmpty(dbCategoryIds)) {
             QueryWrapper queryWrapper = QueryWrapper.create();
-            queryWrapper.where(AttrCategoryTableDef.ATTR_CATEGORY.ATTR_ID.eq(attrId));
-            queryWrapper.and(AttrCategoryTableDef.ATTR_CATEGORY.CATEGORY_ID.in(dbCategoryIds));
+            queryWrapper.where(ATTR_CATEGORY.ATTR_ID.eq(attrId));
+            queryWrapper.and(ATTR_CATEGORY.CATEGORY_ID.in(dbCategoryIds));
             this.remove(queryWrapper);
         }
         return dbCategoryIds;
@@ -59,7 +60,7 @@ public class AttrCategoryServiceImpl extends ServiceImpl<AttrCategoryMapper, Att
     @Override
     public List<CategoryVO> listByAttrId(Long attrId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(AttrCategoryTableDef.ATTR_CATEGORY.ATTR_ID.eq(attrId));
+        queryWrapper.where(ATTR_CATEGORY.ATTR_ID.eq(attrId));
         return this.listAs(queryWrapper, CategoryVO.class);
     }
 }

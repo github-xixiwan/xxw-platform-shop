@@ -9,7 +9,6 @@ import com.xxw.shop.dto.SpuDTO;
 import com.xxw.shop.entity.Sku;
 import com.xxw.shop.entity.SkuStock;
 import com.xxw.shop.entity.SpuSkuAttrValue;
-import com.xxw.shop.entity.table.SkuTableDef;
 import com.xxw.shop.mapper.SkuMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
@@ -30,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.entity.table.SkuTableDef.SKU;
 
 /**
  * 服务层实现。
@@ -151,7 +152,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         Sku sku = new Sku();
         sku.setStatus(-1);
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SkuTableDef.SKU.SPU_ID.eq(spuId));
+        queryWrapper.where(SKU.SPU_ID.eq(spuId));
         this.update(sku, queryWrapper);
     }
 
@@ -164,7 +165,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     @Cacheable(cacheNames = GoodsCacheNames.SKU_BY_ID_KEY, key = "#skuId")
     public SkuVO getSkuBySkuId(Long skuId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SkuTableDef.SKU.SKU_ID.eq(skuId));
+        queryWrapper.where(SKU.SKU_ID.eq(skuId));
         return this.getOneAs(queryWrapper, SkuVO.class);
     }
 

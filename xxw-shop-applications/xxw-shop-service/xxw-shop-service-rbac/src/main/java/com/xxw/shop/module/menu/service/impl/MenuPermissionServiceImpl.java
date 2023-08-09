@@ -8,7 +8,6 @@ import com.xxw.shop.constant.RbacBusinessError;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
-import com.xxw.shop.module.menu.entity.table.MenuPermissionTableDef;
 import com.xxw.shop.module.menu.entity.table.MenuTableDef;
 import com.xxw.shop.module.menu.mapper.MenuPermissionMapper;
 import com.xxw.shop.module.menu.service.MenuPermissionService;
@@ -24,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+import static com.xxw.shop.module.menu.entity.table.MenuPermissionTableDef.MENU_PERMISSION;
+
 /**
  * 服务层实现。
  *
@@ -36,12 +37,12 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
     @Override
     public Page<MenuPermissionVO> page(MenuPermissionQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.select(MenuPermissionTableDef.MENU_PERMISSION.ALL_COLUMNS);
+        queryWrapper.select(MENU_PERMISSION.ALL_COLUMNS);
         queryWrapper.select(MenuTableDef.MENU.TITLE);
-        queryWrapper.from(MenuPermissionTableDef.MENU_PERMISSION);
-        queryWrapper.leftJoin(MenuTableDef.MENU).on(MenuPermissionTableDef.MENU_PERMISSION.MENU_ID.eq(MenuTableDef.MENU.MENU_ID));
-        queryWrapper.where(MenuPermissionTableDef.MENU_PERMISSION.BIZ_TYPE.eq(dto.getSysType()));
-        queryWrapper.orderBy(MenuPermissionTableDef.MENU_PERMISSION.MENU_PERMISSION_ID.desc());
+        queryWrapper.from(MENU_PERMISSION);
+        queryWrapper.leftJoin(MenuTableDef.MENU).on(MENU_PERMISSION.MENU_ID.eq(MenuTableDef.MENU.MENU_ID));
+        queryWrapper.where(MENU_PERMISSION.BIZ_TYPE.eq(dto.getSysType()));
+        queryWrapper.orderBy(MENU_PERMISSION.MENU_PERMISSION_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, MenuPermissionVO.class);
     }
 

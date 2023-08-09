@@ -10,7 +10,6 @@ import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.AttrQueryDTO;
 import com.xxw.shop.entity.Attr;
 import com.xxw.shop.entity.table.AttrTableDef;
-import com.xxw.shop.entity.table.AttrValueTableDef;
 import com.xxw.shop.mapper.AttrMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.entity.table.AttrValueTableDef.ATTR_VALUE;
 
 /**
  * 服务层实现。
@@ -58,9 +59,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     public Page<AttrVO> page(AttrQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.select(AttrTableDef.ATTR.ALL_COLUMNS);
-        queryWrapper.select(AttrValueTableDef.ATTR_VALUE.ATTR_VALUE_ID, AttrValueTableDef.ATTR_VALUE.VALUE);
+        queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
         queryWrapper.from(AttrTableDef.ATTR);
-        queryWrapper.leftJoin(AttrValueTableDef.ATTR_VALUE).on(AttrValueTableDef.ATTR_VALUE.ATTR_ID.eq(AttrValueTableDef.ATTR_VALUE.ATTR_ID));
+        queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
         queryWrapper.where(AttrTableDef.ATTR.NAME.eq(dto.getName()));
         queryWrapper.and(AttrTableDef.ATTR.SEARCH_TYPE.eq(dto.getSearchType()));
         queryWrapper.and(AttrTableDef.ATTR.ATTR_TYPE.eq(dto.getAttrType()));
@@ -72,9 +73,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     private AttrVO getById(Long attrId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.select(AttrTableDef.ATTR.ALL_COLUMNS);
-        queryWrapper.select(AttrValueTableDef.ATTR_VALUE.ATTR_VALUE_ID, AttrValueTableDef.ATTR_VALUE.VALUE);
+        queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
         queryWrapper.from(AttrTableDef.ATTR);
-        queryWrapper.leftJoin(AttrValueTableDef.ATTR_VALUE).on(AttrValueTableDef.ATTR_VALUE.ATTR_ID.eq(AttrValueTableDef.ATTR_VALUE.ATTR_ID));
+        queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
         queryWrapper.where(AttrTableDef.ATTR.ATTR_ID.eq(attrId));
         AttrVO attrVO = this.getOneAs(queryWrapper, AttrVO.class);
         if (Objects.isNull(attrVO)) {

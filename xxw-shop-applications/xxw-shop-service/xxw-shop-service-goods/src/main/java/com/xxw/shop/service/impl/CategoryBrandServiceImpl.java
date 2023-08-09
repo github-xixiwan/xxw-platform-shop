@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.entity.CategoryBrand;
-import com.xxw.shop.entity.table.CategoryBrandTableDef;
 import com.xxw.shop.mapper.CategoryBrandMapper;
 import com.xxw.shop.service.CategoryBrandService;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.entity.table.CategoryBrandTableDef.CATEGORY_BRAND;
 
 /**
  * 服务层实现。
@@ -25,7 +26,7 @@ public class CategoryBrandServiceImpl extends ServiceImpl<CategoryBrandMapper, C
     @Override
     public void deleteByBrandId(Long brandId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(CategoryBrandTableDef.CATEGORY_BRAND.BRAND_ID.eq(brandId));
+        queryWrapper.where(CATEGORY_BRAND.BRAND_ID.eq(brandId));
         this.remove(queryWrapper);
     }
 
@@ -61,8 +62,8 @@ public class CategoryBrandServiceImpl extends ServiceImpl<CategoryBrandMapper, C
         categoryIdDb.removeAll(categoryIds);
         if (CollUtil.isNotEmpty(categoryIdDb)) {
             QueryWrapper queryWrapper = QueryWrapper.create();
-            queryWrapper.where(CategoryBrandTableDef.CATEGORY_BRAND.BRAND_ID.eq(brandId));
-            queryWrapper.and(CategoryBrandTableDef.CATEGORY_BRAND.CATEGORY_ID.in(categoryIdDb));
+            queryWrapper.where(CATEGORY_BRAND.BRAND_ID.eq(brandId));
+            queryWrapper.and(CATEGORY_BRAND.CATEGORY_ID.in(categoryIdDb));
             this.remove(queryWrapper);
         }
     }

@@ -41,7 +41,6 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ServerResponseEntity<Void> lock(List<SkuStockLockDTO> skuStockLocksParam) {
-
         List<SkuStockLock> skuStockLocks = new ArrayList<>();
         for (SkuStockLockDTO skuStockLockDTO : skuStockLocksParam) {
             SkuStockLock skuStockLock = new SkuStockLock();

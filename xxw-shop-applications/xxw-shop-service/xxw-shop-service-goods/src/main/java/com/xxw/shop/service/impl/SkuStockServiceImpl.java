@@ -5,7 +5,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.dto.SkuDTO;
 import com.xxw.shop.entity.SkuStock;
-import com.xxw.shop.entity.table.SkuStockTableDef;
 import com.xxw.shop.mapper.SkuStockMapper;
 import com.xxw.shop.service.SkuStockService;
 import com.xxw.shop.vo.SkuStockVO;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.xxw.shop.entity.table.SkuStockTableDef.SKU_STOCK;
 
 /**
  * 服务层实现。
@@ -30,7 +31,7 @@ public class SkuStockServiceImpl extends ServiceImpl<SkuStockMapper, SkuStock> i
     public List<SkuStockVO> listBySkuList(List<SkuVO> skuVOList) {
         List<Long> skuIdList = skuVOList.stream().map(SkuVO::getSkuId).collect(Collectors.toList());
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SkuStockTableDef.SKU_STOCK.SKU_ID.in(skuIdList));
+        queryWrapper.where(SKU_STOCK.SKU_ID.in(skuIdList));
         return this.listAs(queryWrapper, SkuStockVO.class);
     }
 

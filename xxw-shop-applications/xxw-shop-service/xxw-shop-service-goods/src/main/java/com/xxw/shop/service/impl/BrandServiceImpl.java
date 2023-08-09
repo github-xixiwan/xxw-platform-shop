@@ -9,7 +9,6 @@ import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.BrandDTO;
 import com.xxw.shop.dto.BrandQueryDTO;
 import com.xxw.shop.entity.Brand;
-import com.xxw.shop.entity.table.BrandTableDef;
 import com.xxw.shop.mapper.BrandMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
@@ -28,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.xxw.shop.entity.table.BrandTableDef.BRAND;
 
 /**
  * 服务层实现。
@@ -50,9 +51,9 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     @Override
     public Page<BrandVO> page(BrandQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(BrandTableDef.BRAND.NAME.eq(dto.getName()));
-        queryWrapper.and(BrandTableDef.BRAND.STATUS.eq(dto.getStatus()));
-        queryWrapper.orderBy(BrandTableDef.BRAND.BRAND_ID.desc());
+        queryWrapper.where(BRAND.NAME.eq(dto.getName()));
+        queryWrapper.and(BRAND.STATUS.eq(dto.getStatus()));
+        queryWrapper.orderBy(BRAND.BRAND_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, BrandVO.class);
     }
 

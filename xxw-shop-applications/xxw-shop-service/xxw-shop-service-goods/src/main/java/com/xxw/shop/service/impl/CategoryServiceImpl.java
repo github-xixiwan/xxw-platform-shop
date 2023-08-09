@@ -8,7 +8,6 @@ import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.CategoryLevel;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.entity.Category;
-import com.xxw.shop.entity.table.CategoryTableDef;
 import com.xxw.shop.mapper.CategoryMapper;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.exception.BusinessException;
@@ -23,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.xxw.shop.entity.table.CategoryTableDef.CATEGORY;
+
 /**
  * 服务层实现。
  *
@@ -34,7 +35,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     private CategoryVO getById(Long categoryId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(CategoryTableDef.CATEGORY.CATEGORY_ID.eq(categoryId));
+        queryWrapper.where(CATEGORY.CATEGORY_ID.eq(categoryId));
         return this.getOneAs(queryWrapper, CategoryVO.class);
     }
 
@@ -90,8 +91,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public List<CategoryVO> list(Long shopId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(CategoryTableDef.CATEGORY.SHOP_ID.eq(shopId));
-        queryWrapper.and(CategoryTableDef.CATEGORY.STATUS.ne(-1));
+        queryWrapper.where(CATEGORY.SHOP_ID.eq(shopId));
+        queryWrapper.and(CATEGORY.STATUS.ne(-1));
         return this.listAs(queryWrapper, CategoryVO.class);
     }
 
@@ -101,8 +102,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    @Caching(evict = {@CacheEvict(cacheNames = GoodsCacheNames.CATEGORY_LIST_BY_PARENT_ID_AND_SHOP_ID, key = "#shopId" +
-            " + ':' + " + "#parentId"), @CacheEvict(cacheNames = GoodsCacheNames.CATEGORY_LIST_ALL_OF_SHOP, key =
+    @Caching(evict = {@CacheEvict(cacheNames = GoodsCacheNames.CATEGORY_LIST_BY_PARENT_ID_AND_SHOP_ID, key = "#shopId"
+            + " + ':' + " + "#parentId"), @CacheEvict(cacheNames = GoodsCacheNames.CATEGORY_LIST_ALL_OF_SHOP, key =
             "#shopId"), @CacheEvict(cacheNames = GoodsCacheNames.CATEGORY_LIST, key = "#shopId + ':' + #parentId")})
     public void removeCategoryCache(Long shopId, Long parentId) {
     }
@@ -160,9 +161,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     private List<CategoryVO> listByCondition(Long shopId, Long parentId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(CategoryTableDef.CATEGORY.SHOP_ID.eq(shopId));
-        queryWrapper.and(CategoryTableDef.CATEGORY.PARENT_ID.eq(parentId));
-        queryWrapper.and(CategoryTableDef.CATEGORY.STATUS.eq(1));
+        queryWrapper.where(CATEGORY.SHOP_ID.eq(shopId));
+        queryWrapper.and(CATEGORY.PARENT_ID.eq(parentId));
+        queryWrapper.and(CATEGORY.STATUS.eq(1));
         return this.listAs(queryWrapper, CategoryVO.class);
     }
 
@@ -235,10 +236,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      */
     private void existCategoryName(Category category) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(CategoryTableDef.CATEGORY.NAME.eq(category.getName()));
-        queryWrapper.and(CategoryTableDef.CATEGORY.PARENT_ID.eq(category.getParentId()));
-        queryWrapper.and(CategoryTableDef.CATEGORY.CATEGORY_ID.eq(category.getCategoryId()));
-        queryWrapper.and(CategoryTableDef.CATEGORY.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
+        queryWrapper.where(CATEGORY.NAME.eq(category.getName()));
+        queryWrapper.and(CATEGORY.PARENT_ID.eq(category.getParentId()));
+        queryWrapper.and(CATEGORY.CATEGORY_ID.eq(category.getCategoryId()));
+        queryWrapper.and(CATEGORY.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
         long countByName = this.count(queryWrapper);
         if (countByName > 0) {
             throw new BusinessException(GoodsBusinessError.GOODS_00003);

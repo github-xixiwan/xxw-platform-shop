@@ -3,7 +3,6 @@ package com.xxw.shop.module.minio.service.impl;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.module.minio.entity.AttachFileGroup;
-import com.xxw.shop.module.minio.entity.table.AttachFileGroupTableDef;
 import com.xxw.shop.module.minio.mapper.AttachFileGroupMapper;
 import com.xxw.shop.module.minio.mapper.AttachFileMapper;
 import com.xxw.shop.module.minio.service.AttachFileGroupService;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.xxw.shop.module.minio.entity.table.AttachFileGroupTableDef.ATTACH_FILE_GROUP;
 
 /**
  * 服务层实现。
@@ -30,15 +31,15 @@ public class AttachFileGroupServiceImpl extends ServiceImpl<AttachFileGroupMappe
     @Override
     public List<AttachFileGroupVO> listByShopId() {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(AttachFileGroupTableDef.ATTACH_FILE_GROUP.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
-        queryWrapper.orderBy(AttachFileGroupTableDef.ATTACH_FILE_GROUP.ATTACH_FILE_GROUP_ID.desc());
+        queryWrapper.where(ATTACH_FILE_GROUP.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
+        queryWrapper.orderBy(ATTACH_FILE_GROUP.ATTACH_FILE_GROUP_ID.desc());
         return this.listAs(queryWrapper, AttachFileGroupVO.class);
     }
 
     @Override
     public AttachFileGroupVO getByAttachFileGroupId(Long attachFileGroupId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(AttachFileGroupTableDef.ATTACH_FILE_GROUP.ATTACH_FILE_GROUP_ID.eq(attachFileGroupId));
+        queryWrapper.where(ATTACH_FILE_GROUP.ATTACH_FILE_GROUP_ID.eq(attachFileGroupId));
         return this.getOneAs(queryWrapper, AttachFileGroupVO.class);
     }
 

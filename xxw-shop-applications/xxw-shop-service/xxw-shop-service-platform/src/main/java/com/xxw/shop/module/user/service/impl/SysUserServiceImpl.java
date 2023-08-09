@@ -15,7 +15,6 @@ import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.user.dto.ChangeAccountDTO;
 import com.xxw.shop.module.user.dto.SysUserQueryDTO;
 import com.xxw.shop.module.user.entity.SysUser;
-import com.xxw.shop.module.user.entity.table.SysUserTableDef;
 import com.xxw.shop.module.user.mapper.SysUserMapper;
 import com.xxw.shop.module.user.service.SysUserService;
 import com.xxw.shop.module.user.vo.SysUserSimpleVO;
@@ -29,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.xxw.shop.module.user.entity.table.SysUserTableDef.SYS_USER;
 
 /**
  * 服务层实现。
@@ -54,14 +55,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public Page<SysUserVO> pageByShopId(SysUserQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.orderBy(SysUserTableDef.SYS_USER.SYS_USER_ID.desc());
+        queryWrapper.orderBy(SYS_USER.SYS_USER_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, SysUserVO.class);
     }
 
     @Override
     public SysUserVO getByUserId(Long userId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SysUserTableDef.SYS_USER.SYS_USER_ID.eq(userId));
+        queryWrapper.where(SYS_USER.SYS_USER_ID.eq(userId));
         SysUserVO sysUser = this.getOneAs(queryWrapper, SysUserVO.class);
         ServerResponseEntity<List<Long>> roleIds = userRoleFeignClient.getRoleIds(sysUser.getSysUserId());
         sysUser.setRoleIds(roleIds.getData());

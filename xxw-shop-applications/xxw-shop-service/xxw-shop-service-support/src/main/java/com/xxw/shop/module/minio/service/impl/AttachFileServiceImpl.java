@@ -6,7 +6,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.module.minio.dto.AttachFileQueryDTO;
 import com.xxw.shop.module.minio.entity.AttachFile;
-import com.xxw.shop.module.minio.entity.table.AttachFileTableDef;
 import com.xxw.shop.module.minio.mapper.AttachFileMapper;
 import com.xxw.shop.module.minio.service.AttachFileService;
 import com.xxw.shop.module.minio.vo.AttachFileVO;
@@ -18,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+
+import static com.xxw.shop.module.minio.entity.table.AttachFileTableDef.ATTACH_FILE;
 
 /**
  * 服务层实现。
@@ -34,11 +35,10 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     @Override
     public Page<AttachFileVO> page(AttachFileQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(AttachFileTableDef.ATTACH_FILE.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
-        queryWrapper.and(AttachFileTableDef.ATTACH_FILE.ATTACH_FILE_GROUP_ID.eq(dto.getFileGroupId()));
-        queryWrapper.and(AttachFileTableDef.ATTACH_FILE.FILE_NAME.like(dto.getFileName()));
-        queryWrapper.orderBy(AttachFileTableDef.ATTACH_FILE.UPDATE_TIME.desc(),
-                AttachFileTableDef.ATTACH_FILE.FILE_ID.desc());
+        queryWrapper.where(ATTACH_FILE.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
+        queryWrapper.and(ATTACH_FILE.ATTACH_FILE_GROUP_ID.eq(dto.getFileGroupId()));
+        queryWrapper.and(ATTACH_FILE.FILE_NAME.like(dto.getFileName()));
+        queryWrapper.orderBy(ATTACH_FILE.UPDATE_TIME.desc(), ATTACH_FILE.FILE_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, AttachFileVO.class);
     }
 
