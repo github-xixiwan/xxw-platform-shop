@@ -67,4 +67,75 @@
             </if>
         </where>
     </update>
+
+    <select id="loadEsGoodsVO" resultType="com.xxw.shop.vo.EsGoodsVO">
+        SELECT s.spu_id,s.name AS spu_name,s.shop_id,s.selling_point,s.price_fee,s.market_price_fee,s.img_urls,s.status AS spu_status,
+               s.seq, IF(se.stock>0,1,0) AS has_stock,se.sale_num,s.create_time,s.category_id,s.main_img_url,s.category_id,
+               s.shop_category_id, se.actual_stock AS stock, s.brand_id,b.name AS brand_name,b.img_url AS brand_img, s.shop_category_id AS  shop_secondary_category_id,
+               s.shop_category_id AS shop_secondary_category_id
+        FROM spu s
+                 LEFT JOIN spu_extension se ON s.spu_id = se.spu_id
+                 LEFT JOIN brand b ON s.brand_id = b.brand_id
+        WHERE s.spu_id = #{spuId}
+    </select>
+
+    <select id="getSpuIdsByCondition" resultType="java.lang.Long">
+        SELECT spu_id FROM spu
+        <where>
+            <if test="shopCategoryIds != null">
+                shop_category_id IN
+                <foreach collection="shopCategoryIds" item="shopCategoryId" open="(" close=")" separator=",">
+                    #{shopCategoryId}
+                </foreach>
+            </if>
+            <if test="categoryIds != null">
+                AND category_id IN
+                <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+                    #{categoryId}
+                </foreach>
+            </if>
+            <if test="brandId != null">
+                AND brand_id = #{brandId}
+            </if>
+            <if test="shopId != null">
+                AND shop_id = #{shopId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listBySpuIds" resultMap="spuDetailMap">
+        select spu_id,name,main_img_url,status,price_fee from spu where spu_id in
+        <foreach collection="spuIds" item="spuId" open="(" close=")" separator=",">
+            #{spuId}
+        </foreach>
+        <if test="spuName != null and spuName !=''" >
+            AND spuName LIKE concat('%',#{spuName},'%')
+        </if>
+        <if test="isFailure == 2 " >
+            AND status <![CDATA[ <> ]]> 1
+        </if>
+    </select>
+
+    <select id="listIdsByCidListAndTypeAndShopId" resultType="java.lang.Long">
+        select spu_id from spu
+        where status <![CDATA[<>]]> -1
+        <if test="type == 1">
+            and category_id in
+        </if>
+        <if test="type == 2">
+            and shop_id = #{shopId}
+            and shop_category_id in
+        </if>
+        <foreach collection="cidList" item="categoryId" open="(" close=")" separator=",">
+            #{categoryId}
+        </foreach>
+    </select>
+
+    <update id="batchChangeSpuStatusBySpuIdsAndStatus">
+        update spu set status = #{status}
+        where status <![CDATA[<>]]>  -1 and  spu_id in
+        <foreach collection="spuIdList" item="spuId" open="(" close=")" separator=",">
+            #{spuId}
+        </foreach>
+    </update>
 </mapper>

@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class ShopCartItemVO implements Serializable {
@@ -13,7 +13,7 @@ public class ShopCartItemVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "加入购物车时间", required = true)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @Schema(description = "购物车ID", required = true)
     private Long cartItemId;

@@ -15,6 +15,7 @@ import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.service.BrandService;
+import com.xxw.shop.service.CategoryBrandService;
 import com.xxw.shop.service.SpuService;
 import com.xxw.shop.vo.BrandVO;
 import jakarta.annotation.Resource;
@@ -47,6 +48,9 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
 
     @Resource
     private SpuService spuService;
+
+    @Resource
+    private CategoryBrandService categoryBrandService;
 
     @Override
     public Page<BrandVO> page(BrandQueryDTO dto) {

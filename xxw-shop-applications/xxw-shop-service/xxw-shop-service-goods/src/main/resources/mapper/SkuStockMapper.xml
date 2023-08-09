@@ -3,12 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxw.shop.mapper.SkuStockMapper">
+
+    <update id="reduceStockByOrder">
+        update sku_stock
+        set `stock`      = `stock` - #{count},
+            `lock_stock` = `lock_stock` + #{count}
+        where sku_id = #{skuId}
+          and #{count} &lt;= `stock`
+    </update>
+
     <update id="updateStock">
         <foreach collection="skuStocks" item="skuStock" separator=";">
             update sku_stock
             set stock = #{skuStock.stock} + stock,
             actual_stock = #{skuStock.stock} + actual_stock
             where sku_id = #{skuStock.skuId}
+        </foreach>
+    </update>
+
+    <update id="reduceActualStockByOrder">
+        <foreach collection="skuWithStocks" item="skuWithStock" separator=";">
+            update sku_stock
+            set `actual_stock` = `actual_stock` - #{skuWithStock.count},
+            `lock_stock` = `lock_stock` - #{skuWithStock.count}
+            where sku_id = #{skuWithStock.skuId}
+        </foreach>
+    </update>
+
+    <update id="reduceActualStockByCancelOrder">
+        <foreach collection="skuWithStocks" item="skuWithStock" separator=";">
+            update sku_stock
+            set `actual_stock` = `actual_stock` - #{skuWithStock.count},
+            `lock_stock` = `lock_stock` - #{skuWithStock.count},
+            stock = stock - #{skuWithStock.count}
+            where sku_id = #{skuWithStock.skuId}
         </foreach>
     </update>
 </mapper>

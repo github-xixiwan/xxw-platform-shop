@@ -3,11 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxw.shop.mapper.SkuStockLockMapper">
-    <update id="reduceStockByOrder">
-        update sku_stock
-        set `stock`      = `stock` - #{count},
-            `lock_stock` = `lock_stock` + #{count}
-        where sku_id = #{skuId}
-          and #{count} &lt;= `stock`
+
+    <select id="listByOrderIds" resultType="com.xxw.shop.vo.SkuStockLockVO">
+        select id, sku_id, spu_id, count
+        from sku_stock_lock where order_id in
+        <foreach collection="orderIds" item="orderId" separator="," open="(" close=")">
+            #{orderId}
+        </foreach>
+        and `status` = 0
+    </select>
+
+    <select id="listUnLockByOrderIds" resultType="com.xxw.shop.vo.SkuStockLockVO">
+        select id, sku_id, spu_id, count
+        from sku_stock_lock where order_id in
+        <foreach collection="orderIds" item="orderId" separator="," open="(" close=")">
+            #{orderId}
+        </foreach>
+        and `status` = -1
+    </select>
+
+    <update id="markerStockUse">
+        update sku_stock_lock
+        set `status` = 1 where order_id in
+        <foreach collection="orderIds" item="orderId" open="(" close=")" separator=",">
+            #{orderId}
+        </foreach>
     </update>
 </mapper>

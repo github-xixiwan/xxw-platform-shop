@@ -28,30 +28,6 @@
         </where>
     </update>
 
-    <select id="getSpuIdsBySpuUpdateDTO" resultType="java.lang.Long">
-        SELECT spu_id FROM spu
-        <where>
-            <if test="shopCategoryIds != null">
-                shop_category_id IN
-                <foreach collection="shopCategoryIds" item="shopCategoryId" open="(" close=")" separator=",">
-                    #{shopCategoryId}
-                </foreach>
-            </if>
-            <if test="categoryIds != null">
-                AND category_id IN
-                <foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
-                    #{categoryId}
-                </foreach>
-            </if>
-            <if test="brandId != null">
-                AND brand_id = #{brandId}
-            </if>
-            <if test="shopId != null">
-                AND shop_id = #{shopId}
-            </if>
-        </where>
-    </select>
-
     <update id="batchUpdateSpuAttrValue">
         <foreach collection="spuAttrValues" item="spuAttrValue">
             update spu_attr_value

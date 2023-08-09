@@ -7,6 +7,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.AttrType;
 import com.xxw.shop.constant.GoodsBusinessError;
+import com.xxw.shop.dto.AttrDTO;
 import com.xxw.shop.dto.AttrQueryDTO;
 import com.xxw.shop.entity.Attr;
 import com.xxw.shop.entity.table.AttrTableDef;
@@ -15,11 +16,11 @@ import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.service.AttrCategoryService;
-import com.xxw.shop.service.AttrService;
+import com.xxw.shop.service.*;
 import com.xxw.shop.vo.AttrVO;
 import com.xxw.shop.vo.CategoryVO;
 import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,16 +45,19 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     private IGlobalRedisCache globalRedisCache;
 
     @Resource
+    private MapperFacade mapperFacade;
+
+    @Resource
     private AttrCategoryService attrCategoryService;
 
-//    @Resource
-//    private CategoryService categoryService;
+    @Resource
+    private CategoryService categoryService;
 
-//    @Resource
-//    private AttrValueService attrValueService;
+    @Resource
+    private AttrValueService attrValueService;
 
-//    @Resource
-//    private SpuAttrValueService spuAttrValueService;
+    @Resource
+    private SpuAttrValueService spuAttrValueService;
 
     @Override
     public Page<AttrVO> page(AttrQueryDTO dto) {
@@ -96,37 +100,32 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveAttr(Attr attr, List<Long> categoryIds) {
+    public void saveAttr(AttrDTO dto, List<Long> categoryIds) {
+        Attr attr = mapperFacade.map(dto, Attr.class);
         attr.setShopId(AuthUserContext.get().getTenantId());
         this.save(attr);
         // 保存属性值
-        attrValueService.saveByAttrValuesAndAttrId(attr.getAttrValues(), attr.getAttrId());
+        attrValueService.saveAttrValue(dto.getAttrValues(), dto.getAttrId());
         // 基本属性关联分类
-        if (Objects.equals(AttrType.BASIC.value(), attr.getAttrType())) {
+        if (Objects.equals(AttrType.BASIC.value(), dto.getAttrType())) {
             // 保存属性分类关联信息
-            attrCategoryService.saveAttrCategory(attr.getAttrId(), categoryIds);
+            attrCategoryService.saveAttrCategory(dto.getAttrId(), categoryIds);
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateAttr(Attr attr, List<Long> categoryIds) {
-        AttrVO dbAttr = getById(attr.getAttrId());
-        // 属性名、描述相等，则设为null，不进行修改操作
-        if (Objects.equals(attr.getName(), dbAttr.getName())) {
-            attr.setName(null);
-        }
-        if (Objects.equals(attr.getDesc(), dbAttr.getDesc())) {
-            attr.setDesc(null);
-        }
+    public void updateAttr(AttrDTO dto, List<Long> categoryIds) {
+        Attr attr = mapperFacade.map(dto, Attr.class);
+        AttrVO dbAttr = getById(dto.getAttrId());
         // 保存属性值
-        attrValueService.update(attr, dbAttr);
+        attrValueService.updateAttrValue(dto, dbAttr);
         this.updateById(attr);
         if (Objects.equals(dbAttr.getAttrType(), AttrType.BASIC.value())) {
             // 更新属性分类关联信息
-            List<Long> ids = attrCategoryService.updateAttrCategory(attr.getAttrId(), categoryIds);
+            List<Long> ids = attrCategoryService.updateAttrCategory(dto.getAttrId(), categoryIds);
             // 清除取消关联的分类的数据
-            spuAttrValueService.deleteByAttIdAndCategoryIds(attr.getAttrId(), null, ids);
+            spuAttrValueService.deleteByAttIdAndCategoryIds(dto.getAttrId(), null, ids);
         }
     }
 

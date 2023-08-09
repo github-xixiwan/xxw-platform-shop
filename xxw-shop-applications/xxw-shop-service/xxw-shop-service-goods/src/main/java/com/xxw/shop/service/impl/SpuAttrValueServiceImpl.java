@@ -9,6 +9,7 @@ import com.xxw.shop.mapper.SpuAttrValueMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.service.SpuAttrValueService;
+import com.xxw.shop.service.SpuService;
 import com.xxw.shop.vo.SpuAttrValueVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
 
     @Resource
     private IGlobalRedisCache globalRedisCache;
+
+    @Resource
+    private SpuService spuService;
 
     @Override
     public void updateSpuAttrValue(Long spuId, List<SpuAttrValue> spuAttrValues, List<SpuAttrValueVO> spuAttrValuesDb) {
@@ -115,7 +119,7 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
             spuIds = mapper.getShopIdByAttrValueIds(attrValueIds);
             mapper.updateSpuUpdateTime(spuIds, null);
         } else if (CollUtil.isNotEmpty(categoryIds)) {
-            spuIds = mapper.getSpuIdsBySpuUpdateDTO(null, categoryIds, null, null);
+            spuIds = spuService.getSpuIdsByCondition(null, categoryIds, null, null);
             mapper.updateSpuUpdateTime(null, categoryIds);
         }
         if (CollUtil.isEmpty(spuIds)) {

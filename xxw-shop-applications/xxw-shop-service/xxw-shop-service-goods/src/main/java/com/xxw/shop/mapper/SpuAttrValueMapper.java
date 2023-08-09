@@ -32,19 +32,6 @@ public interface SpuAttrValueMapper extends BaseMapper<SpuAttrValue> {
     void updateSpuUpdateTime(@Param("spuIds") List<Long> spuIds, @Param("categoryIds") List<Long> categoryIds);
 
     /**
-     * 获取 spuId列表
-     *
-     * @param shopCategoryIds 店铺分类id列表
-     * @param categoryIds     平台分类Id列表
-     * @param brandId         品牌id
-     * @param shopId          店铺id
-     * @return spuId列表
-     */
-    List<Long> getSpuIdsBySpuUpdateDTO(@Param("shopCategoryIds") List<Long> shopCategoryIds,
-                                       @Param("categoryIds") List<Long> categoryIds, @Param("brandId") Long brandId,
-                                       @Param("shopId") Long shopId);
-
-    /**
      * 批量更新商品基本属性
      *
      * @param spuAttrValues

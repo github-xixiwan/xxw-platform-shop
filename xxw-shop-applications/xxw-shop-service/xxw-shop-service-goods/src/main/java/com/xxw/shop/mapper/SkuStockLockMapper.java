@@ -2,7 +2,10 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.SkuStockLock;
+import com.xxw.shop.vo.SkuStockLockVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 映射层。
@@ -13,11 +16,25 @@ import org.apache.ibatis.annotations.Param;
 public interface SkuStockLockMapper extends BaseMapper<SkuStockLock> {
 
     /**
-     * 通过订单减少库存
+     * 根据订单号获取锁定的库存
      *
-     * @param skuId 商品id
-     * @param count 数量
-     * @return
+     * @param orderIds 订单号
+     * @return 锁定的库存信息
      */
-    int reduceStockByOrder(@Param("skuId") Long skuId, @Param("count") Integer count);
+    List<SkuStockLockVO> listByOrderIds(@Param("orderIds") List<Long> orderIds);
+
+    /**
+     * 根据订单号获取已取消锁定的库存
+     *
+     * @param orderIds 订单号
+     * @return 锁定的库存信息
+     */
+    List<SkuStockLockVO> listUnLockByOrderIds(@Param("orderIds") List<Long> orderIds);
+
+    /**
+     * 正式锁定库存，标记为使用状态
+     *
+     * @param orderIds 锁定库存的订单
+     */
+    void markerStockUse(@Param("orderIds") List<Long> orderIds);
 }

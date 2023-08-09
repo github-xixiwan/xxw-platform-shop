@@ -12,6 +12,34 @@ spring:
     sentinel:
       transport:
         dashboard: 10.66.70.183:8080
+    stream:
+      default:
+        producer:
+          use-native-encoding: true
+        consumer:
+          use-native-encoding: true
+      rocketmq:
+        binder:
+          name-server: 10.66.70.183:9876
+          group: default-group
+        bindings:
+          normalMessage-in-0:
+            consumer:
+              push:
+                delayLevelWhenNextConsume: -1
+          filterMessage-in-0:
+            consumer:
+              subscription: 1
+      bindings:
+        stockUnlock-out-0:
+          destination: stock-unlock
+          content-type: application/json
+        stockUnlock-in-0:
+          destination: stock-unlock
+          content-type: application/json
+          group: stock-unlock-group
+      function:
+        definition: stockUnlock
   datasource: # 数据源的相关配置
     url: jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: xxw-shop
