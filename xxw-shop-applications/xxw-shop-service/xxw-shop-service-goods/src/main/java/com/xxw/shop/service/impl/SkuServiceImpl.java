@@ -14,6 +14,8 @@ import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.service.SkuService;
+import com.xxw.shop.service.SkuStockService;
+import com.xxw.shop.service.SpuSkuAttrValueService;
 import com.xxw.shop.vo.SkuAppVO;
 import com.xxw.shop.vo.SkuVO;
 import com.xxw.shop.vo.SpuSkuAttrValueVO;
@@ -47,8 +49,14 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     @Resource
     private MapperFacade mapperFacade;
 
+    @Resource
+    private SkuStockService skuStockService;
+
+    @Resource
+    private SpuSkuAttrValueService spuSkuAttrValueService;
+
     @Override
-    public void save(Long spuId, List<SkuDTO> skuList) {
+    public void saveSku(Long spuId, List<SkuDTO> skuList) {
         List<Sku> list = skuList.stream().map(l -> {
             Sku sku = mapperFacade.map(l, Sku.class);
             sku.setSpuId(spuId);
@@ -103,7 +111,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         }
         // 新增的sku--保存
         if (CollUtil.isNotEmpty(insertSkus)) {
-            save(spuId, insertSkus);
+            saveSku(spuId, insertSkus);
         }
         // 已有的sku--更新
         if (CollUtil.isNotEmpty(updateSkus)) {
@@ -116,11 +124,6 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         if (CollUtil.isNotEmpty(skuIdsDb)) {
             deleteSkuBatch(skuIdsDb);
         }
-    }
-
-    @Override
-    public void deleteById(Long skuId) {
-        this.removeById(skuId);
     }
 
     @Override
@@ -173,7 +176,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     public void updateAmountOrStock(SpuDTO spuDTO) {
         List<SkuDTO> skuList = spuDTO.getSkuList();
         List<Sku> skus = new ArrayList<>();
-        Boolean isUpdateStock = false;
+        boolean isUpdateStock = false;
         for (SkuDTO skuDTO : skuList) {
             if (Objects.nonNull(skuDTO.getChangeStock()) && skuDTO.getChangeStock() > 0) {
                 isUpdateStock = true;
@@ -202,10 +205,9 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         List<SkuVO> skuData = mapper.getSkuBySpuId(spuId);
         for (SkuVO sku : skuData) {
             SkuAppVO skuAppVO = mapperFacade.map(sku, SkuAppVO.class);
-            String properties = "";
+            StringBuilder properties = new StringBuilder();
             for (SpuSkuAttrValueVO spuSkuAttrValue : sku.getSpuSkuAttrValues()) {
-                properties =
-                        properties + spuSkuAttrValue.getAttrName() + attrUnionAttrValue + spuSkuAttrValue.getAttrValueName() + attrUnionAttr;
+                properties.append(spuSkuAttrValue.getAttrName()).append(attrUnionAttrValue).append(spuSkuAttrValue.getAttrValueName()).append(attrUnionAttr);
             }
             skuAppVO.setProperties(properties.substring(0, properties.length() - 1));
             skuAppList.add(skuAppVO);

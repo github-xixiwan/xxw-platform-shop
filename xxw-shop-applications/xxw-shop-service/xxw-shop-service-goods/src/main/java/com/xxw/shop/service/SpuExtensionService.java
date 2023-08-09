@@ -18,7 +18,7 @@ public interface SpuExtensionService extends IService<SpuExtension> {
 
     SpuExtensionVO getBySpuExtendId(Long spuExtendId);
 
-    void updateStock(Long spuId, Integer count);
+    void updateStock(Long spuId, Long count);
 
     void deleteBySpuId(Long spuId);
 

@@ -64,10 +64,10 @@ public class SpuDTO implements Serializable {
 
 	@NotNull(message = "总库存不能为空")
 	@Schema(description = "总库存" )
-	private Integer totalStock;
+	private Long totalStock;
 
 	@Schema(description = "更新时，变化的库存" )
-	private Integer changeStock;
+	private Long changeStock;
 
 	@Schema(description = "商品视频" )
 	private String video;

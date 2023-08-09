@@ -3,11 +3,13 @@ package com.xxw.shop.service.impl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.dto.SpuExtensionQueryDTO;
 import com.xxw.shop.entity.SpuExtension;
 import com.xxw.shop.mapper.SpuExtensionMapper;
 import com.xxw.shop.service.SpuExtensionService;
 import com.xxw.shop.vo.SpuExtensionVO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import static com.xxw.shop.entity.table.SpuExtensionTableDef.SPU_EXTENSION;
@@ -35,7 +37,7 @@ public class SpuExtensionServiceImpl extends ServiceImpl<SpuExtensionMapper, Spu
     }
 
     @Override
-    public void updateStock(Long spuId, Integer count) {
+    public void updateStock(Long spuId, Long count) {
         mapper.updateStock(spuId, count);
     }
 
@@ -47,6 +49,7 @@ public class SpuExtensionServiceImpl extends ServiceImpl<SpuExtensionMapper, Spu
     }
 
     @Override
+    @Cacheable(cacheNames = GoodsCacheNames.SPU_EXTENSION_KEY, key = "#spuId",sync = true)
     public SpuExtensionVO getBySpuId(Long spuId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(SPU_EXTENSION.SPU_ID.eq(spuId));

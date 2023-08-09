@@ -18,5 +18,5 @@ public interface SpuExtensionMapper extends BaseMapper<SpuExtension> {
      * @param spuId 商品id
      * @param count 商品数量
      */
-    void updateStock(@Param("spuId") Long spuId, @Param("count") Integer count);
+    void updateStock(@Param("spuId") Long spuId, @Param("count") Long count);
 }

@@ -12,6 +12,7 @@ public enum GoodsBusinessError implements ErrorEnumInterface {
     GOODS_00003("GOODS_00003", "分类名已存在，请重新输入"),
     GOODS_00004("GOODS_00004", "分类不能成为本身的上级分类"),
     GOODS_00005("GOODS_00005", "该分类在使用中，不能进行删除操作"),
+    GOODS_00006("GOODS_00006", "商品不存在或者已被删除"),
     ;
 
     private String code;
