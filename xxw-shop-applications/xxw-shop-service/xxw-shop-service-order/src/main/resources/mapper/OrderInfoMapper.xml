@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.OrderInfoMapper">
+    <resultMap id="orderMap" type="com.xxw.shop.entity.OrderInfo">
+        <id column="order_id" property="orderId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="shop_id" property="shopId"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_addr_id" property="orderAddrId"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="total" property="total"/>
+        <result column="status" property="status"/>
+        <result column="delivery_type" property="deliveryType"/>
+        <result column="close_type" property="closeType"/>
+        <result column="all_count" property="allCount"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="finally_time" property="finallyTime"/>
+        <result column="cancel_time" property="cancelTime"/>
+        <result column="is_payed" property="isPayed"/>
+        <result column="delete_status" property="deleteStatus"/>
+    </resultMap>
+
+    <resultMap type="com.xxw.shop.vo.OrderInfoAndOrderItemVO" id="orderAndOrderItem" extends="orderMap">
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.entity.OrderItem">
+            <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
+            <result column="shop_id" property="shopId"/>
+            <result column="order_id" property="orderId"/>
+            <result column="spu_id" property="spuId"/>
+            <result column="sku_id" property="skuId"/>
+            <result column="user_id" property="userId"/>
+            <result column="count" property="count"/>
+            <result column="spu_name" property="spuName"/>
+            <result column="sku_name" property="skuName"/>
+            <result column="pic" property="pic"/>
+            <result column="delivery_type" property="deliveryType"/>
+            <result column="shop_cart_time" property="shopCartTime"/>
+            <result column="price" property="price"/>
+            <result column="spu_total_amount" property="spuTotalAmount"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.xxw.shop.vo.EsOrderVO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="consignee" jdbcType="VARCHAR" property="consignee"/>
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.vo.EsOrderItemVO">
+            <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
+            <result column="shop_id" property="shopId"/>
+            <result column="order_id" property="orderId"/>
+            <result column="spu_id" property="spuId"/>
+            <result column="sku_id" property="skuId"/>
+            <result column="user_id" property="userId"/>
+            <result column="count" property="count"/>
+            <result column="spu_name" property="spuName"/>
+            <result column="sku_name" property="skuName"/>
+            <result column="pic" property="pic"/>
+            <result column="delivery_type" property="deliveryType"/>
+            <result column="shop_cart_time" property="shopCartTime"/>
+            <result column="price" property="price"/>
+            <result column="spu_total_amount" property="spuTotalAmount"/>
+        </collection>
+    </resultMap>
+
+    <select id="getOrderAndOrderItemData" resultMap="orderAndOrderItem">
+        SELECT o.user_id,
+        o.*,
+        oi.`order_item_id` oi_order_item_id ,
+        oi.`shop_id` oi_shop_id,
+        oi.`order_id` oi_order_id,
+        oi.`spu_id` oi_spu_id,
+        oi.`sku_id` oi_sku_id,
+        oi.`user_id` oi_user_id,
+        oi.`count` oi_count,
+        oi.`spu_name` oi_spu_name,
+        oi.`sku_name` oi_sku_name,
+        oi.`pic` oi_pic,
+        oi.`delivery_type` oi_delivery_type,
+        oi.`shop_cart_time` oi_shop_cart_time,
+        oi.`price` oi_price,
+        oi.`spu_total_amount` oi_spu_total_amount
+        from `order` o
+        join order_item oi on o.order_id = oi.order_id
+        where o.order_id = #{orderId}
+        <if test="shopId != null">
+            and o.shop_id = #{shopId}
+        </if>
+    </select>
+
+    <select id="countNumberOfStatus" resultType="com.xxw.shop.vo.OrderCountVO">
+        SELECT COUNT(o.order_id)                                                  as all_count,
+               COUNT(CASE WHEN o.status = 1 THEN o.order_id ELSE NULL END)        AS unPay,
+               COUNT(CASE WHEN o.status = 2 THEN o.order_id ELSE NULL END)        AS payed,
+               COUNT(CASE WHEN o.status = 3 THEN o.order_id ELSE NULL END)        AS consignment,
+               COUNT(CASE WHEN o.status = 5 THEN o.order_id ELSE NULL END)        AS success
+        FROM `order` o WHERE o.user_id = #{userId} AND o.delete_status = 0
+    </select>
+
+    <select id="getOrdersStatus" resultType="com.xxw.shop.vo.OrderStatusVO">
+        select `status`, `order_id` from `order` where order_id in
+        <foreach collection="orderIds" open="(" item="orderId" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </select>
+
+    <update id="cancelOrders">
+        update `order` set `status`=6,cancel_time = NOW(),update_time=NOW() where is_payed = 0 and order_id in
+        <foreach collection="orderIds" item="orderId" open="(" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </update>
+
+    <update id="receiptOrder">
+        update `order`
+        set `status` = 5,
+            finally_time = NOW(),
+            update_time = NOW()
+        where order_id = #{orderId} and `status` = 3
+    </update>
+
+    <update id="deleteOrder">
+        UPDATE `order` SET `delete_status` = 2 where order_id = #{orderId}
+    </update>
+
+    <select id="getSubmitOrderPayAmountInfo" resultType="com.xxw.shop.vo.SubmitOrderPayAmountInfoVO">
+        select sum(total) as totalFee, max(create_time) as createTime from `order` where order_id in
+        <foreach collection="orderIdList" item="orderId" separator="," close=")" open="(">
+            #{orderId}
+        </foreach>
+    </select>
+
+    <select id="getEsOrder" resultMap="esOrderAndOrderItemAndUserAddrMap">
+        SELECT o.user_id,
+               o.*,
+               oi.`order_item_id`              oi_order_item_id,
+               oi.`shop_id`                    oi_shop_id,
+               oi.`order_id`                   oi_order_id,
+               oi.`spu_id`                     oi_spu_id,
+               oi.`sku_id`                     oi_sku_id,
+               oi.`user_id`                    oi_user_id,
+               oi.`count`                      oi_count,
+               oi.`spu_name`                   oi_spu_name,
+               oi.`sku_name`                   oi_sku_name,
+               oi.`pic`                        oi_pic,
+               oi.`delivery_type`              oi_delivery_type,
+               oi.`shop_cart_time`             oi_shop_cart_time,
+               oi.`price`                      oi_price,
+               oi.`spu_total_amount`           oi_spu_total_amount,
+               oa.consignee,
+               oa.mobile
+        FROM `order` AS o
+                 JOIN order_item oi ON o.order_id = oi.order_id
+                 left JOIN order_addr oa on o.order_addr_id = oa.order_addr_id
+        where o.order_id = #{orderId}
+    </select>
+
+    <select id="getOrdersActualAmount" resultType="com.xxw.shop.vo.OrderAmountVO">
+        select SUM(total) as payAmount from `order` where order_id in
+        <foreach collection="orderIds" open="(" item="orderId" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </select>
+
+    <update id="updateByToPaySuccess">
+        update `order` set `status` = 2,is_payed =1,update_time=NOW(),pay_time=NOW()
+        where order_id in
+        <foreach collection="orderIds" item="orderId" separator="," open="(" close=")">
+            #{orderId}
+        </foreach>
+    </update>
+
+    <select id="getOrdersSimpleAmountInfo" resultType="com.xxw.shop.vo.OrderSimpleAmountInfoVO">
+        select `shop_id`, `order_id`, actual_total, platform_amount,`status`,close_type
+        from `order`
+        where order_id in
+        <foreach collection="orderIds" open="(" item="orderId" close=")" separator=",">
+            #{orderId}
+        </foreach>
+    </select>
+</mapper>

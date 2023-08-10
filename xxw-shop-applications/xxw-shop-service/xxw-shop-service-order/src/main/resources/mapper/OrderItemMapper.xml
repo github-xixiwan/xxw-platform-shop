@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.OrderItemMapper">
+    <select id="getSpuNameListByOrderIds" resultType="java.lang.String">
+        select spu_name from order_item where order_id in
+        <foreach collection="orderIdList" item="orderId" separator="," close=")" open="(">
+            #{orderId}
+        </foreach>
+    </select>
+</mapper>

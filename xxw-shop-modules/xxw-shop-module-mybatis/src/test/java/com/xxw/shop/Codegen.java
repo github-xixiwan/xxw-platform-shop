@@ -37,9 +37,7 @@ public class Codegen {
 //        globalConfig.setGenerateSchema("schema");
 //        globalConfig.setTablePrefix("tb_");
 //        globalConfig.setGenerateTable("menu","menu_permission","role","role_menu","user_role");
-        globalConfig.setGenerateTable("attr", "attr_category", "attr_value", "brand", "category", "category_brand",
-                "shop_cart_item", "sku", "sku_stock", "sku_stock_lock", "spu", "spu_attr_value", "spu_detail",
-                "spu_extension", "spu_sku_attr_value", "spu_tag", "spu_tag_reference");
+        globalConfig.setGenerateTable("order_info", "order_addr", "order_item");
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
         globalConfig.setEntityWithLombok(true);

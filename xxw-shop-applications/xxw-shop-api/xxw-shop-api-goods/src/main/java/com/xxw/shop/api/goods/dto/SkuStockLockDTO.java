@@ -3,11 +3,13 @@ package com.xxw.shop.api.goods.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@AllArgsConstructor
 public class SkuStockLockDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

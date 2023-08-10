@@ -18,6 +18,7 @@
         <module>xxw-shop-api-auth</module>
         <module>xxw-shop-api-platform</module>
         <module>xxw-shop-api-goods</module>
+        <module>xxw-shop-api-order</module>
     </modules>
 
     <dependencies>
