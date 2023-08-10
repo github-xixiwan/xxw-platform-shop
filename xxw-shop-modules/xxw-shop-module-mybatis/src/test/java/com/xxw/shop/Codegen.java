@@ -37,7 +37,7 @@ public class Codegen {
 //        globalConfig.setGenerateSchema("schema");
 //        globalConfig.setTablePrefix("tb_");
 //        globalConfig.setGenerateTable("menu","menu_permission","role","role_menu","user_role");
-        globalConfig.setGenerateTable("order_info", "order_addr", "order_item");
+        globalConfig.setGenerateTable("pay_info");
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
         globalConfig.setEntityWithLombok(true);
@@ -47,7 +47,7 @@ public class Codegen {
         globalConfig.setMapperGenerateEnable(true);
         globalConfig.setServiceGenerateEnable(true);
         globalConfig.setServiceImplGenerateEnable(true);
-        globalConfig.setControllerGenerateEnable(true);
+//        globalConfig.setControllerGenerateEnable(true);
         globalConfig.setTableDefGenerateEnable(true);
         globalConfig.setMapperXmlGenerateEnable(true);
         globalConfig.setPackageInfoGenerateEnable(true);

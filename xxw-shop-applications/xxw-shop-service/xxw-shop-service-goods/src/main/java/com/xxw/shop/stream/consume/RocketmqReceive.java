@@ -22,4 +22,11 @@ public class RocketmqReceive {
             skuStockLockService.stockUnlock(message);
         };
     }
+
+    @Bean
+    public Consumer<List<Long>> orderNotifyStock() {
+        return message -> {
+            skuStockLockService.markerStockUse(message);
+        };
+    }
 }

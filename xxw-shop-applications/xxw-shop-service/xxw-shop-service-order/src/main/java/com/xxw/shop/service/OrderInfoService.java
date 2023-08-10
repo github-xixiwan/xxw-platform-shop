@@ -47,9 +47,9 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     EsOrderVO getEsOrder(Long orderId);
 
-    List<OrderInfoAndOrderItemVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
+    List<OrderInfoVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
 
-    OrderInfoAndOrderItemVO getOrderAndOrderItemData(Long orderId, Long shopId);
+    OrderInfoVO getOrderAndOrderItemData(Long orderId, Long shopId);
 
     OrderCountVO countNumberOfStatus(Long userId);
 }

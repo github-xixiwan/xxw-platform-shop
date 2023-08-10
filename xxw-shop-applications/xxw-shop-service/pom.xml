@@ -20,6 +20,7 @@
         <module>xxw-shop-service-platform</module>
         <module>xxw-shop-service-goods</module>
         <module>xxw-shop-service-order</module>
+        <module>xxw-shop-service-payment</module>
     </modules>
 
     <dependencies>

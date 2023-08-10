@@ -27,4 +27,9 @@ public class RocketmqSend {
         Message<List<Long>> message = MessageBuilder.withPayload(orderIds).build();
         return streamBridge.send("stock-unlock", orderIds);
     }
+
+    public void orderNotifyStock(List<Long> orderIds) {
+        Message<List<Long>> message = MessageBuilder.withPayload(orderIds).build();
+        streamBridge.send("order-notify-stock", orderIds);
+    }
 }

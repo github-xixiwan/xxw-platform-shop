@@ -24,8 +24,8 @@
         <result column="delete_status" property="deleteStatus"/>
     </resultMap>
 
-    <resultMap type="com.xxw.shop.vo.OrderInfoAndOrderItemVO" id="orderAndOrderItem" extends="orderMap">
-        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.entity.OrderItem">
+    <resultMap type="com.xxw.shop.vo.OrderInfoVO" id="orderAndOrderItem" extends="orderMap">
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.vo.OrderItemVO">
             <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
             <result column="shop_id" property="shopId"/>
             <result column="order_id" property="orderId"/>

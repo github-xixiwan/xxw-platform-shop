@@ -60,6 +60,9 @@ public class OrderInfoVO extends BaseVO implements Serializable {
     @Schema(description = "用户订单删除状态，0：没有删除， 1：回收站， 2：永久删除")
     private Integer deleteStatus;
 
+    @Schema(description = "用户订单地址id")
+    private Long orderAddrId;
+
     @Schema(description = "订单项")
     private List<OrderItemVO> orderItems;
 

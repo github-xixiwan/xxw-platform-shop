@@ -22,14 +22,6 @@ spring:
         binder:
           name-server: 10.66.70.183:9876
           group: default-group
-        bindings:
-          normalMessage-in-0:
-            consumer:
-              push:
-                delayLevelWhenNextConsume: -1
-          filterMessage-in-0:
-            consumer:
-              subscription: 1
       bindings:
         orderCancel-out-0:
           destination: order-cancel
@@ -38,11 +30,15 @@ spring:
           destination: order-cancel
           content-type: application/json
           group: order-cancel-group
-        stockUnlock-out-0:
-          destination: stock-unlock
+        orderNotify-in-0:
+          destination: order-notify
+          content-type: application/json
+          group: order-notify-group
+        orderNotifyStock-out-0:
+          destination: order-notify-stock
           content-type: application/json
       function:
-        definition: orderCancel
+        definition: orderCancel;orderNotify
   datasource: # 数据源的相关配置
     url: jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: xxw-shop
