@@ -4,8 +4,8 @@
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>xxw-shop-service-order</artifactId>
-    <name>xxw-shop-service-order</name>
+    <artifactId>xxw-shop-service-search</artifactId>
+    <name>xxw-shop-service-search</name>
 
     <parent>
         <groupId>com.xxw.shop</groupId>
@@ -21,19 +21,19 @@
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-search</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-order</artifactId>
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
-            <artifactId>xxw-shop-api-goods</artifactId>
+            <artifactId>xxw-shop-module-cache</artifactId>
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
-            <artifactId>xxw-shop-api-search</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
+            <artifactId>xxw-shop-starter-elasticsearch</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,7 +73,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.xxw.shop.OrderApplication</mainClass>
+                    <mainClass>com.xxw.shop.SearchApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

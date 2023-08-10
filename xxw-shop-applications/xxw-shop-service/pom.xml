@@ -22,6 +22,7 @@
         <module>xxw-shop-service-order</module>
         <module>xxw-shop-service-payment</module>
         <module>xxw-shop-service-business</module>
+        <module>xxw-shop-service-search</module>
     </modules>
 
     <dependencies>

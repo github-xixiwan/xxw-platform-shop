@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @FeignClient(value = "shop-goods", contextId = "productFeign")
-public interface ProductFeignClient {
+public interface GoodsFeignClient {
 
     /**
      * 通过spuId需要搜索的商品

@@ -20,6 +20,7 @@
         <module>xxw-shop-api-goods</module>
         <module>xxw-shop-api-order</module>
         <module>xxw-shop-api-business</module>
+        <module>xxw-shop-api-search</module>
     </modules>
 
     <dependencies>

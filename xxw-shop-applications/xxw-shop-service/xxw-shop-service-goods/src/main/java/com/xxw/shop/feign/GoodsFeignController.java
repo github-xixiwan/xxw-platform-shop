@@ -1,6 +1,6 @@
 package com.xxw.shop.feign;
 
-import com.xxw.shop.api.goods.feign.ProductFeignClient;
+import com.xxw.shop.api.goods.feign.GoodsFeignClient;
 import com.xxw.shop.api.goods.vo.EsGoodsVO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.service.SpuService;
@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-public class ProductFeignController implements ProductFeignClient {
+public class GoodsFeignController implements GoodsFeignClient {
 
     @Resource
     private SpuService spuService;
 
+    //TODO
 //    @Resource
 //    private ShopDetailFeignClient shopDetailFeignClient;
 
