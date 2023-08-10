@@ -1,4 +1,4 @@
-package com.xxw.shop.vo;
+package com.xxw.shop.api.order.vo;
 
 import lombok.Data;
 

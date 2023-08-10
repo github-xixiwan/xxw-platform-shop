@@ -37,4 +37,11 @@ public interface SkuStockLockMapper extends BaseMapper<SkuStockLock> {
      * @param orderIds 锁定库存的订单
      */
     void markerStockUse(@Param("orderIds") List<Long> orderIds);
+
+    /**
+     * 将锁定状态标记为已解锁
+     *
+     * @param lockIds ids
+     */
+    void unLockByIds(@Param("lockIds") List<Long> lockIds);
 }

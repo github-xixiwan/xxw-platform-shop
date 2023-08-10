@@ -43,10 +43,10 @@
         </collection>
     </resultMap>
 
-    <resultMap type="com.xxw.shop.vo.EsOrderVO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
+    <resultMap type="com.xxw.shop.api.order.vo.EsOrderVO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
         <result column="consignee" jdbcType="VARCHAR" property="consignee"/>
-        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.vo.EsOrderItemVO">
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.api.order.vo.EsOrderItemVO">
             <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
             <result column="shop_id" property="shopId"/>
             <result column="order_id" property="orderId"/>
@@ -98,7 +98,7 @@
         FROM `order` o WHERE o.user_id = #{userId} AND o.delete_status = 0
     </select>
 
-    <select id="getOrdersStatus" resultType="com.xxw.shop.vo.OrderStatusVO">
+    <select id="getOrdersStatus" resultType="com.xxw.shop.api.order.vo.OrderStatusVO">
         select `status`, `order_id` from `order` where order_id in
         <foreach collection="orderIds" open="(" item="orderId" close=")" separator=",">
             #{orderId}
@@ -156,7 +156,7 @@
         where o.order_id = #{orderId}
     </select>
 
-    <select id="getOrdersActualAmount" resultType="com.xxw.shop.vo.OrderAmountVO">
+    <select id="getOrdersActualAmount" resultType="com.xxw.shop.api.order.vo.OrderAmountVO">
         select SUM(total) as payAmount from `order` where order_id in
         <foreach collection="orderIds" open="(" item="orderId" close=")" separator=",">
             #{orderId}
@@ -171,7 +171,7 @@
         </foreach>
     </update>
 
-    <select id="getOrdersSimpleAmountInfo" resultType="com.xxw.shop.vo.OrderSimpleAmountInfoVO">
+    <select id="getOrdersSimpleAmountInfo" resultType="com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO">
         select `shop_id`, `order_id`, actual_total, platform_amount,`status`,close_type
         from `order`
         where order_id in

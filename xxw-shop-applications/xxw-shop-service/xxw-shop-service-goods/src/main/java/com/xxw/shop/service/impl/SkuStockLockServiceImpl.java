@@ -4,6 +4,9 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.api.goods.dto.SkuStockLockDTO;
+import com.xxw.shop.api.order.constant.OrderStatus;
+import com.xxw.shop.api.order.feign.OrderFeignClient;
+import com.xxw.shop.api.order.vo.OrderStatusVO;
 import com.xxw.shop.dto.SkuStockLockQueryDTO;
 import com.xxw.shop.entity.SkuStockLock;
 import com.xxw.shop.mapper.SkuStockLockMapper;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +44,9 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
 
     @Resource
     private SpuExtensionMapper spuExtensionMapper;
+
+    @Resource
+    private OrderFeignClient orderFeignClient;
 
     @Override
     public Page<SkuStockLock> page(SkuStockLockQueryDTO dto) {
@@ -91,38 +98,36 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void stockUnlock(List<Long> orderIds) {
-        //TODO
-//        ServerResponseEntity<List<OrderStatusBO>> ordersStatusResponse = orderFeignClient.getOrdersStatus(orderIds);
-//        if (!ordersStatusResponse.isSuccess()) {
-//            throw new Mall4cloudException(ordersStatusResponse.getMsg());
-//        }
-//        List<OrderStatusBO> orderStatusList = ordersStatusResponse.getData();
-//
-//        List<Long> needUnLockOrderId = new ArrayList<>();
-//        for (OrderStatusBO orderStatusBO : orderStatusList) {
-//            // 该订单没有下单成功，或订单已取消，赶紧解锁库存
-//            if (orderStatusBO.getStatus() == null || Objects.equals(orderStatusBO.getStatus(),
-//                    OrderStatus.CLOSE.value())) {
-//                needUnLockOrderId.add(orderStatusBO.getOrderId());
-//            }
-//        }
-//
-//        if (CollectionUtil.isEmpty(needUnLockOrderId)) {
-//            return;
-//        }
-//
-//        List<SkuWithStockBO> allSkuWithStocks = skuStockLockMapper.listByOrderIds(needUnLockOrderId);
-//        if (CollectionUtil.isEmpty(allSkuWithStocks)) {
-//            return;
-//        }
-//        List<Long> lockIds = allSkuWithStocks.stream().map(SkuWithStockBO::getId).collect(Collectors.toList());
-//
-//        // 还原商品库存
-//        spuExtensionMapper.addStockByOrder(allSkuWithStocks);
-//        // 还原sku库存
-//        skuStockMapper.addStockByOrder(allSkuWithStocks);
-//        // 将锁定状态标记为已解锁
-//        skuStockLockMapper.unLockByIds(lockIds);
+        ServerResponseEntity<List<OrderStatusVO>> ordersStatusResponse = orderFeignClient.getOrdersStatus(orderIds);
+        if (!ordersStatusResponse.isSuccess()) {
+            throw new BusinessException(ordersStatusResponse.getMessage());
+        }
+        List<OrderStatusVO> orderStatusList = ordersStatusResponse.getData();
+
+        List<Long> needUnLockOrderId = new ArrayList<>();
+        for (OrderStatusVO vo : orderStatusList) {
+            // 该订单没有下单成功，或订单已取消，赶紧解锁库存
+            if (vo.getStatus() == null || Objects.equals(vo.getStatus(), OrderStatus.CLOSE.value())) {
+                needUnLockOrderId.add(vo.getOrderId());
+            }
+        }
+
+        if (CollectionUtil.isEmpty(needUnLockOrderId)) {
+            return;
+        }
+
+        List<SkuStockLockVO> allSkuWithStocks = mapper.listByOrderIds(needUnLockOrderId);
+        if (CollectionUtil.isEmpty(allSkuWithStocks)) {
+            return;
+        }
+        List<Long> lockIds = allSkuWithStocks.stream().map(SkuStockLockVO::getId).collect(Collectors.toList());
+
+        // 还原商品库存
+        spuExtensionMapper.addStockByOrder(allSkuWithStocks);
+        // 还原sku库存
+        spuExtensionMapper.addStockByOrder(allSkuWithStocks);
+        // 将锁定状态标记为已解锁
+        mapper.unLockByIds(lockIds);
     }
 
     @Override

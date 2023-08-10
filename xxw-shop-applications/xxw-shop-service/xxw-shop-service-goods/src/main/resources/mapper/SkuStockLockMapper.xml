@@ -29,4 +29,12 @@
             #{orderId}
         </foreach>
     </update>
+
+    <update id="unLockByIds">
+        update sku_stock_lock
+        set `status` = -1 where id in
+        <foreach collection="lockIds" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

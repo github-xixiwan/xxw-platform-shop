@@ -7,9 +7,13 @@ import com.xxw.shop.api.goods.dto.SkuStockLockDTO;
 import com.xxw.shop.api.goods.feign.ShopCartFeignClient;
 import com.xxw.shop.api.goods.feign.SkuStockLockFeignClient;
 import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.api.order.vo.EsOrderVO;
+import com.xxw.shop.api.order.vo.OrderAmountVO;
+import com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO;
+import com.xxw.shop.api.order.vo.OrderStatusVO;
 import com.xxw.shop.constant.DeliveryType;
 import com.xxw.shop.constant.OrderBusinessError;
-import com.xxw.shop.constant.OrderStatus;
+import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderAddr;
 import com.xxw.shop.entity.OrderInfo;
@@ -82,7 +86,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         ServerResponseEntity<Void> lockStockResponse = skuStockLockFeignClient.lock(skuStockLocks);
         // 锁定不成，抛异常，让回滚订单
         if (!lockStockResponse.isSuccess()) {
-            throw new BusinessException(SystemErrorEnumError.SHOW_FAIL, lockStockResponse.getMessage());
+            throw new BusinessException(lockStockResponse.getMessage());
         }
         // 发送消息，如果三十分钟后没有支付，则取消订单
         boolean r = rocketmqSend.orderCancel(orderIds);

@@ -9,12 +9,13 @@ import com.xxw.shop.dto.SkuDTO;
 import com.xxw.shop.dto.SpuDTO;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.StatusEnum;
-import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.*;
-import com.xxw.shop.vo.*;
+import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrValueVO;
+import com.xxw.shop.vo.SpuExtensionVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -179,8 +180,7 @@ public class SpuController {
         }
         spuService.batchRemoveSpuCacheBySpuId(spuIds);
         if (!errorList.isEmpty()) {
-            throw new BusinessException(SystemErrorEnumError.SHOW_FAIL.getCode(), "商品id为：" + errorList.toString() +
-                    "的" + errorList.size() + "件商品不符合操作条件");
+            throw new BusinessException("商品id为：" + errorList.toString() + "的" + errorList.size() + "件商品不符合操作条件");
         }
         spuService.changeSpuStatus(spu.getSpuId(), spu.getStatus());
         spuService.removeSpuCacheBySpuId(spu.getSpuId());

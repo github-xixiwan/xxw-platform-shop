@@ -1,4 +1,4 @@
-package com.xxw.shop.constant;
+package com.xxw.shop.api.order.constant;
 
 /**
  * 订单状态
