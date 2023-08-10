@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.ShopDetailMapper">
+    <select id="countShopName" resultType="int">
+        select count(*) from shop_detail where shop_name = #{shopName} and shop_status != -1
+        <if test="shopId != null">
+            and shop_id != #{shopId}
+        </if>
+    </select>
+</mapper>

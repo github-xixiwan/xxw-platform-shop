@@ -37,7 +37,7 @@ public class Codegen {
 //        globalConfig.setGenerateSchema("schema");
 //        globalConfig.setTablePrefix("tb_");
 //        globalConfig.setGenerateTable("menu","menu_permission","role","role_menu","user_role");
-        globalConfig.setGenerateTable("pay_info");
+        globalConfig.setGenerateTable("hot_search","index_img","shop_detail","shop_user");
         //设置生成 entity 并启用 Lombok
         globalConfig.setEntityGenerateEnable(true);
         globalConfig.setEntityWithLombok(true);

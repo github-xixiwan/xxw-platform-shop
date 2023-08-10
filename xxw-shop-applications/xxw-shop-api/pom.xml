@@ -19,6 +19,7 @@
         <module>xxw-shop-api-platform</module>
         <module>xxw-shop-api-goods</module>
         <module>xxw-shop-api-order</module>
+        <module>xxw-shop-api-business</module>
     </modules>
 
     <dependencies>

@@ -93,6 +93,11 @@
                 <artifactId>xxw-shop-api-order</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-api-business</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- starter -->
             <dependency>

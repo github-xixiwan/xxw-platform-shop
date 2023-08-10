@@ -1,0 +1,56 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 10.66.70.183:8848
+        namespace: dev
+        group: xxw-shop
+        file-extension: properties
+        shared-configs:
+          - data-id: shop-application-${spring.profiles.active}.yml
+            group: xxw-shop
+    sentinel:
+      transport:
+        dashboard: 10.66.70.183:8080
+  datasource: # 数据源的相关配置
+    url: jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: xxw-shop
+    password: xxw-shop
+  data:
+    redis:
+      database: 0
+      host: 10.66.70.183
+      port: 6379
+      password: xxw
+      timeout: 1000
+      client-type: lettuce
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+seata:
+  enable-auto-data-source-proxy: false
+  application-id: ${spring.application.name}  # seata 应用编号，默认为 ${spring.application.name}
+  tx-service-group: default_tx_group # seata 事务组编号，用于 TC 集群名
+  # seata 服务配置项，对应 ServiceProperties 类
+  service:
+    grouplist:
+      seata-server: 10.66.70.183:8091
+    # 虚拟组和分组的映射, key一定要与 tx-service-group一致
+    vgroupMapping:
+      default_tx_group: default
+  # seata 注册中心配置项，对应 RegistryProperties 类
+  registry:
+    type: nacos # 注册中心类型，默认为 file
+    nacos:
+      server-addr: 10.66.70.183:8848 # Nacos 服务地址
+      namespace: seata
+      group: SEATA_GROUP
+  config:
+    type: nacos # 注册中心类型，默认为 file
+    nacos:
+      server-addr: 10.66.70.183:8848 # Nacos 服务地址
+      namespace: seata
+      group: SEATA_GROUP

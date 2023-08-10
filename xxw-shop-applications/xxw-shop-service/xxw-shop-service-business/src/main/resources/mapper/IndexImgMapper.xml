@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.IndexImgMapper">
+    <select id="getListByShopId" resultType="com.xxw.shop.vo.IndexImgVO">
+        select `img_id`,`img_url`,`seq`,`spu_id`,`img_type` from index_img
+        where `status` = 1 and shop_id = #{shopId}
+        order by seq desc,img_id desc
+    </select>
+
+    <update id="clearSpuIdBySpuId">
+        update index_img
+        set `spu_id` = null
+        where `spu_id` = #{spuId}
+    </update>
+</mapper>
