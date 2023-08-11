@@ -2,11 +2,9 @@ package com.xxw.shop.module.cache.tool.impl;
 
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class GlobalRedisCacheTool implements IGlobalRedisCache {
@@ -416,5 +414,18 @@ public class GlobalRedisCacheTool implements IGlobalRedisCache {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 比较和删除标记，原子性
+     * @return 是否成功
+     */
+    public boolean cad(String key, String value) {
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        //通过lure脚本原子验证令牌和删除令牌
+        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+                Collections.singletonList(key),
+                value);
+        return !Objects.equals(result, 0L);
     }
 }

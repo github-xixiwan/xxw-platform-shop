@@ -8,7 +8,7 @@ public enum EsIndexEnum {
     /**
      * 商品
      */
-    PRODUCT("product"),
+    PRODUCT("goods"),
 
     /**
      * 订单

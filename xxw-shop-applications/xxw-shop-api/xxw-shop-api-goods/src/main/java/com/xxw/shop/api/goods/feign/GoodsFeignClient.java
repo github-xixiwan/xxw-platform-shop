@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(value = "shop-goods", contextId = "productFeign")
+@FeignClient(value = "shop-goods", contextId = "goodsFeign")
 public interface GoodsFeignClient {
 
     /**
@@ -18,7 +18,7 @@ public interface GoodsFeignClient {
      * @param spuId spuid
      * @return es保存的商品信息
      */
-    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/product/loadEsProductBO")
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/goods/loadEsProductBO")
     ServerResponseEntity<GoodsVO> loadGoodsVO(@RequestParam("spuId") Long spuId);
 
     /**
@@ -27,7 +27,7 @@ public interface GoodsFeignClient {
      * @param shopCategoryIds
      * @return spuId列表
      */
-    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/product/getSpuIdsByShopCategoryIds")
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/goods/getSpuIdsByShopCategoryIds")
     ServerResponseEntity<List<Long>> getSpuIdsByShopCategoryIds(@RequestParam("shopCategoryIds") List<Long> shopCategoryIds);
 
     /**
@@ -36,7 +36,7 @@ public interface GoodsFeignClient {
      * @param categoryIds
      * @return spuId列表
      */
-    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/product/getSpuIdsByCategoryIds")
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/goods/getSpuIdsByCategoryIds")
     ServerResponseEntity<List<Long>> getSpuIdsByCategoryIds(@RequestParam("categoryIds") List<Long> categoryIds);
 
     /**
@@ -45,7 +45,7 @@ public interface GoodsFeignClient {
      * @param brandId
      * @return spuId列表
      */
-    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/product/getSpuIdsByBrandId")
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/goods/getSpuIdsByBrandId")
     ServerResponseEntity<List<Long>> getSpuIdsByBrandId(@RequestParam("brandId") Long brandId);
 
     /**
@@ -54,7 +54,7 @@ public interface GoodsFeignClient {
      * @param shopId
      * @return spuId列表
      */
-    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/product/getSpuIdsByShopId")
+    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/goods/getSpuIdsByShopId")
     ServerResponseEntity<List<Long>> getSpuIdsByShopId(@RequestParam("shopId") Long shopId);
 
 }

@@ -35,19 +35,19 @@ public class SearchSpuFeignController implements SearchSpuFeignClient {
         if (CollUtil.isEmpty(spuIds)) {
             return ServerResponseEntity.success(new ArrayList<>());
         }
-        GoodsSearchDTO productSearchDTO = new GoodsSearchDTO();
-        productSearchDTO.setSpuIds(spuIds);
-        List<EsSpuVO> list = goodsSearchManager.list(productSearchDTO);
+        GoodsSearchDTO goodsSearchDTO = new GoodsSearchDTO();
+        goodsSearchDTO.setSpuIds(spuIds);
+        List<EsSpuVO> list = goodsSearchManager.list(goodsSearchDTO);
         return ServerResponseEntity.success(list);
     }
 
     @Override
     public ServerResponseEntity<EsPageVO<EsGoodsSearchVO>> spuPage(GoodsSearchDTO dto) {
-        GoodsSearchDTO productSearchDTO = new GoodsSearchDTO();
+        GoodsSearchDTO goodsSearchDTO = new GoodsSearchDTO();
         // 平台id则搜索整个平台的商品
         Long shopId = dto.getShopId();
         if (!Objects.equals(shopId, Constant.PLATFORM_SHOP_ID)) {
-            productSearchDTO.setShopId(shopId);
+            goodsSearchDTO.setShopId(shopId);
         }
         EsPageVO<EsGoodsSearchVO> page = goodsSearchManager.page(dto);
         return ServerResponseEntity.success(page);

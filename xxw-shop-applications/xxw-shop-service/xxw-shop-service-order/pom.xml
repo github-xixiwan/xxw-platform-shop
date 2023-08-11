@@ -25,11 +25,19 @@
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-user</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-goods</artifactId>
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-search</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-module-cache</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

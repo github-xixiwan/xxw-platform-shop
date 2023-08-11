@@ -504,9 +504,9 @@ public abstract class BaseElasticsearchService {
 
         //nested类型嵌套查询
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        boolQueryBuilder.must(QueryBuilders.matchQuery("products.brand", "A"));
-        boolQueryBuilder.must(QueryBuilders.matchQuery("products.title", "巧克力"));
-        NestedQueryBuilder nested = QueryBuilders.nestedQuery("products", boolQueryBuilder, ScoreMode.None);
+        boolQueryBuilder.must(QueryBuilders.matchQuery("goods.brand", "A"));
+        boolQueryBuilder.must(QueryBuilders.matchQuery("goods.title", "巧克力"));
+        NestedQueryBuilder nested = QueryBuilders.nestedQuery("goods", boolQueryBuilder, ScoreMode.None);
         mainBool.must(nested);
 
         builder.query(mainBool);

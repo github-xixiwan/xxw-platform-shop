@@ -70,23 +70,23 @@ public class OrderSearchManager {
      * 构建结果数据
      */
     private EsPageVO<EsOrderInfoVO> buildSearchResult(OrderSearchDTO dto, SearchResponse response) {
-        EsPageVO<EsOrderInfoVO> esEsPageVOVO = new EsPageVO<>();
+        EsPageVO<EsOrderInfoVO> esEsPageVO = new EsPageVO<>();
 
         //1、返回的所有查询到的商品
         SearchHits hits = response.getHits();
-        List<EsOrderInfoVO> productSearchs = getEsOrderBOList(response);
-        esEsPageVOVO.setRecords(productSearchs);
+        List<EsOrderInfoVO> goodsSearchs = getEsOrderBOList(response);
+        esEsPageVO.setRecords(goodsSearchs);
 
 
         //===============分页信息====================//
         //总记录数
         long total = hits.getTotalHits().value;
-        esEsPageVOVO.setTotalRow(total);
+        esEsPageVO.setTotalRow(total);
         // 总页码
-        int totalEsPageVOs = (int) total % dto.getPageSize() == 0 ? (int) total / dto.getPageSize() :
+        int totalPage = (int) total % dto.getPageSize() == 0 ? (int) total / dto.getPageSize() :
                 ((int) total / dto.getPageSize() + 1);
-        esEsPageVOVO.setTotalEsPageVO(totalEsPageVOs);
-        return esEsPageVOVO;
+        esEsPageVO.setTotalPage(totalPage);
+        return esEsPageVO;
     }
 
     private List<EsOrderInfoVO> getEsOrderBOList(SearchResponse response) {

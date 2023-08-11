@@ -373,4 +373,6 @@ public interface IGlobalRedisCache {
      * @return
      */
     RedisTemplate<String, Object> getRedisTemplate();
+
+    boolean cad(String key, String value);
 }
