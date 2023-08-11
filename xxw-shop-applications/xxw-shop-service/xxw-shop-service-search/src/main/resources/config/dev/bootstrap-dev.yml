@@ -30,6 +30,12 @@ spring:
           max-wait: -1
           max-idle: 8
           min-idle: 0
+  elasticsearch:
+    cluster-name: elasticsearch
+    cluster-nodes: 127.0.0.1:9200
+    index:
+      number-of-replicas: 0
+      number-of-shards: 3
 seata:
   enable-auto-data-source-proxy: false
   application-id: ${spring.application.name}  # seata 应用编号，默认为 ${spring.application.name}

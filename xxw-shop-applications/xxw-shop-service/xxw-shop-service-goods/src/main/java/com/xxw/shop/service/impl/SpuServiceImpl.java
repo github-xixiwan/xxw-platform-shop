@@ -3,6 +3,7 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.business.feign.IndexImgFeignClient;
 import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
 import com.xxw.shop.api.goods.vo.SpuVO;
@@ -18,7 +19,9 @@ import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.StatusEnum;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.common.vo.AttrVO;
 import com.xxw.shop.module.common.vo.GoodsVO;
 import com.xxw.shop.module.security.AuthUserContext;
@@ -70,6 +73,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     @Resource
     private CategoryService categoryService;
 
+    @Resource
+    private IndexImgFeignClient indexImgFeignClient;
+
     @Override
     @Cacheable(cacheNames = GoodsCacheNames.SPU_KEY, key = "#spuId", sync = true)
     public SpuVO getBySpuId(Long spuId) {
@@ -103,12 +109,10 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         this.updateById(spu);
         if (!Objects.equals(status, StatusEnum.ENABLE.value())) {
             SpuVO spuVO = mapper.getBySpuId(spuId);
-            //TODO
-//            ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuVO.getSpuId(), spuVO.getShopId
-//            ());
-//            if (!imgRes.isSuccess()) {
-//                throw new BusinessException(SystemErrorEnumError.EXCEPTION);
-//            }
+            ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuVO.getSpuId(), spuVO.getShopId());
+            if (!imgRes.isSuccess()) {
+                throw new BusinessException(SystemErrorEnumError.EXCEPTION);
+            }
         }
     }
 
@@ -189,12 +193,11 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         this.updateById(spu);
 
         skuService.deleteBySpuId(spuId);
-        //TODO
         // 把轮播图中关联了该商品的数据删除
-//        ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuId, spuVO.getShopId());
-//        if (!imgRes.isSuccess()) {
-//            throw new BusinessException(SystemErrorEnumError.EXCEPTION);
-//        }
+        ServerResponseEntity<Void> imgRes = indexImgFeignClient.deleteBySpuId(spuId, spuVO.getShopId());
+        if (!imgRes.isSuccess()) {
+            throw new BusinessException(SystemErrorEnumError.EXCEPTION);
+        }
     }
 
     @Override

@@ -45,6 +45,18 @@ spring:
             - Path=/xxw_shop_auth/**
           filters:
             - RewritePath=/xxw_shop_auth(?<segment>/?.*), $\{segment}
+        - id: shop-goods
+          uri: lb://shop-goods
+          predicates:
+            - Path=/xxw_shop_goods/**
+          filters:
+            - RewritePath=/xxw_shop_goods(?<segment>/?.*), $\{segment}
+        - id: shop-search
+          uri: lb://shop-search
+          predicates:
+            - Path=/xxw_shop_search/**
+          filters:
+            - RewritePath=/xxw_shop_search(?<segment>/?.*), $\{segment}
         - id: shop-platform
           uri: lb://shop-platform
           predicates:

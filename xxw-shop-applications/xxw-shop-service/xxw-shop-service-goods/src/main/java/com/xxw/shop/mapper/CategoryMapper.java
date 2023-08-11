@@ -1,6 +1,7 @@
 package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.entity.Category;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,12 @@ public interface CategoryMapper extends BaseMapper<Category> {
      * @return
      */
     int updateBatchOfStatus(@Param("categoryIds") List<Long> categoryIds, @Param("status") Integer status);
+
+    /**
+     * 获取分类列表(未删除的分类--启用、未启用状态， 用于分类管理)
+     *
+     * @param shopId 店铺id 必填
+     * @return
+     */
+    List<CategoryVO> list(@Param("shopId") Long shopId);
 }

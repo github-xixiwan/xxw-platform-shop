@@ -3,14 +3,14 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.entity.SpuAttrValue;
 import com.xxw.shop.mapper.SpuAttrValueMapper;
+import com.xxw.shop.mapper.SpuMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.service.SpuAttrValueService;
-import com.xxw.shop.service.SpuService;
-import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +35,7 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
     private IGlobalRedisCache globalRedisCache;
 
     @Resource
-    private SpuService spuService;
+    private SpuMapper spuMapper;
 
     @Override
     public void updateSpuAttrValue(Long spuId, List<SpuAttrValue> spuAttrValues, List<SpuAttrValueVO> spuAttrValuesDb) {
@@ -119,7 +119,7 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
             spuIds = mapper.getShopIdByAttrValueIds(attrValueIds);
             mapper.updateSpuUpdateTime(spuIds, null);
         } else if (CollUtil.isNotEmpty(categoryIds)) {
-            spuIds = spuService.getSpuIdsByCondition(null, categoryIds, null, null);
+            spuIds = spuMapper.getSpuIdsByCondition(null, categoryIds, null, null);
             mapper.updateSpuUpdateTime(null, categoryIds);
         }
         if (CollUtil.isEmpty(spuIds)) {

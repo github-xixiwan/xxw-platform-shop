@@ -4,13 +4,13 @@ import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.AttrType;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.AttrDTO;
 import com.xxw.shop.dto.AttrQueryDTO;
 import com.xxw.shop.entity.Attr;
-import com.xxw.shop.entity.table.AttrTableDef;
 import com.xxw.shop.mapper.AttrMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.common.cache.CacheNames;
@@ -18,7 +18,6 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.*;
 import com.xxw.shop.vo.AttrCompleteVO;
-import com.xxw.shop.api.goods.vo.CategoryVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.xxw.shop.entity.table.AttrTableDef.ATTR;
 import static com.xxw.shop.entity.table.AttrValueTableDef.ATTR_VALUE;
 
 /**
@@ -62,25 +62,25 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     @Override
     public Page<AttrCompleteVO> page(AttrQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.select(AttrTableDef.ATTR.ALL_COLUMNS);
+        queryWrapper.select(ATTR.ALL_COLUMNS);
         queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
-        queryWrapper.from(AttrTableDef.ATTR);
+        queryWrapper.from(ATTR);
         queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
-        queryWrapper.where(AttrTableDef.ATTR.NAME.eq(dto.getName()));
-        queryWrapper.and(AttrTableDef.ATTR.SEARCH_TYPE.eq(dto.getSearchType()));
-        queryWrapper.and(AttrTableDef.ATTR.ATTR_TYPE.eq(dto.getAttrType()));
-        queryWrapper.and(AttrTableDef.ATTR.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
-        queryWrapper.orderBy(AttrTableDef.ATTR.ATTR_ID.desc());
+        queryWrapper.where(ATTR.NAME.eq(dto.getName()));
+        queryWrapper.and(ATTR.SEARCH_TYPE.eq(dto.getSearchType()));
+        queryWrapper.and(ATTR.ATTR_TYPE.eq(dto.getAttrType()));
+        queryWrapper.and(ATTR.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
+        queryWrapper.orderBy(ATTR.ATTR_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, AttrCompleteVO.class);
     }
 
     private AttrCompleteVO getById(Long attrId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.select(AttrTableDef.ATTR.ALL_COLUMNS);
+        queryWrapper.select(ATTR.ALL_COLUMNS);
         queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
-        queryWrapper.from(AttrTableDef.ATTR);
+        queryWrapper.from(ATTR);
         queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
-        queryWrapper.where(AttrTableDef.ATTR.ATTR_ID.eq(attrId));
+        queryWrapper.where(ATTR.ATTR_ID.eq(attrId));
         AttrCompleteVO attrVO = this.getOneAs(queryWrapper, AttrCompleteVO.class);
         if (Objects.isNull(attrVO)) {
             throw new BusinessException(GoodsBusinessError.GOODS_00001);

@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.CategoryLevel;
 import com.xxw.shop.constant.GoodsBusinessError;
@@ -14,9 +15,8 @@ import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
+import com.xxw.shop.module.web.util.SpringContextUtils;
 import com.xxw.shop.service.CategoryService;
-import com.xxw.shop.service.SpuService;
-import com.xxw.shop.api.goods.vo.CategoryVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
@@ -42,13 +42,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Resource
     private MapperFacade mapperFacade;
 
-    @Resource
-    private SpuService spuService;
-
     private CategoryVO getById(Long categoryId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(CATEGORY.CATEGORY_ID.eq(categoryId));
-        return this.getOneAs(queryWrapper, CategoryVO.class);
+        return mapperFacade.map(this.getOne(queryWrapper), CategoryVO.class);
     }
 
     @Override
@@ -104,10 +101,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public List<CategoryVO> list(Long shopId) {
-        QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(CATEGORY.SHOP_ID.eq(shopId));
-        queryWrapper.and(CATEGORY.STATUS.ne(-1));
-        return this.listAs(queryWrapper, CategoryVO.class);
+        return mapper.list(shopId);
     }
 
     @Override
@@ -299,6 +293,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             if (CollUtil.isEmpty(thirdIdList)) {
                 return true;
             }
+            SpuServiceImpl spuService = (SpuServiceImpl) SpringContextUtils.getBean("spuServiceImpl");
             spuService.batchChangeSpuStatusByCids(thirdIdList, categoryDb.getShopId(), StatusEnum.DISABLE.value());
         }
         return true;

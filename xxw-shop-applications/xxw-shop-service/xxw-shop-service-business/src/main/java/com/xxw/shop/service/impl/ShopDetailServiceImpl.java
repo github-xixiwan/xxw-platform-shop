@@ -9,7 +9,6 @@ import com.xxw.shop.api.auth.dto.AuthAccountDTO;
 import com.xxw.shop.api.auth.feign.AccountFeignClient;
 import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import com.xxw.shop.api.business.vo.ShopDetailVO;
-import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.cache.BusinessCacheNames;
 import com.xxw.shop.constant.BusinessBusinessError;
 import com.xxw.shop.constant.ShopStatus;
@@ -114,27 +113,6 @@ public class ShopDetailServiceImpl extends ServiceImpl<ShopDetailMapper, ShopDet
         queryWrapper.where(SHOP_DETAIL.SHOP_ID.in(shopIds));
         return this.list(queryWrapper);
     }
-
-    //TODO
-//
-//    @Override
-//    public PageVO<ShopDetailAppVO> shopSearchPage(PageDTO pageDTO, ShopDetailDTO shopDetailDTO) {
-//        PageVO<ShopDetailAppVO> page = PageUtil.doPage(pageDTO, () -> shopDetailMapper.shopSearchList(shopDetailDTO));
-//        Set<Long> spuIdSet = page.getList().stream().map(ShopDetailAppVO::getShopId).collect(Collectors.toSet());
-//        ServerResponseEntity<List<SpuSearchVO>> spuResponse =
-//                searchSpuFeignClient.limitSizeListByShopIds(new ArrayList<>(spuIdSet), Constant.SPU_SIZE_FIVE);
-//        if (!Objects.equals(spuResponse.getCode(), ResponseEnum.OK.value())) {
-//            throw new Mall4cloudException(spuResponse.getMsg());
-//        } else if (CollectionUtil.isEmpty(spuResponse.getData())) {
-//            return page;
-//        }
-//        List<SpuSearchVO> data = spuResponse.getData();
-//        Map<Long, List<SpuSearchVO>> shopMap = data.stream().collect(Collectors.groupingBy(SpuSearchVO::getShopId));
-//        for (ShopDetailAppVO shopDetail : page.getList()) {
-//            shopDetail.setSpuList(shopMap.get(shopDetail.getShopId()));
-//        }
-//        return page;
-//    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

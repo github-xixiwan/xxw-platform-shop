@@ -6,6 +6,7 @@ import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
 import com.xxw.shop.module.cache.tool.impl.GlobalRedisCacheManagerTool;
 import com.xxw.shop.module.cache.tool.impl.GlobalRedisCacheTool;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,22 +63,28 @@ public class CacheConfig {
                                      CacheTtlAdapter cacheTtlAdapter) {
         RedisCacheManager redisCacheManager =
                 new RedisCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(lettuceConnectionFactory),
-                // 默认策略，未配置的 key 会使用这个
-                this.getRedisCacheConfigurationWithTtl(3600),
-                // 指定 key 策略
-                this.getRedisCacheConfigurationMap(cacheTtlAdapter));
+                        // 默认策略，未配置的 key 会使用这个
+                        this.getRedisCacheConfigurationWithTtl(3600),
+                        // 指定 key 策略
+                        this.getRedisCacheConfigurationMap(cacheTtlAdapter));
 
         redisCacheManager.setTransactionAware(true);
         return redisCacheManager;
     }
 
     @Bean
-    public IGlobalRedisCache cache(RedisTemplate<String, Object> redisTemplate) {
+    @ConditionalOnMissingBean
+    public CacheTtlAdapter cacheTtl() {
+        return Collections::emptyList;
+    }
+
+    @Bean
+    public IGlobalRedisCache globalRedisCache(RedisTemplate<String, Object> redisTemplate) {
         return new GlobalRedisCacheTool(redisTemplate);
     }
 
     @Bean
-    public IGlobalRedisCacheManager cache(CacheManager cacheManager) {
+    public IGlobalRedisCacheManager globalRedisCacheManager(CacheManager cacheManager) {
         return new GlobalRedisCacheManagerTool(cacheManager);
     }
 }

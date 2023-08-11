@@ -3,6 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxw.shop.mapper.CategoryMapper">
+
+    <sql id="Vo_Column_List">
+        `category_id`,`create_time`,`update_time`,`shop_id`,`parent_id`,`name`,`desc`,`path`,`status`,`icon`,`img_url`,`level`,`seq`
+    </sql>
+
     <select id="getCategoryUseNum" parameterType="java.lang.Long" resultType="int">
         SELECT SUM(c.num)
         FROM (SELECT COUNT(*) AS num
@@ -50,4 +55,8 @@
             #{categoryId}
         </foreach>
     </update>
+
+    <select id="list" resultType="com.xxw.shop.api.goods.vo.CategoryVO">
+        SELECT <include refid="Vo_Column_List"/> FROM `category` WHERE shop_id = #{shopId} AND `status` != -1
+    </select>
 </mapper>
