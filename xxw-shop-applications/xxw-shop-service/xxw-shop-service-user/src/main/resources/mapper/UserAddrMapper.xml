@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.UserAddrMapper">
+    <sql id="Vo_Column_List">
+        `addr_id`,
+        `create_time`,
+        `update_time`,
+        `mobile`,
+        `is_default`,
+        `consignee`,
+        `province_id`,
+        `province`,
+        `city_id`,
+        `city`,
+        `area_id`,
+        `area`,
+        `post_code`,
+        `addr`,
+        `lng`,
+        `lat`
+    </sql>
+
+    <update id="removeDefaultUserAddr">
+        update user_addr
+        set is_default = 0
+        where user_id = #{userId}
+          and is_default = 1
+    </update>
+
+    <select id="getUserDefaultAddrByUserId" resultType="com.xxw.shop.api.user.vo.UserAddrVO">
+        select
+        <include refid="Vo_Column_List"/>
+        from user_addr
+        where user_id = #{userId} and is_default = 1
+    </select>
+</mapper>

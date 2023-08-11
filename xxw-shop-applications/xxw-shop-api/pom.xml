@@ -14,13 +14,14 @@
     </parent>
 
     <modules>
+        <module>xxw-shop-api-user</module>
         <module>xxw-shop-api-rbac</module>
         <module>xxw-shop-api-auth</module>
-        <module>xxw-shop-api-platform</module>
         <module>xxw-shop-api-goods</module>
         <module>xxw-shop-api-order</module>
-        <module>xxw-shop-api-business</module>
         <module>xxw-shop-api-search</module>
+        <module>xxw-shop-api-platform</module>
+        <module>xxw-shop-api-business</module>
     </modules>
 
     <dependencies>

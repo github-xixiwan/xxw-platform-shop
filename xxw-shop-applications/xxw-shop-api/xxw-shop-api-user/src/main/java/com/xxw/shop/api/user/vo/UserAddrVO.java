@@ -1,4 +1,4 @@
-package com.xxw.shop.vo;
+package com.xxw.shop.api.user.vo;
 
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;

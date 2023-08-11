@@ -14,15 +14,16 @@
     </parent>
 
     <modules>
-        <module>xxw-shop-service-support</module>
+        <module>xxw-shop-service-user</module>
         <module>xxw-shop-service-rbac</module>
         <module>xxw-shop-service-auth</module>
-        <module>xxw-shop-service-platform</module>
         <module>xxw-shop-service-goods</module>
         <module>xxw-shop-service-order</module>
-        <module>xxw-shop-service-payment</module>
-        <module>xxw-shop-service-business</module>
         <module>xxw-shop-service-search</module>
+        <module>xxw-shop-service-platform</module>
+        <module>xxw-shop-service-business</module>
+        <module>xxw-shop-service-support</module>
+        <module>xxw-shop-service-payment</module>
     </modules>
 
     <dependencies>

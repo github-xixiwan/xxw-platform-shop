@@ -81,4 +81,8 @@ public class Constant {
 	 * 逗号
 	 */
 	public static final String COMMA = ",";
+
+	public static final Integer DEFAULT_ADDR = 1;
+
+	public static final Integer NOT_DEFAULT_ADDR = 0;
 }

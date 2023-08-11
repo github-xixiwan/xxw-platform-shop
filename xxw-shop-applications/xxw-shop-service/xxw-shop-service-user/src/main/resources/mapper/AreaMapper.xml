@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxw.shop.mapper.AreaMapper">
+    <resultMap id="areaListMap" type="com.xxw.shop.api.user.vo.AreaVO">
+        <id column="pid" property="areaId"/>
+        <result column="pname"  property="areaName"/>
+        <result column="ppid"  property="parentId"/>
+        <result column="plevel"  property="level"/>
+        <collection property="areas" ofType="com.xxw.shop.api.user.vo.AreaVO">
+            <id column="cid" property="areaId"/>
+            <result column="cname"  property="areaName"/>
+            <result column="cpid"  property="parentId"/>
+            <result column="clevel"  property="level"/>
+            <collection property="areas" ofType="com.xxw.shop.api.user.vo.AreaVO">
+                <id column="area_id"  property="areaId"/>
+                <result column="area_name"  property="areaName"/>
+                <result column="parent_id"  property="parentId"/>
+                <result column="level"  property="level"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getAreaListInfo" resultMap="areaListMap">
+        SELECT  p.area_id pid,p.area_name pname,p.parent_id ppid,p.level plevel,
+                c.area_id cid,c.area_name cname,c.parent_id cpid,c.level clevel,
+                r.area_id ,r.area_name,r.parent_id,r.level
+        FROM `area` p
+                 JOIN `area` c  ON c.parent_id=p.area_id
+                 JOIN `area` r  ON r.parent_id=c.area_id
+        WHERE p.parent_id=0
+    </select>
+
+    <select id="listAreaOfEnable" resultMap="areaListMap">
+        SELECT * FROM
+            (
+                SELECT
+                    p.area_id pid,p.area_name pname,p.parent_id ppid,p.level plevel,
+                    c.area_id cid,c.area_name cname,c.parent_id cpid,c.level clevel
+                FROM
+                    `area` p
+                        JOIN `area` c ON p.level = 1 AND c.parent_id = p.area_id
+            ) tal
+                JOIN `area` a  ON tal.cid = a.parent_id
+    </select>
+
+    <select id="countByAreaId" resultType="int">
+        SELECT COUNT(*) FROM `area` WHERE parent_id = #{areaId}
+    </select>
+</mapper>

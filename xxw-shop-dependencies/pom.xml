@@ -70,17 +70,17 @@
             <!-- api -->
             <dependency>
                 <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-api-user</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
                 <artifactId>xxw-shop-api-rbac</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.xxw.shop</groupId>
                 <artifactId>xxw-shop-api-auth</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-api-platform</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -95,12 +95,17 @@
             </dependency>
             <dependency>
                 <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-api-business</artifactId>
+                <artifactId>xxw-shop-api-search</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-api-search</artifactId>
+                <artifactId>xxw-shop-api-platform</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-api-business</artifactId>
                 <version>${revision}</version>
             </dependency>
 
