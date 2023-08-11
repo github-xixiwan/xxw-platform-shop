@@ -13,4 +13,11 @@
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-business</artifactId>
+        </dependency>
+    </dependencies>
 </project>

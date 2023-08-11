@@ -2,17 +2,19 @@ package com.xxw.shop.controller.consumer;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.api.goods.manager.ShopCartAdapter;
 import com.xxw.shop.entity.OrderAddr;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.OrderAddrService;
 import com.xxw.shop.service.OrderInfoService;
 import com.xxw.shop.service.OrderItemService;
-import com.xxw.shop.vo.ShopCartOrderMergerVO;
 import com.xxw.shop.vo.ShopCartOrderVO;
+import com.xxw.shop.vo.ShopCartOrderMergerVO;
 import com.xxw.shop.vo.UserAddrVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +34,7 @@ import java.util.Objects;
  */
 @RestController("consumerOrderController")
 @RequestMapping("/a/order")
-@Tag(name = "app-订单信息")
+@Tag(name = "consumer-订单信息")
 public class OrderController {
 
     @Resource

@@ -13,7 +13,7 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.*;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 import com.xxw.shop.vo.AttrValueVO;
 import com.xxw.shop.vo.SpuExtensionVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -198,9 +198,9 @@ public class SpuController {
         } else {
             attrMap = new HashMap<>(1);
         }
-        List<AttrVO> attrList = attrService.getAttrsByCategoryIdAndAttrType(spuVO.getCategoryId());
+        List<AttrCompleteVO> attrList = attrService.getAttrsByCategoryIdAndAttrType(spuVO.getCategoryId());
         List<SpuAttrValueVO> spuAttrValues = new ArrayList<>();
-        for (AttrVO attrVO : attrList) {
+        for (AttrCompleteVO attrVO : attrList) {
             SpuAttrValueVO spuAttrValueVO = attrMap.get(attrVO.getAttrId());
             SpuAttrValueVO newSpuAttrValue = new SpuAttrValueVO();
             if (Objects.nonNull(spuAttrValueVO)) {

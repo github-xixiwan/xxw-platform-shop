@@ -1,4 +1,4 @@
-package com.xxw.shop.api.goods.vo;
+package com.xxw.shop.module.common.vo;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class EsGoodsVO implements Serializable {
+public class GoodsVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -159,5 +159,5 @@ public class EsGoodsVO implements Serializable {
     /**
      * 商品用于搜索的规格属性
      */
-    private List<EsAttrVO> attrs;
+    private List<AttrVO> attrs;
 }

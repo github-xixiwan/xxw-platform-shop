@@ -1,7 +1,7 @@
 package com.xxw.shop.api.goods.feign;
 
-import com.xxw.shop.api.goods.vo.EsGoodsVO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.common.vo.GoodsVO;
 import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public interface GoodsFeignClient {
      * @return es保存的商品信息
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/product/loadEsProductBO")
-    ServerResponseEntity<EsGoodsVO> loadEsGoodsVO(@RequestParam("spuId") Long spuId);
+    ServerResponseEntity<GoodsVO> loadGoodsVO(@RequestParam("spuId") Long spuId);
 
     /**
      * 根据平台categoryId，获取spuId列表

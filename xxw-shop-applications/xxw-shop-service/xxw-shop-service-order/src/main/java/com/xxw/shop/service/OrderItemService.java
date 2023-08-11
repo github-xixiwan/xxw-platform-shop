@@ -1,6 +1,7 @@
 package com.xxw.shop.service;
 
 import com.mybatisflex.core.service.IService;
+import com.xxw.shop.api.order.vo.OrderItemVO;
 import com.xxw.shop.entity.OrderItem;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public interface OrderItemService extends IService<OrderItem> {
 
-    List<OrderItem> listOrderItemsByOrderId(Long orderId);
+    List<OrderItemVO> listOrderItemsByOrderId(Long orderId);
 
     List<String> getSpuNameListByOrderIds(long[] orderIdList);
 

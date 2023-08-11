@@ -1,9 +1,9 @@
 package com.xxw.shop.manager;
 
 import cn.hutool.core.util.StrUtil;
-import com.mybatisflex.core.paginate.Page;
-import com.xxw.shop.api.order.vo.EsOrderVO;
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
+import com.xxw.shop.api.search.vo.EsOrderInfoVO;
+import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.constant.EsIndexEnum;
 import com.xxw.shop.constant.SearchBusinessError;
 import com.xxw.shop.module.common.exception.BusinessException;
@@ -45,9 +45,9 @@ public class OrderSearchManager {
      * @return 搜索结果
      * @dto dto 订单搜索条件
      */
-    public Page<EsOrderVO> pageSearchResult(OrderSearchDTO dto) {
+    public EsPageVO<EsOrderInfoVO> pageSearchResult(OrderSearchDTO dto) {
         //1、动态构建出查询需要的DSL语句
-        Page<EsOrderVO> result;
+        EsPageVO<EsOrderInfoVO> result;
 
         //1、准备检索请求
         SearchRequest searchRequest = buildSearchRequest(dto);
@@ -69,27 +69,27 @@ public class OrderSearchManager {
     /**
      * 构建结果数据
      */
-    private Page<EsOrderVO> buildSearchResult(OrderSearchDTO dto, SearchResponse response) {
-        Page<EsOrderVO> esPageVO = new Page<>();
+    private EsPageVO<EsOrderInfoVO> buildSearchResult(OrderSearchDTO dto, SearchResponse response) {
+        EsPageVO<EsOrderInfoVO> esEsPageVOVO = new EsPageVO<>();
 
         //1、返回的所有查询到的商品
         SearchHits hits = response.getHits();
-        List<EsOrderVO> productSearchs = getEsOrderBOList(response);
-        esPageVO.setRecords(productSearchs);
+        List<EsOrderInfoVO> productSearchs = getEsOrderBOList(response);
+        esEsPageVOVO.setRecords(productSearchs);
 
 
         //===============分页信息====================//
         //总记录数
         long total = hits.getTotalHits().value;
-        esPageVO.setTotalRow(total);
+        esEsPageVOVO.setTotalRow(total);
         // 总页码
-        int totalPages = (int) total % dto.getPageSize() == 0 ? (int) total / dto.getPageSize() :
+        int totalEsPageVOs = (int) total % dto.getPageSize() == 0 ? (int) total / dto.getPageSize() :
                 ((int) total / dto.getPageSize() + 1);
-        esPageVO.setTotalPage(totalPages);
-        return esPageVO;
+        esEsPageVOVO.setTotalEsPageVO(totalEsPageVOs);
+        return esEsPageVOVO;
     }
 
-    private List<EsOrderVO> getEsOrderBOList(SearchResponse response) {
+    private List<EsOrderInfoVO> getEsOrderBOList(SearchResponse response) {
 
         return getOrderListByResponse(response.getHits().getHits());
     }
@@ -100,10 +100,10 @@ public class OrderSearchManager {
      * @return
      * @dto hits es返回的数据
      */
-    private List<EsOrderVO> getOrderListByResponse(SearchHit[] hits) {
-        List<EsOrderVO> esOrders = new ArrayList<>();
+    private List<EsOrderInfoVO> getOrderListByResponse(SearchHit[] hits) {
+        List<EsOrderInfoVO> esOrders = new ArrayList<>();
         for (SearchHit hit : hits) {
-            EsOrderVO esOrder = JsonUtil.fromJson(hit.getSourceAsString(), EsOrderVO.class);
+            EsOrderInfoVO esOrder = JsonUtil.fromJson(hit.getSourceAsString(), EsOrderInfoVO.class);
             esOrders.add(esOrder);
         }
         return esOrders;

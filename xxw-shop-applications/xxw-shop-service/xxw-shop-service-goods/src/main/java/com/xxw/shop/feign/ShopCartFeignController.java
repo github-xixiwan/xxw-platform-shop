@@ -2,7 +2,7 @@ package com.xxw.shop.feign;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.xxw.shop.api.goods.feign.ShopCartFeignClient;
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.ShopCartItemService;

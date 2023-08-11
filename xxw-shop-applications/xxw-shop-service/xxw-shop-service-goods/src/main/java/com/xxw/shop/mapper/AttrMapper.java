@@ -2,7 +2,7 @@ package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.entity.Attr;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,12 +21,12 @@ public interface AttrMapper extends BaseMapper<Attr> {
      * @param categoryId
      * @return
      */
-    List<AttrVO> getAttrsByCategoryIdAndAttrType(@Param("categoryId") Long categoryId);
+    List<AttrCompleteVO> getAttrsByCategoryIdAndAttrType(@Param("categoryId") Long categoryId);
 
     /**
      * 获取店铺中的销售属性
      * @param shopId
      * @return 销售属性列表
      */
-    List<AttrVO> getShopAttrs(Long shopId);
+    List<AttrCompleteVO> getShopAttrs(Long shopId);
 }

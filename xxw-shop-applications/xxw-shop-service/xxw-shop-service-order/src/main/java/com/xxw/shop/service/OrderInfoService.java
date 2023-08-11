@@ -1,10 +1,7 @@
 package com.xxw.shop.service;
 
 import com.mybatisflex.core.service.IService;
-import com.xxw.shop.api.order.vo.EsOrderVO;
-import com.xxw.shop.api.order.vo.OrderAmountVO;
-import com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO;
-import com.xxw.shop.api.order.vo.OrderStatusVO;
+import com.xxw.shop.api.order.vo.*;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderInfo;
 import com.xxw.shop.vo.*;
@@ -32,9 +29,9 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     void cancelOrderAndGetCancelOrderIds(List<Long> orderIds);
 
-    OrderInfoVO getOrderByOrderIdAndUserId(Long orderId, Long userId);
+    OrderInfoCompleteVO getOrderByOrderIdAndUserId(Long orderId, Long userId);
 
-    OrderInfoVO getOrderByOrderId(Long orderId);
+    OrderInfoCompleteVO getOrderByOrderId(Long orderId);
 
     int receiptOrder(Long orderId);
 
@@ -45,11 +42,11 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     SubmitOrderPayAmountInfoVO getSubmitOrderPayAmountInfo(long[] orderIdList);
 
-    EsOrderVO getEsOrder(Long orderId);
+    OrderInfoCompleteVO getEsOrder(Long orderId);
 
-    List<OrderInfoVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
+    List<OrderInfoCompleteVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
 
-    OrderInfoVO getOrderAndOrderItemData(Long orderId, Long shopId);
+    OrderInfoCompleteVO getOrderAndOrderItemData(Long orderId, Long shopId);
 
     OrderCountVO countNumberOfStatus(Long userId);
 }

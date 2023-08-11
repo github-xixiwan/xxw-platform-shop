@@ -1,13 +1,13 @@
 package com.xxw.shop.controller.consumer;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import com.xxw.shop.api.goods.vo.SkuVO;
 import com.xxw.shop.api.goods.vo.SpuVO;
 import com.xxw.shop.dto.ChangeShopCartItemDTO;
 import com.xxw.shop.dto.CheckShopCartItemDTO;
 import com.xxw.shop.entity.ShopCartItem;
-import com.xxw.shop.manager.ShopCartAdapter;
+import com.xxw.shop.api.goods.manager.ShopCartAdapter;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -16,7 +16,7 @@ import com.xxw.shop.service.ShopCartItemService;
 import com.xxw.shop.service.SkuService;
 import com.xxw.shop.service.SpuService;
 import com.xxw.shop.vo.ShopCartAmountVO;
-import com.xxw.shop.vo.ShopCartVO;
+import com.xxw.shop.module.common.vo.ShopCartVO;
 import com.xxw.shop.vo.ShopCartWithAmountVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

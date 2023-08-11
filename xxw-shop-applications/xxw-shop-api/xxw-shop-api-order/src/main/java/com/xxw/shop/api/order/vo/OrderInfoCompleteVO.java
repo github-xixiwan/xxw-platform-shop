@@ -1,4 +1,4 @@
-package com.xxw.shop.vo;
+package com.xxw.shop.api.order.vo;
 
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OrderInfoVO extends BaseVO implements Serializable {
+public class OrderInfoCompleteVO extends BaseVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,6 +62,12 @@ public class OrderInfoVO extends BaseVO implements Serializable {
 
     @Schema(description = "用户订单地址id")
     private Long orderAddrId;
+
+    @Schema(description = "收货人姓名" )
+    private String consignee;
+
+    @Schema(description = "收货人手机号" )
+    private String mobile;
 
     @Schema(description = "订单项")
     private List<OrderItemVO> orderItems;

@@ -1,7 +1,7 @@
 package com.xxw.shop.api.order.feign;
 
-import com.xxw.shop.api.order.vo.EsOrderVO;
 import com.xxw.shop.api.order.vo.OrderAmountVO;
+import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO;
 import com.xxw.shop.api.order.vo.OrderStatusVO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -51,7 +51,7 @@ public interface OrderFeignClient {
      * @return es中的数据
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/getEsOrder")
-    ServerResponseEntity<EsOrderVO> getEsOrder(@RequestParam("orderId") Long orderId);
+    ServerResponseEntity<OrderInfoCompleteVO> getEsOrder(@RequestParam("orderId") Long orderId);
 
     /**
      * 支付时更新订单状态

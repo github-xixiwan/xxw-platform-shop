@@ -11,7 +11,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AttrVO extends BaseVO implements Serializable {
+public class AttrCompleteVO extends BaseVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

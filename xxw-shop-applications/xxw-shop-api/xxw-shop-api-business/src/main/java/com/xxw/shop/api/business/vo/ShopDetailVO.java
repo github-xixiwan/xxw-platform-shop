@@ -43,9 +43,9 @@ public class ShopDetailVO extends BaseVO implements Serializable {
     @Schema(description = "移动端背景图")
     private String mobileBackgroundPic;
 
-    @Schema(description = "用户名", required = true)
+    @Schema(description = "用户名")
     private String username;
 
-    @Schema(description = "密码", required = true)
+    @Schema(description = "密码")
     private String password;
 }

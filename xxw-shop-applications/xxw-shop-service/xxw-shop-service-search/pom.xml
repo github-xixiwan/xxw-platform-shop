@@ -23,10 +23,10 @@
             <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-search</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.xxw.shop</groupId>
-            <artifactId>xxw-shop-api-order</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.xxw.shop</groupId>-->
+<!--            <artifactId>xxw-shop-api-order</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-module-cache</artifactId>

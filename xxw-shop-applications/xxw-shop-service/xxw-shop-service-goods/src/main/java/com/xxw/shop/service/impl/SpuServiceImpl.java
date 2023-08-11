@@ -3,7 +3,9 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.xxw.shop.api.goods.vo.*;
+import com.xxw.shop.api.goods.vo.CategoryVO;
+import com.xxw.shop.api.goods.vo.SpuAttrValueVO;
+import com.xxw.shop.api.goods.vo.SpuVO;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.SpuDTO;
@@ -17,6 +19,8 @@ import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.vo.AttrVO;
+import com.xxw.shop.module.common.vo.GoodsVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.web.util.SpringContextUtils;
 import com.xxw.shop.service.*;
@@ -219,9 +223,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     }
 
     @Override
-    public EsGoodsVO loadEsGoodsVO(Long spuId) {
+    public GoodsVO loadGoodsVO(Long spuId) {
         // 获取商品、品牌数据
-        EsGoodsVO esGoodsVO = mapper.loadEsGoodsVO(spuId);
+        GoodsVO esGoodsVO = mapper.loadGoodsVO(spuId);
         // 获取分类数据
         CategoryVO category = categoryService.getPathNameByCategoryId(esGoodsVO.getCategoryId());
         String[] categoryIdArray = category.getPath().split(Constant.CATEGORY_INTERVAL);
@@ -245,7 +249,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         List<SpuAttrValueVO> spuAttrsBySpuId = spuAttrValueService.getSpuAttrsBySpuId(spuId);
         List<SpuAttrValueVO> attrs =
                 spuAttrsBySpuId.stream().filter(spuAttrValueVO -> spuAttrValueVO.getSearchType().equals(1)).collect(Collectors.toList());
-        esGoodsVO.setAttrs(mapperFacade.mapAsList(attrs, EsAttrVO.class));
+        esGoodsVO.setAttrs(mapperFacade.mapAsList(attrs, AttrVO.class));
         return esGoodsVO;
     }
 

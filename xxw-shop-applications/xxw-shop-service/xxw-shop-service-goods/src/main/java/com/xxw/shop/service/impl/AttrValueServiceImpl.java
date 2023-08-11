@@ -10,7 +10,7 @@ import com.xxw.shop.entity.SpuAttrValue;
 import com.xxw.shop.mapper.AttrValueMapper;
 import com.xxw.shop.service.AttrValueService;
 import com.xxw.shop.service.SpuAttrValueService;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 import com.xxw.shop.vo.AttrValueVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -63,7 +63,7 @@ public class AttrValueServiceImpl extends ServiceImpl<AttrValueMapper, AttrValue
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateAttrValue(AttrDTO dto, AttrVO dbAttr) {
+    public void updateAttrValue(AttrDTO dto, AttrCompleteVO dbAttr) {
         List<AttrValueDTO> addAttrValue = new ArrayList<>();
         List<AttrValueDTO> updateAttrValue = new ArrayList<>();
         List<Long> deleteAttrValue =

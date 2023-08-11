@@ -4,7 +4,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.ChangeShopCartItemDTO;
 import com.xxw.shop.dto.CheckShopCartItemDTO;
 import com.xxw.shop.entity.ShopCartItem;
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
 
 import java.util.List;
 

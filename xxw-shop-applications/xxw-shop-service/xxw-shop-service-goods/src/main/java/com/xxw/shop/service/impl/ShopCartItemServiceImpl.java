@@ -11,7 +11,7 @@ import com.xxw.shop.mapper.ShopCartItemMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.ShopCartItemService;
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

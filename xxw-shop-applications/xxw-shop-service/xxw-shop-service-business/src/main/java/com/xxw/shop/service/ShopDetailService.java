@@ -2,7 +2,7 @@ package com.xxw.shop.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import com.xxw.shop.api.business.vo.EsShopDetailVO;
+import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.dto.ShopDetailDTO;
 import com.xxw.shop.dto.ShopDetailQueryDTO;
@@ -33,7 +33,7 @@ public interface ShopDetailService extends IService<ShopDetail> {
 
     void removeCacheByShopId(Long shopId);
 
-    EsShopDetailVO shopExtensionData(Long shopId);
+    ShopDetailVO shopExtensionData(Long shopId);
 
     void createShop(ShopDetailDTO shopDetailDTO);
 

@@ -1,11 +1,11 @@
-package com.xxw.shop.api.goods.vo;
+package com.xxw.shop.module.common.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class EsAttrVO implements Serializable {
+public class AttrVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

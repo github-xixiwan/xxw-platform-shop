@@ -5,7 +5,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.AttrDTO;
 import com.xxw.shop.dto.AttrQueryDTO;
 import com.xxw.shop.entity.Attr;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
  */
 public interface AttrService extends IService<Attr> {
 
-    Page<AttrVO> page(AttrQueryDTO dto);
+    Page<AttrCompleteVO> page(AttrQueryDTO dto);
 
-    AttrVO getByAttrId(Long attrId);
+    AttrCompleteVO getByAttrId(Long attrId);
 
     void saveAttr(AttrDTO dto, List<Long> categoryIds);
 
@@ -27,12 +27,12 @@ public interface AttrService extends IService<Attr> {
 
     void deleteById(Long attrId);
 
-    List<AttrVO> getAttrsByCategoryIdAndAttrType(Long categoryId);
+    List<AttrCompleteVO> getAttrsByCategoryIdAndAttrType(Long categoryId);
 
     List<Long> getAttrOfCategoryIdByAttrId(Long attrId);
 
     void removeAttrByCategoryId(List<Long> categoryIds);
 
-    List<AttrVO> getShopAttrs(Long shopId);
+    List<AttrCompleteVO> getShopAttrs(Long shopId);
 
 }

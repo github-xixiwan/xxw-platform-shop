@@ -2,7 +2,7 @@ package com.xxw.shop.feign;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.xxw.shop.api.order.feign.OrderFeignClient;
-import com.xxw.shop.api.order.vo.EsOrderVO;
+import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.order.vo.OrderAmountVO;
 import com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO;
 import com.xxw.shop.api.order.vo.OrderStatusVO;
@@ -52,9 +52,9 @@ public class OrderFeignController implements OrderFeignClient {
     }
 
     @Override
-    public ServerResponseEntity<EsOrderVO> getEsOrder(Long orderId) {
-        EsOrderVO esOrderVO = orderInfoService.getEsOrder(orderId);
-        return ServerResponseEntity.success(esOrderVO);
+    public ServerResponseEntity<OrderInfoCompleteVO> getEsOrder(Long orderId) {
+        OrderInfoCompleteVO esOrderInfoCompleteVO = orderInfoService.getEsOrder(orderId);
+        return ServerResponseEntity.success(esOrderInfoCompleteVO);
     }
 
     @Override

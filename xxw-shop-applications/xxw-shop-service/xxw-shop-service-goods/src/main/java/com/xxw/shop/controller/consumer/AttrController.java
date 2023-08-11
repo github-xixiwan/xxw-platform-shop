@@ -2,7 +2,7 @@ package com.xxw.shop.controller.consumer;
 
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.service.AttrService;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -24,7 +24,7 @@ public class AttrController {
 
     @GetMapping
     @Operation(summary = "获取属性信息", description = "根据attrId获取属性信息")
-    public ServerResponseEntity<AttrVO> getByAttrId(@RequestParam Long attrId) {
+    public ServerResponseEntity<AttrCompleteVO> getByAttrId(@RequestParam Long attrId) {
         return ServerResponseEntity.success(attrService.getByAttrId(attrId));
     }
 }

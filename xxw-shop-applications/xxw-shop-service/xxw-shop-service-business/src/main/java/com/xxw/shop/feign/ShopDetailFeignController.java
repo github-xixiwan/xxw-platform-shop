@@ -1,7 +1,7 @@
 package com.xxw.shop.feign;
 
 import com.xxw.shop.api.business.feign.ShopDetailFeignClient;
-import com.xxw.shop.api.business.vo.EsShopDetailVO;
+import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.entity.ShopDetail;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -32,12 +32,12 @@ public class ShopDetailFeignController implements ShopDetailFeignClient {
     }
 
     @Override
-    public ServerResponseEntity<EsShopDetailVO> getShopByShopId(Long shopId) {
+    public ServerResponseEntity<ShopDetailVO> getShopByShopId(Long shopId) {
         ShopDetailVO shopDetail = shopDetailService.getByShopId(shopId);
         if (Objects.isNull(shopDetail)) {
-            return ServerResponseEntity.success(new EsShopDetailVO());
+            return ServerResponseEntity.success(new ShopDetailVO());
         }
-        return ServerResponseEntity.success(mapperFacade.map(shopDetail, EsShopDetailVO.class));
+        return ServerResponseEntity.success(mapperFacade.map(shopDetail, ShopDetailVO.class));
     }
 
 
@@ -48,7 +48,7 @@ public class ShopDetailFeignController implements ShopDetailFeignClient {
     }
 
     @Override
-    public ServerResponseEntity<EsShopDetailVO> shopExtensionData(Long shopId) {
+    public ServerResponseEntity<ShopDetailVO> shopExtensionData(Long shopId) {
         return ServerResponseEntity.success(shopDetailService.shopExtensionData(shopId));
     }
 

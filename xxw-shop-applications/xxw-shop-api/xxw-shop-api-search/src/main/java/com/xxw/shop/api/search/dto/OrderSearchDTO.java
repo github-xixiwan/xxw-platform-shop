@@ -38,11 +38,11 @@ public class OrderSearchDTO extends PageDTO<OrderSearchDTO> implements Serializa
 
     @Schema(description = "下单的时间范围:开始时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Schema(description = "下单的时间范围:结束时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endTime;
+    private LocalDateTime endTime;
 
     @Schema(description = "店铺名称")
     private String shopName;

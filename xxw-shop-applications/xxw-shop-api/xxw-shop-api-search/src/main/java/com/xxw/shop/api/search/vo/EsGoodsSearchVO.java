@@ -22,7 +22,7 @@ public class EsGoodsSearchVO implements Serializable {
     private List<BrandSearchVO> brands;
 
     @Schema(description = "spu列表信息")
-    private List<SpuSearchVO> spus;
+    private List<EsSpuVO> spus;
 
     @Schema(description = "分类列表信息")
     private List<CategorySearchVO> categorys;

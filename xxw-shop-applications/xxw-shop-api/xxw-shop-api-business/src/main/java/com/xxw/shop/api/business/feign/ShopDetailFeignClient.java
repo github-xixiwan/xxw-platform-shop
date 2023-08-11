@@ -1,6 +1,5 @@
 package com.xxw.shop.api.business.feign;
 
-import com.xxw.shop.api.business.vo.EsShopDetailVO;
 import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
@@ -29,7 +28,7 @@ public interface ShopDetailFeignClient {
      * @return 店铺信息
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/shopDetail/getShopByShopId")
-    ServerResponseEntity<EsShopDetailVO> getShopByShopId(@RequestParam("shopId") Long shopId);
+    ServerResponseEntity<ShopDetailVO> getShopByShopId(@RequestParam("shopId") Long shopId);
 
     /**
      * 根据店铺id列表， 获取店铺列表信息
@@ -47,7 +46,7 @@ public interface ShopDetailFeignClient {
      * @return 店铺信息及扩展信息
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/shopDetail/getShopExtension")
-    ServerResponseEntity<EsShopDetailVO> shopExtensionData(@RequestParam("shopId") Long shopId);
+    ServerResponseEntity<ShopDetailVO> shopExtensionData(@RequestParam("shopId") Long shopId);
 
     /**
      * 获取店铺信息及扩展信息

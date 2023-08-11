@@ -24,8 +24,8 @@
         <result column="delete_status" property="deleteStatus"/>
     </resultMap>
 
-    <resultMap type="com.xxw.shop.vo.OrderInfoVO" id="orderAndOrderItem" extends="orderMap">
-        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.vo.OrderItemVO">
+    <resultMap type="com.xxw.shop.api.order.vo.OrderInfoCompleteVO" id="orderAndOrderItem" extends="orderMap">
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.api.order.vo.OrderItemVO">
             <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
             <result column="shop_id" property="shopId"/>
             <result column="order_id" property="orderId"/>
@@ -43,10 +43,10 @@
         </collection>
     </resultMap>
 
-    <resultMap type="com.xxw.shop.api.order.vo.EsOrderVO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
+    <resultMap type="com.xxw.shop.api.order.vo.OrderInfoCompleteVO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
         <result column="consignee" jdbcType="VARCHAR" property="consignee"/>
-        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.api.order.vo.EsOrderItemVO">
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.api.order.vo.OrderItemVO">
             <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
             <result column="shop_id" property="shopId"/>
             <result column="order_id" property="orderId"/>

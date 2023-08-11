@@ -12,7 +12,7 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.AttrService;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,13 +36,13 @@ public class AttrController {
 
     @GetMapping("/page")
     @Operation(summary = "获取属性信息列表", description = "分页获取属性信息列表")
-    public ServerResponseEntity<Page<AttrVO>> page(@Valid AttrQueryDTO dto) {
+    public ServerResponseEntity<Page<AttrCompleteVO>> page(@Valid AttrQueryDTO dto) {
         return ServerResponseEntity.success(attrService.page(dto));
     }
 
     @GetMapping
     @Operation(summary = "获取属性信息", description = "根据attrId获取属性信息")
-    public ServerResponseEntity<AttrVO> getByAttrId(@RequestParam Long attrId) {
+    public ServerResponseEntity<AttrCompleteVO> getByAttrId(@RequestParam Long attrId) {
         return ServerResponseEntity.success(attrService.getByAttrId(attrId));
     }
 
@@ -86,13 +86,13 @@ public class AttrController {
     @GetMapping("/get_attrs_by_category_id")
     @Operation(summary = "根据分类及属性类别获取属性列表", description = "根据分类及属性类别获取属性列表")
     @Parameter(name = "categoryId", description = "分类id", required = true)
-    public ServerResponseEntity<List<AttrVO>> getAttrsByCategoryId(@RequestParam(value = "categoryId") Long categoryId) {
+    public ServerResponseEntity<List<AttrCompleteVO>> getAttrsByCategoryId(@RequestParam(value = "categoryId") Long categoryId) {
         return ServerResponseEntity.success(attrService.getAttrsByCategoryIdAndAttrType(categoryId));
     }
 
     @GetMapping("/get_shop_attrs")
     @Operation(summary = "获取店铺中的销售属性", description = "获取店铺中的销售属性")
-    public ServerResponseEntity<List<AttrVO>> getShopAttrs() {
+    public ServerResponseEntity<List<AttrCompleteVO>> getShopAttrs() {
         return ServerResponseEntity.success(attrService.getShopAttrs(AuthUserContext.get().getTenantId()));
     }
 

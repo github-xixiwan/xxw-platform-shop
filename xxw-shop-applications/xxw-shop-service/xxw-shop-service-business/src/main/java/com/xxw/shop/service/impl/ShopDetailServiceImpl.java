@@ -8,7 +8,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.api.auth.dto.AuthAccountDTO;
 import com.xxw.shop.api.auth.feign.AccountFeignClient;
 import com.xxw.shop.api.auth.vo.AuthAccountVO;
-import com.xxw.shop.api.business.vo.EsShopDetailVO;
+import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.cache.BusinessCacheNames;
 import com.xxw.shop.constant.BusinessBusinessError;
@@ -166,10 +166,10 @@ public class ShopDetailServiceImpl extends ServiceImpl<ShopDetailMapper, ShopDet
     }
 
     @Override
-    public EsShopDetailVO shopExtensionData(Long shopId) {
+    public ShopDetailVO shopExtensionData(Long shopId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(SHOP_DETAIL.SHOP_ID.ne(shopId));
-        return this.getOneAs(queryWrapper, EsShopDetailVO.class);
+        return this.getOneAs(queryWrapper, ShopDetailVO.class);
     }
 
     @Override

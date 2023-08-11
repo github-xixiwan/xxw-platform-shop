@@ -1,9 +1,9 @@
 package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.xxw.shop.entity.Spu;
-import com.xxw.shop.api.goods.vo.EsGoodsVO;
 import com.xxw.shop.api.goods.vo.SpuVO;
+import com.xxw.shop.entity.Spu;
+import com.xxw.shop.module.common.vo.GoodsVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public interface SpuMapper extends BaseMapper<Spu> {
      * @param spuId
      * @return 商品信息
      */
-    EsGoodsVO loadEsGoodsVO(@Param("spuId") Long spuId);
+    GoodsVO loadGoodsVO(@Param("spuId") Long spuId);
 
     /**
      * 获取 spuId列表

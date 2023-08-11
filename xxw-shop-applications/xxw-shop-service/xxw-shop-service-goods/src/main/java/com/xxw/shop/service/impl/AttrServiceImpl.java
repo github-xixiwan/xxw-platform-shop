@@ -17,7 +17,7 @@ import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.*;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 import com.xxw.shop.api.goods.vo.CategoryVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
@@ -60,7 +60,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     private SpuAttrValueService spuAttrValueService;
 
     @Override
-    public Page<AttrVO> page(AttrQueryDTO dto) {
+    public Page<AttrCompleteVO> page(AttrQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.select(AttrTableDef.ATTR.ALL_COLUMNS);
         queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
@@ -71,17 +71,17 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         queryWrapper.and(AttrTableDef.ATTR.ATTR_TYPE.eq(dto.getAttrType()));
         queryWrapper.and(AttrTableDef.ATTR.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
         queryWrapper.orderBy(AttrTableDef.ATTR.ATTR_ID.desc());
-        return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, AttrVO.class);
+        return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, AttrCompleteVO.class);
     }
 
-    private AttrVO getById(Long attrId) {
+    private AttrCompleteVO getById(Long attrId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.select(AttrTableDef.ATTR.ALL_COLUMNS);
         queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
         queryWrapper.from(AttrTableDef.ATTR);
         queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
         queryWrapper.where(AttrTableDef.ATTR.ATTR_ID.eq(attrId));
-        AttrVO attrVO = this.getOneAs(queryWrapper, AttrVO.class);
+        AttrCompleteVO attrVO = this.getOneAs(queryWrapper, AttrCompleteVO.class);
         if (Objects.isNull(attrVO)) {
             throw new BusinessException(GoodsBusinessError.GOODS_00001);
         }
@@ -89,8 +89,8 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     }
 
     @Override
-    public AttrVO getByAttrId(Long attrId) {
-        AttrVO attrVO = getById(attrId);
+    public AttrCompleteVO getByAttrId(Long attrId) {
+        AttrCompleteVO attrVO = getById(attrId);
         if (Objects.equals(attrVO.getAttrType(), AttrType.BASIC.value())) {
             attrVO.setCategories(attrCategoryService.listByAttrId(attrId));
             categoryService.getPathNames(attrVO.getCategories());
@@ -117,7 +117,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     @Transactional(rollbackFor = Exception.class)
     public void updateAttr(AttrDTO dto, List<Long> categoryIds) {
         Attr attr = mapperFacade.map(dto, Attr.class);
-        AttrVO dbAttr = getById(dto.getAttrId());
+        AttrCompleteVO dbAttr = getById(dto.getAttrId());
         // 保存属性值
         attrValueService.updateAttrValue(dto, dbAttr);
         this.updateById(attr);
@@ -131,7 +131,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
 
     @Override
     public void deleteById(Long attrId) {
-        AttrVO dbAttr = getById(attrId);
+        AttrCompleteVO dbAttr = getById(attrId);
         if (Objects.equals(dbAttr.getAttrType(), AttrType.BASIC.value())) {
             List<Long> categoryIds =
                     dbAttr.getCategories().stream().map(CategoryVO::getCategoryId).collect(Collectors.toList());
@@ -142,13 +142,13 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
 
     @Override
     @Cacheable(cacheNames = GoodsCacheNames.ATTRS_BY_CATEGORY_KEY, key = "#categoryId")
-    public List<AttrVO> getAttrsByCategoryIdAndAttrType(Long categoryId) {
+    public List<AttrCompleteVO> getAttrsByCategoryIdAndAttrType(Long categoryId) {
         return mapper.getAttrsByCategoryIdAndAttrType(categoryId);
     }
 
     @Override
     public List<Long> getAttrOfCategoryIdByAttrId(Long attrId) {
-        AttrVO attr = getById(attrId);
+        AttrCompleteVO attr = getById(attrId);
         if (CollUtil.isEmpty(attr.getCategories())) {
             return new ArrayList<>();
         }
@@ -168,7 +168,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     }
 
     @Override
-    public List<AttrVO> getShopAttrs(Long shopId) {
+    public List<AttrCompleteVO> getShopAttrs(Long shopId) {
         return mapper.getShopAttrs(shopId);
     }
 }

@@ -1,23 +1,23 @@
 package com.xxw.shop.api.goods.manager;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.BooleanUtil;
+import com.xxw.shop.api.business.feign.ShopDetailFeignClient;
+import com.xxw.shop.api.goods.dto.ShopCartItemDTO;
 import com.xxw.shop.api.goods.feign.ShopCartFeignClient;
 import com.xxw.shop.api.goods.feign.SpuFeignClient;
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
-import com.xxw.shop.api.goods.vo.SkuVO;
-import com.xxw.shop.api.goods.vo.SpuAndSkuVO;
-import com.xxw.shop.api.goods.vo.SpuVO;
+import com.xxw.shop.api.goods.vo.*;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * 购物车适配器
- */
 @Component
 public class ShopCartAdapter {
 
@@ -32,6 +32,7 @@ public class ShopCartAdapter {
 
     /**
      * 获取购物项组装信息
+     *
      * @param shopCartItemParam 购物项参数
      * @return 购物项组装信息
      */
@@ -50,7 +51,7 @@ public class ShopCartAdapter {
         }
         // 请选择您需要的商品加入购物车
         if (CollectionUtil.isEmpty(shopCartItemResponse.getData())) {
-            return ServerResponseEntity.fail(ResponseEnum.SHOP_CART_NOT_EXIST);
+            return ServerResponseEntity.fail(SystemErrorEnumError.SHOP_CART_NOT_EXIST);
         }
         // 返回购物车选择的商品信息
         return shopCartItemResponse;
@@ -58,11 +59,13 @@ public class ShopCartAdapter {
 
     /**
      * 将参数转换成组装好的购物项
+     *
      * @param shopCartItemParam 购物项参数
      * @return 组装好的购物项
      */
-    public ServerResponseEntity<List<ShopCartItemVO>> conversionShopCartItem(ShopCartItemDTO shopCartItemParam){
-        ServerResponseEntity<SpuAndSkuVO> spuAndSkuResponse = spuFeignClient.getSpuAndSkuById(shopCartItemParam.getSpuId(),shopCartItemParam.getSkuId());
+    public ServerResponseEntity<List<ShopCartItemVO>> conversionShopCartItem(ShopCartItemDTO shopCartItemParam) {
+        ServerResponseEntity<SpuAndSkuVO> spuAndSkuResponse =
+                spuFeignClient.getSpuAndSkuById(shopCartItemParam.getSpuId(), shopCartItemParam.getSkuId());
         if (!spuAndSkuResponse.isSuccess()) {
             return ServerResponseEntity.transform(spuAndSkuResponse);
         }
@@ -76,10 +79,10 @@ public class ShopCartAdapter {
         shopCartItem.setSpuId(shopCartItemParam.getSpuId());
         shopCartItem.setSkuName(sku.getSkuName());
         shopCartItem.setSpuName(spu.getName());
-        shopCartItem.setImgUrl(BooleanUtil.isTrue(spu.getHasSkuImg()) ? sku.getImgUrl() : spu.getMainImgUrl());
+        shopCartItem.setImgUrl(Objects.equals(spu.getHasSkuImg(), 1) ? sku.getImgUrl() : spu.getMainImgUrl());
         shopCartItem.setSkuPriceFee(sku.getPriceFee());
         shopCartItem.setTotalAmount(shopCartItem.getCount() * shopCartItem.getSkuPriceFee());
-        shopCartItem.setCreateTime(new Date());
+        shopCartItem.setCreateTime(LocalDateTime.now());
         shopCartItem.setShopId(shopCartItemParam.getShopId());
         return ServerResponseEntity.success(Collections.singletonList(shopCartItem));
     }
@@ -87,25 +90,27 @@ public class ShopCartAdapter {
 
     /**
      * 将参数转换成组装好的购物项
+     *
      * @param shopCartItems 订单参数
      * @return 组装好的购物项
      */
-    public List<ShopCartVO> conversionShopCart(List<ShopCartItemVO> shopCartItems){
+    public List<ShopCartVO> conversionShopCart(List<ShopCartItemVO> shopCartItems) {
 
         // 根据店铺ID划分item
-        Map<Long, List<ShopCartItemVO>> shopCartMap = shopCartItems.stream().collect(Collectors.groupingBy(ShopCartItemVO::getShopId));
+        Map<Long, List<ShopCartItemVO>> shopCartMap =
+                shopCartItems.stream().collect(Collectors.groupingBy(ShopCartItemVO::getShopId));
 
         // 返回一个店铺的所有信息
         List<ShopCartVO> shopCarts = new ArrayList<>();
         for (Long shopId : shopCartMap.keySet()) {
             // 构建每个店铺的购物车信息
-            ShopCartVO shopCart = buildShopCart(shopId,shopCartMap.get(shopId));
+            ShopCartVO shopCart = buildShopCart(shopId, shopCartMap.get(shopId));
             shopCart.setShopId(shopId);
-            shopCart.setshopCartItem(shopCartMap.get(shopId));
+            shopCart.setShopCartItem(shopCartMap.get(shopId));
             // 店铺信息
             ServerResponseEntity<String> shopNameResponse = shopDetailFeignClient.getShopNameByShopId(shopId);
             if (!shopNameResponse.isSuccess()) {
-                throw new Mall4cloudException(shopNameResponse.getMsg());
+                throw new BusinessException(shopNameResponse.getMessage());
             }
             shopCart.setShopName(shopNameResponse.getData());
             shopCarts.add(shopCart);

@@ -4,7 +4,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.dto.AttrDTO;
 import com.xxw.shop.dto.AttrValueDTO;
 import com.xxw.shop.entity.AttrValue;
-import com.xxw.shop.vo.AttrVO;
+import com.xxw.shop.vo.AttrCompleteVO;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface AttrValueService extends IService<AttrValue> {
 
     void saveAttrValue(List<AttrValueDTO> attrValues, Long attrId);
 
-    void updateAttrValue(AttrDTO dto, AttrVO dbAttr);
+    void updateAttrValue(AttrDTO dto, AttrCompleteVO dbAttr);
 }

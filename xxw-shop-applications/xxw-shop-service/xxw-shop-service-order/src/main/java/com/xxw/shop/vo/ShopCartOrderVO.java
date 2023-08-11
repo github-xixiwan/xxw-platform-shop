@@ -1,6 +1,6 @@
 package com.xxw.shop.vo;
 
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -15,18 +15,18 @@ public class ShopCartOrderVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "店铺id", required = true)
+    @Schema(description = "店铺id")
     private Long shopId;
 
-    @Schema(description = "店铺名称", required = true)
+    @Schema(description = "店铺名称")
     private String shopName;
 
-    @Schema(description = "商品总值", required = true)
+    @Schema(description = "商品总值")
     private Long total;
 
-    @Schema(description = "购物车商品", required = true)
+    @Schema(description = "购物车商品")
     private List<ShopCartItemVO> shopCartItemVO;
 
-    @Schema(description = "商品总数", required = true)
+    @Schema(description = "商品总数")
     private Integer totalCount;
 }

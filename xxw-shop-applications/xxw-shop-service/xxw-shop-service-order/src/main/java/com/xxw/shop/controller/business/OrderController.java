@@ -1,6 +1,12 @@
 package com.xxw.shop.controller.business;
 
 import com.xxw.shop.api.order.constant.OrderStatus;
+import com.xxw.shop.api.order.vo.OrderAddrVO;
+import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
+import com.xxw.shop.api.search.dto.OrderSearchDTO;
+import com.xxw.shop.api.search.feign.SearchOrderFeignClient;
+import com.xxw.shop.api.search.vo.EsOrderInfoVO;
+import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderAddr;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
@@ -8,8 +14,6 @@ import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.OrderAddrService;
 import com.xxw.shop.service.OrderInfoService;
-import com.xxw.shop.vo.OrderAddrVO;
-import com.xxw.shop.vo.OrderInfoVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -32,32 +36,32 @@ public class OrderController {
     @Resource
     private MapperFacade mapperFacade;
 
-    //TODO
-//    @Resource
-//    private SearchOrderFeignClient searchOrderFeignClient;
+    @Resource
+    private SearchOrderFeignClient searchOrderFeignClient;
 
     @Resource
     private OrderAddrService orderAddrService;
 
-//    /**
-//     * 分页获取
-//     */
-//    @GetMapping("/page")
-//    @Operation(summary = "分页获取订单详情")
-//    public ServerResponseEntity<EsPageVO<EsOrderInfoVO>> page(OrderSearchDTO orderSearchDTO) {
-//        Long shopId = AuthUserContext.get().getTenantId();
-//        orderSearchDTO.setShopId(shopId);
-//        return searchOrderFeignClient.getOrderPage(orderSearchDTO);
-//    }
+    /**
+     * 分页获取
+     */
+    @GetMapping("/page")
+    @Operation(summary = "分页获取订单详情")
+    public ServerResponseEntity<EsPageVO<EsOrderInfoVO>> page(OrderSearchDTO dto) {
+        Long shopId = AuthUserContext.get().getTenantId();
+        dto.setShopId(shopId);
+        return searchOrderFeignClient.getOrderPage(dto);
+    }
 
     /**
      * 获取信息
      */
     @GetMapping("/order_info/{orderId}")
     @Operation(summary = "根据id获取订单详情")
-    public ServerResponseEntity<OrderInfoVO> info(@PathVariable("orderId") Long orderId) {
+    public ServerResponseEntity<OrderInfoCompleteVO> info(@PathVariable("orderId") Long orderId) {
         // 订单和订单项
-        OrderInfoVO vo = orderInfoService.getOrderAndOrderItemData(orderId, AuthUserContext.get().getTenantId());
+        OrderInfoCompleteVO vo = orderInfoService.getOrderAndOrderItemData(orderId,
+                AuthUserContext.get().getTenantId());
         // 详情用户收货地址
         OrderAddr orderAddr = orderAddrService.getById(vo.getOrderAddrId());
         vo.setOrderAddr(mapperFacade.map(orderAddr, OrderAddrVO.class));
@@ -79,9 +83,10 @@ public class OrderController {
      */
     @GetMapping("/order_item_and_address/{orderId}")
     @Operation(summary = "订单项待发货数量查询")
-    public ServerResponseEntity<OrderInfoVO> getOrderItemAndAddress(@PathVariable("orderId") Long orderId) {
+    public ServerResponseEntity<OrderInfoCompleteVO> getOrderItemAndAddress(@PathVariable("orderId") Long orderId) {
         // 订单和订单项
-        OrderInfoVO vo = orderInfoService.getOrderAndOrderItemData(orderId, AuthUserContext.get().getTenantId());
+        OrderInfoCompleteVO vo = orderInfoService.getOrderAndOrderItemData(orderId,
+                AuthUserContext.get().getTenantId());
         // 详情用户收货地址
         OrderAddr orderAddr = orderAddrService.getById(vo.getOrderAddrId());
         vo.setOrderAddr(mapperFacade.map(orderAddr, OrderAddrVO.class));
@@ -94,7 +99,7 @@ public class OrderController {
     @PostMapping("/delivery")
     @Operation(summary = "发货")
     public ServerResponseEntity<Void> delivery(@Valid @RequestBody DeliveryOrderDTO deliveryOrderParam) {
-        OrderInfoVO order = orderInfoService.getOrderByOrderId(deliveryOrderParam.getOrderId());
+        OrderInfoCompleteVO order = orderInfoService.getOrderByOrderId(deliveryOrderParam.getOrderId());
         // 订单不在支付状态
         if (!Objects.equals(order.getStatus(), OrderStatus.PADYED.value())) {
             return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_NOT_PAYED);

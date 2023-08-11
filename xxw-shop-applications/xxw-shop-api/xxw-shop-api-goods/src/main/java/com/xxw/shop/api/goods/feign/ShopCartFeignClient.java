@@ -1,6 +1,6 @@
 package com.xxw.shop.api.goods.feign;
 
-import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
