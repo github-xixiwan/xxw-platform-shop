@@ -58,5 +58,6 @@
 
     <select id="list" resultType="com.xxw.shop.api.goods.vo.CategoryVO">
         SELECT <include refid="Vo_Column_List"/> FROM `category` WHERE shop_id = #{shopId} AND `status` != -1
+        order by seq asc
     </select>
 </mapper>

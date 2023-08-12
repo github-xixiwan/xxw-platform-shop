@@ -1,5 +1,5 @@
 spring:
   application:
-    name: shop-goods
+    name: shop-business
   profiles:
     active: @profileActive@

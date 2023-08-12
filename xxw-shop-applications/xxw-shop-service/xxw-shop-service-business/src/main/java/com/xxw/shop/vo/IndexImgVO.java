@@ -1,5 +1,6 @@
 package com.xxw.shop.vo;
 
+import com.mybatisflex.annotation.Column;
 import com.xxw.shop.api.goods.vo.SpuVO;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +36,7 @@ public class IndexImgVO extends BaseVO implements Serializable {
     @Schema(description = "图片类型 0:小程序 1:pc")
     private Integer imgType;
 
+    @Column(ignore = true)
     @Schema(description = "spu信息")
     private SpuVO spu;
 }

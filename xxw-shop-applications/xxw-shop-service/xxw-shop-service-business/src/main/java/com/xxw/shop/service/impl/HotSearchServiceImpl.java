@@ -33,7 +33,7 @@ public class HotSearchServiceImpl extends ServiceImpl<HotSearchMapper, HotSearch
         queryWrapper.and(HOT_SEARCH.CONTENT.like(dto.getContent()));
         queryWrapper.and(HOT_SEARCH.STATUS.eq(dto.getStatus()));
         queryWrapper.and(HOT_SEARCH.TITLE.like(dto.getTitle()));
-        queryWrapper.orderBy(HOT_SEARCH.HOT_SEARCH_ID.desc());
+        queryWrapper.orderBy(HOT_SEARCH.SEQ.asc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, HotSearchVO.class);
     }
 

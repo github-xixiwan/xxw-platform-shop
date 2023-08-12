@@ -246,7 +246,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(CATEGORY.NAME.eq(category.getName()));
         queryWrapper.and(CATEGORY.PARENT_ID.eq(category.getParentId()));
-        queryWrapper.and(CATEGORY.CATEGORY_ID.eq(category.getCategoryId()));
+        queryWrapper.and(CATEGORY.CATEGORY_ID.ne(category.getCategoryId()));
         queryWrapper.and(CATEGORY.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
         long countByName = this.count(queryWrapper);
         if (countByName > 0) {
