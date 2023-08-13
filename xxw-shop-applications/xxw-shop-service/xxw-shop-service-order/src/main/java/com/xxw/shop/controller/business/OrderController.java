@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @RestController("businessOrderController")
 @Controller
-@RequestMapping("/m/order")
+@RequestMapping("/b/order")
 @Tag(name = "business-订单接口")
 public class OrderController {
 

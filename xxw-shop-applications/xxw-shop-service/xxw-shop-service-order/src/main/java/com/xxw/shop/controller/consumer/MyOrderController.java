@@ -32,7 +32,7 @@ import java.util.Objects;
  * 我的订单
  */
 @RestController
-@RequestMapping("/p/myOrder")
+@RequestMapping("/c/myOrder")
 @Tag(name = "consumer-我的订单接口")
 public class MyOrderController {
 

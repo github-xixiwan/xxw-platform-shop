@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("businessGoodsSearchController")
-@RequestMapping("/m/search")
+@RequestMapping("/b/search")
 @Tag(name = "business-spu管理列表接口")
 public class GoodsSearchController {
 

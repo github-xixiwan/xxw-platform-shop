@@ -22,6 +22,11 @@ public class ShopUserTableDef extends TableDef {
     public final QueryColumn CODE = new QueryColumn(this, "code");
 
     /**
+     * 头像
+     */
+    public final QueryColumn AVATAR = new QueryColumn(this, "avatar");
+
+    /**
      * 关联店铺id
      */
     public final QueryColumn SHOP_ID = new QueryColumn(this, "shop_id");

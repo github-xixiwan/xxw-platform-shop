@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("platformGoodsSearchController")
-@RequestMapping("/p/search")
+@RequestMapping("/c/search")
 @Tag(name = "platform-spu列表接口")
 public class GoodsSearchController {
 

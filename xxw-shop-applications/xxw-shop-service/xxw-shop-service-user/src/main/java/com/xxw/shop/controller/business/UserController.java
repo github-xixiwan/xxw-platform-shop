@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * 用户表
  */
 @RestController("businessUserController")
-@RequestMapping("/m/user")
+@RequestMapping("/b/user")
 @Tag(name = "店铺-用户表")
 public class UserController {
 

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
-@RequestMapping(value = "/m/shop_user")
+@RequestMapping(value = "/b/shop_user")
 @RestController("businessShopUserController")
 @Tag(name = "店铺用户信息")
 public class ShopUserController {
@@ -65,7 +65,8 @@ public class ShopUserController {
     @Operation(summary = "保存店铺用户信息", description = "保存店铺用户信息")
     public ServerResponseEntity<Void> save(@Valid @RequestBody ShopUserDTO dto) {
         ShopUser shopUser = mapperFacade.map(dto, ShopUser.class);
-        shopUser.setShopUserId(null);
+        //TODO
+        shopUser.setShopUserId(System.currentTimeMillis());
         shopUser.setShopId(AuthUserContext.get().getTenantId());
         shopUser.setHasAccount(0);
         shopUserService.saveShopUser(shopUser, dto.getRoleIds());

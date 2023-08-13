@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- *  实体类。
+ * 实体类。
  *
  * @author liaoxiting
  * @since 2023-08-10
@@ -48,6 +48,11 @@ public class ShopUser implements Serializable {
      * 昵称
      */
     private String nickName;
+
+    /**
+     * 头像
+     */
+    private String avatar;
 
     /**
      * 员工编号

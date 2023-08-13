@@ -19,6 +19,10 @@ public class ShopUserDTO implements Serializable {
     @Schema(description = "昵称")
     private String nickName;
 
+    @NotBlank(message = "头像不能为空")
+    @Schema(description = "头像")
+    private String avatar;
+
     @Schema(description = "员工编号")
     private String code;
 

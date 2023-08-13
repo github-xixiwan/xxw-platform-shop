@@ -13,6 +13,8 @@ public enum BusinessBusinessError implements ErrorEnumInterface {
     BUSINESS_00004("BUSINESS_00004", "用户账号已存在"),
     BUSINESS_00005("BUSINESS_00005", "该用户已经创建过店铺"),
     BUSINESS_00006("BUSINESS_00006", "店铺不存在"),
+    BUSINESS_00007("BUSINESS_00007", "无法获取账户信息"),
+    BUSINESS_00008("BUSINESS_00008", "已有账号，无需重复添加"),
     ;
 
     private String code;

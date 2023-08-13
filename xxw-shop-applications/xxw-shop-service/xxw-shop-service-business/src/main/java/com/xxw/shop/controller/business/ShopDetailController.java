@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(value = "/m/shop_detail")
+@RequestMapping(value = "/b/shop_detail")
 @RestController("businessShopDetailController")
 @Tag(name = "business-店铺详情信息")
 public class ShopDetailController {
