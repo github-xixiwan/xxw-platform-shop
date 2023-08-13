@@ -3,6 +3,8 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.SkuVO;
+import com.xxw.shop.api.goods.vo.SpuSkuAttrValueVO;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.dto.SkuDTO;
 import com.xxw.shop.dto.SpuDTO;
@@ -18,8 +20,6 @@ import com.xxw.shop.service.SkuService;
 import com.xxw.shop.service.SkuStockService;
 import com.xxw.shop.service.SpuSkuAttrValueService;
 import com.xxw.shop.vo.SkuConsumerVO;
-import com.xxw.shop.api.goods.vo.SkuVO;
-import com.xxw.shop.api.goods.vo.SpuSkuAttrValueVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
@@ -57,38 +57,34 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 
     @Override
     public void saveSku(Long spuId, List<SkuDTO> skuList) {
-        List<Sku> list = skuList.stream().map(l -> {
+        List<SkuStock> skuStocks = new ArrayList<>();
+        List<SpuSkuAttrValue> spuSkuAttrValues = new ArrayList<>();
+        skuList.forEach(l -> {
             Sku sku = mapperFacade.map(l, Sku.class);
             sku.setSpuId(spuId);
             sku.setStatus(StatusEnum.ENABLE.value());
-            return sku;
-        }).collect(Collectors.toList());
-        skuList.forEach(sku -> {
-            sku.setSpuId(spuId);
-            sku.setStatus(StatusEnum.ENABLE.value());
-        });
-        // 处理数据，保存库存、属性
-        this.saveBatchSelective(list);
-        List<SkuStock> skuStocks = new ArrayList<>();
-        List<SpuSkuAttrValue> spuSkuAttrValues = new ArrayList<>();
-        for (SkuDTO skuDTO : skuList) {
+            this.save(sku);
+
+            Long skuId = sku.getSkuId();
+
             SkuStock skuStock = new SkuStock();
-            skuStock.setSkuId(skuDTO.getSkuId());
-            skuStock.setStock(skuDTO.getStock());
-            skuStock.setActualStock(skuDTO.getStock());
+            skuStock.setSkuId(skuId);
+            skuStock.setStock(l.getStock());
+            skuStock.setActualStock(l.getStock());
             skuStock.setLockStock(0);
             skuStocks.add(skuStock);
-            List<SpuSkuAttrValue> spuSkuAttrValueList = mapperFacade.mapAsList(skuDTO.getSpuSkuAttrValues(),
+
+            List<SpuSkuAttrValue> spuSkuAttrValueList = mapperFacade.mapAsList(l.getSpuSkuAttrValues(),
                     SpuSkuAttrValue.class);
-            for (SpuSkuAttrValue spuSkuAttrValue : spuSkuAttrValueList) {
-                spuSkuAttrValue.setSpuId(spuId);
-                spuSkuAttrValue.setSkuId(skuDTO.getSkuId());
-                spuSkuAttrValue.setStatus(StatusEnum.ENABLE.value());
-                spuSkuAttrValues.add(spuSkuAttrValue);
-            }
-        }
-        skuStockService.saveBatch(skuStocks);
-        spuSkuAttrValueService.saveBatch(spuSkuAttrValues);
+            spuSkuAttrValueList.forEach(ll -> {
+                ll.setSpuId(spuId);
+                ll.setSkuId(skuId);
+                ll.setStatus(StatusEnum.ENABLE.value());
+                spuSkuAttrValues.add(ll);
+            });
+        });
+        skuStockService.saveBatchSelective(skuStocks);
+        spuSkuAttrValueService.saveBatchSelective(spuSkuAttrValues);
     }
 
 

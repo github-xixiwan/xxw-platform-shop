@@ -1,7 +1,6 @@
 package com.xxw.shop.controller.business;
 
 import com.mybatisflex.core.paginate.Page;
-import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.dto.ShopUserDTO;
 import com.xxw.shop.dto.ShopUserQueryDTO;
 import com.xxw.shop.entity.ShopUser;
@@ -9,7 +8,6 @@ import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.service.ShopDetailService;
 import com.xxw.shop.service.ShopUserService;
 import com.xxw.shop.vo.ShopUserVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,9 +28,6 @@ public class ShopUserController {
     private ShopUserService shopUserService;
 
     @Resource
-    private ShopDetailService shopDetailService;
-
-    @Resource
     private MapperFacade mapperFacade;
 
     @GetMapping("/page")
@@ -47,11 +42,8 @@ public class ShopUserController {
     @Operation(summary = "登陆店铺用户信息", description = "获取当前登陆店铺用户的用户信息")
     public ServerResponseEntity<ShopUserVO> info() {
         UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
-        ShopUserVO shopUserVO = new ShopUserVO();
+        ShopUserVO shopUserVO = shopUserService.getByUserId(userInfoInTokenBO.getUserId());
         shopUserVO.setIsAdmin(userInfoInTokenBO.getIsAdmin());
-        ShopDetailVO shopDetail = shopDetailService.getByShopId(userInfoInTokenBO.getTenantId());
-        shopUserVO.setAvatar(shopDetail.getShopLogo());
-        shopUserVO.setNickName(shopDetail.getShopName());
         return ServerResponseEntity.success(shopUserVO);
     }
 

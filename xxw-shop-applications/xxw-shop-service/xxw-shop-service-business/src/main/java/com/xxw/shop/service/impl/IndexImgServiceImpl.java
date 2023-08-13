@@ -33,7 +33,7 @@ public class IndexImgServiceImpl extends ServiceImpl<IndexImgMapper, IndexImg> i
         queryWrapper.where(INDEX_IMG.IMG_TYPE.eq(dto.getImgType()));
         queryWrapper.and(INDEX_IMG.SHOP_ID.eq(dto.getShopId()));
         queryWrapper.and(INDEX_IMG.STATUS.eq(dto.getStatus()));
-        queryWrapper.orderBy(INDEX_IMG.SEQ.desc(), INDEX_IMG.IMG_ID.desc());
+        queryWrapper.orderBy(INDEX_IMG.SEQ.asc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, IndexImgVO.class);
     }
 
