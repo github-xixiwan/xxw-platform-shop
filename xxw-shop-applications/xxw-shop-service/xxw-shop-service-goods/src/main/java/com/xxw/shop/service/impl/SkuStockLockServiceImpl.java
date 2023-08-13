@@ -84,7 +84,7 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
             }
         }
         // 保存库存锁定信息
-        this.saveBatch(skuStockLocks);
+        this.saveBatchSelective(skuStockLocks);
         List<Long> orderIds = skuStockLocksParam.stream().map(SkuStockLockDTO::getOrderId).collect(Collectors.toList());
         // 一个小时后解锁库存
         boolean r = rocketmqSend.stockUnlock(orderIds);

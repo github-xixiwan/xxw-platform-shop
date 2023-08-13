@@ -33,6 +33,7 @@ import com.xxw.shop.service.ShopUserService;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,7 +71,7 @@ public class ShopDetailServiceImpl extends ServiceImpl<ShopDetailMapper, ShopDet
     public Page<ShopDetailVO> page(ShopDetailQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(SHOP_DETAIL.SHOP_STATUS.ne(-1));
-        queryWrapper.and(SHOP_DETAIL.SHOP_NAME.like(dto.getShopName()));
+        queryWrapper.and(SHOP_DETAIL.SHOP_NAME.like(dto.getShopName()).when(StringUtils.isNotBlank(dto.getShopName())));
         queryWrapper.and(SHOP_DETAIL.SHOP_STATUS.eq(dto.getShopStatus()));
         queryWrapper.orderBy(SHOP_DETAIL.SHOP_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, ShopDetailVO.class);

@@ -68,7 +68,7 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
             sku.setStatus(StatusEnum.ENABLE.value());
         });
         // 处理数据，保存库存、属性
-        this.saveBatch(list);
+        this.saveBatchSelective(list);
         List<SkuStock> skuStocks = new ArrayList<>();
         List<SpuSkuAttrValue> spuSkuAttrValues = new ArrayList<>();
         for (SkuDTO skuDTO : skuList) {

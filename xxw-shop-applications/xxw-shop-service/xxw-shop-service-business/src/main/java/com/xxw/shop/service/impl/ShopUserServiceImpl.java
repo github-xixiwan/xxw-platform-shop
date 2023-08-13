@@ -21,6 +21,7 @@ import com.xxw.shop.service.ShopUserService;
 import com.xxw.shop.vo.ShopUserVO;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +49,7 @@ public class ShopUserServiceImpl extends ServiceImpl<ShopUserMapper, ShopUser> i
     public Page<ShopUserVO> page(ShopUserQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(SHOP_USER.SHOP_ID.eq(dto.getShopId()));
-        queryWrapper.and(SHOP_USER.NICK_NAME.like(dto.getNickName()));
+        queryWrapper.and(SHOP_USER.NICK_NAME.like(dto.getNickName()).when(StringUtils.isNotBlank(dto.getNickName())));
         queryWrapper.orderBy(SHOP_USER.SHOP_USER_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, ShopUserVO.class);
     }

@@ -12,6 +12,7 @@ import com.xxw.shop.module.minio.vo.AttachFileVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.starter.minio.MinioComponent;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(ATTACH_FILE.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
         queryWrapper.and(ATTACH_FILE.ATTACH_FILE_GROUP_ID.eq(dto.getFileGroupId()));
-        queryWrapper.and(ATTACH_FILE.FILE_NAME.like(dto.getFileName()));
+        queryWrapper.and(ATTACH_FILE.FILE_NAME.like(dto.getFileName()).when(StringUtils.isNotBlank(dto.getFileName())));
         queryWrapper.orderBy(ATTACH_FILE.UPDATE_TIME.desc(), ATTACH_FILE.FILE_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, AttachFileVO.class);
     }
@@ -46,7 +47,7 @@ public class AttachFileServiceImpl extends ServiceImpl<AttachFileMapper, AttachF
     public void saveAttachFile(List<AttachFile> attachFiles) {
         Long tenantId = AuthUserContext.get().getTenantId();
         attachFiles.forEach(l -> l.setShopId(tenantId));
-        this.saveBatch(attachFiles);
+        this.saveBatchSelective(attachFiles);
     }
 
     @Override

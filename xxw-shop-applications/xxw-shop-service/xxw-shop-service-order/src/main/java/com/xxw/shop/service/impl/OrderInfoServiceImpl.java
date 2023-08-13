@@ -255,7 +255,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 orders.add(vo);
             }
         }
-        this.saveBatch(orderInfos);
+        this.saveBatchSelective(orderInfos);
         orderItemService.saveBatch(orderItems);
         // 清空购物车
         shopCartFeignClient.deleteItem(shopCartItemIds);

@@ -7,4 +7,10 @@
     <select id="getCategoryIdsByAttrId" resultType="java.lang.Long">
         SELECT category_id FROM `attr_category` WHERE attr_id = #{attrId}
     </select>
+
+    <select id="listByAttrId" resultType="com.xxw.shop.api.goods.vo.CategoryVO">
+        SELECT c.category_id,c.parent_id,c.path,c.name FROM `attr_category` ac
+                                                                JOIN `category` c ON ac.category_id = c.category_id
+        WHERE ac.attr_id = #{attrId}
+    </select>
 </mapper>

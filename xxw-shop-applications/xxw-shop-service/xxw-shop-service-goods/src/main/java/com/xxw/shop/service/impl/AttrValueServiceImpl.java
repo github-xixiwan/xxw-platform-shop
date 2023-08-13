@@ -44,7 +44,7 @@ public class AttrValueServiceImpl extends ServiceImpl<AttrValueMapper, AttrValue
             attrValue.setValue(l.getValue());
             return attrValue;
         }).collect(Collectors.toList());
-        this.saveBatch(list);
+        this.saveBatchSelective(list);
     }
 
     private void updateAttrValue(List<AttrValueDTO> attrValues) {

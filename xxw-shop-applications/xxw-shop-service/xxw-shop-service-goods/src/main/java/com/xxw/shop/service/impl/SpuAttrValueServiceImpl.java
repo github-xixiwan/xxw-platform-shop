@@ -78,7 +78,7 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
         spuAttrValues.forEach(l -> {
             l.setSpuId(spuId);
         });
-        this.saveBatch(spuAttrValues);
+        this.saveBatchSelective(spuAttrValues);
     }
 
     @Override
@@ -108,7 +108,12 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchUpdateSpuAttrValue(List<SpuAttrValue> spuAttrValues) {
-        mapper.batchUpdateSpuAttrValue(spuAttrValues);
+        spuAttrValues.forEach(l->{
+            QueryWrapper queryWrapper = QueryWrapper.create();
+            queryWrapper.where(SPU_ATTR_VALUE.ATTR_VALUE_ID.eq(l.getAttrValueId()));
+            queryWrapper.and(SPU_ATTR_VALUE.ATTR_ID.eq(l.getAttrId()));
+            this.update(l,queryWrapper);
+        });
         List<Long> attrValueIds = spuAttrValues.stream().map(SpuAttrValue::getAttrValueId).collect(Collectors.toList());
         updateSpu(attrValueIds, null);
     }
@@ -117,7 +122,9 @@ public class SpuAttrValueServiceImpl extends ServiceImpl<SpuAttrValueMapper, Spu
         List<Long> spuIds = null;
         if (CollUtil.isNotEmpty(attrValueIds)) {
             spuIds = mapper.getShopIdByAttrValueIds(attrValueIds);
-            mapper.updateSpuUpdateTime(spuIds, null);
+            if (CollUtil.isNotEmpty(spuIds)) {
+                mapper.updateSpuUpdateTime(spuIds, null);
+            }
         } else if (CollUtil.isNotEmpty(categoryIds)) {
             spuIds = spuMapper.getSpuIdsByCondition(null, categoryIds, null, null);
             mapper.updateSpuUpdateTime(null, categoryIds);

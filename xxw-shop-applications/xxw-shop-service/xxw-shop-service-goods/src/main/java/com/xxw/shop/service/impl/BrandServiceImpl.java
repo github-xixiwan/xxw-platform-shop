@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.BrandVO;
 import com.xxw.shop.cache.GoodsCacheNames;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.BrandDTO;
@@ -17,9 +18,9 @@ import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.service.BrandService;
 import com.xxw.shop.service.CategoryBrandService;
 import com.xxw.shop.service.SpuService;
-import com.xxw.shop.api.goods.vo.BrandVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -55,10 +56,13 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     @Override
     public Page<BrandVO> page(BrandQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(BRAND.NAME.eq(dto.getName()));
+        queryWrapper.where(BRAND.NAME.eq(dto.getName()).when(StringUtils.isNotBlank(dto.getName())));
         queryWrapper.and(BRAND.STATUS.eq(dto.getStatus()));
-        queryWrapper.orderBy(BRAND.BRAND_ID.desc());
-        return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, BrandVO.class);
+        queryWrapper.orderBy(BRAND.SEQ.asc());
+        Page<Brand> page = this.page(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper);
+        List<Brand> records = page.getRecords();
+        return new Page<>(mapperFacade.mapAsList(records, BrandVO.class), page.getPageNumber(),
+                page.getPageSize(), page.getTotalRow());
     }
 
     @Override
@@ -73,7 +77,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
         dto.setStatus(StatusEnum.ENABLE.value());
         Brand brand = mapperFacade.map(dto, Brand.class);
         this.save(brand);
-        categoryBrandService.saveByCategoryIds(dto.getBrandId(), categoryIds);
+        categoryBrandService.saveByCategoryIds(brand.getBrandId(), categoryIds);
     }
 
     @Override

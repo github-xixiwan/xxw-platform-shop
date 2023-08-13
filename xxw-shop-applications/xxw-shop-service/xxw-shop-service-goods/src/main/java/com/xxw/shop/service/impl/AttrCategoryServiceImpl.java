@@ -3,10 +3,10 @@ package com.xxw.shop.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.entity.AttrCategory;
 import com.xxw.shop.mapper.AttrCategoryMapper;
 import com.xxw.shop.service.AttrCategoryService;
-import com.xxw.shop.api.goods.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class AttrCategoryServiceImpl extends ServiceImpl<AttrCategoryMapper, Att
             attrCategory.setCategoryId(l);
             return attrCategory;
         }).collect(Collectors.toList());
-        this.saveBatch(list);
+        this.saveBatchSelective(list);
     }
 
     @Override
@@ -59,8 +59,6 @@ public class AttrCategoryServiceImpl extends ServiceImpl<AttrCategoryMapper, Att
 
     @Override
     public List<CategoryVO> listByAttrId(Long attrId) {
-        QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(ATTR_CATEGORY.ATTR_ID.eq(attrId));
-        return this.listAs(queryWrapper, CategoryVO.class);
+        return mapper.listByAttrId(attrId);
     }
 }

@@ -41,7 +41,7 @@ public class CategoryBrandServiceImpl extends ServiceImpl<CategoryBrandMapper, C
             categoryBrand.setCategoryId(l);
             return categoryBrand;
         }).collect(Collectors.toList());
-        this.saveBatch(list);
+        this.saveBatchSelective(list);
     }
 
     @Override

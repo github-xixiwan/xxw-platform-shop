@@ -28,21 +28,6 @@
         </where>
     </update>
 
-    <update id="batchUpdateSpuAttrValue">
-        <foreach collection="spuAttrValues" item="spuAttrValue">
-            update spu_attr_value
-            <set>
-                <if test="spuAttrValue.attrName != null">
-                    `attr_name` = #{spuAttrValue.attrName}
-                </if>
-                <if test="spuAttrValue.attrValueName != null">
-                    ,`attr_value_name` = #{spuAttrValue.attrValueName}
-                </if>
-            </set>
-            where `attr_value_id` = #{spuAttrValue.attrValueId} and attr_id = #{spuAttrValue.attrId};
-        </foreach>
-    </update>
-
     <select id="getSpuAttrsBySpuId" resultType="com.xxw.shop.api.goods.vo.SpuAttrValueVO">
         SELECT sav.attr_id,sav.attr_name,sav.attr_value_id,sav.attr_value_name,a.search_type
         FROM spu_attr_value sav

@@ -1,13 +1,14 @@
 package com.xxw.shop.mapper;
 
 import com.mybatisflex.core.BaseMapper;
+import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.entity.AttrCategory;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- *  映射层。
+ * 映射层。
  *
  * @author liaoxiting
  * @since 2023-08-08
@@ -21,4 +22,12 @@ public interface AttrCategoryMapper extends BaseMapper<AttrCategory> {
      * @return 分类id列表
      */
     List<Long> getCategoryIdsByAttrId(@Param("attrId") Long attrId);
+
+    /**
+     * 据属性Id，获取属性关联的分类列表信息
+     *
+     * @param attrId
+     * @return
+     */
+    List<CategoryVO> listByAttrId(@Param("attrId") Long attrId);
 }

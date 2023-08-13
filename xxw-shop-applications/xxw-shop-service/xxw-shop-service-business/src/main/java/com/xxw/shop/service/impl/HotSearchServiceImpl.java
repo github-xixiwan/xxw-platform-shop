@@ -9,6 +9,7 @@ import com.xxw.shop.entity.HotSearch;
 import com.xxw.shop.mapper.HotSearchMapper;
 import com.xxw.shop.service.HotSearchService;
 import com.xxw.shop.vo.HotSearchVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,9 @@ public class HotSearchServiceImpl extends ServiceImpl<HotSearchMapper, HotSearch
     public Page<HotSearchVO> page(HotSearchQueryDTO dto) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(HOT_SEARCH.SHOP_ID.eq(dto.getShopId()));
-        queryWrapper.and(HOT_SEARCH.CONTENT.like(dto.getContent()));
+        queryWrapper.and(HOT_SEARCH.CONTENT.like(dto.getContent()).when(StringUtils.isNotBlank(dto.getContent())));
         queryWrapper.and(HOT_SEARCH.STATUS.eq(dto.getStatus()));
-        queryWrapper.and(HOT_SEARCH.TITLE.like(dto.getTitle()));
+        queryWrapper.and(HOT_SEARCH.TITLE.like(dto.getTitle()).when(StringUtils.isNotBlank(dto.getTitle())));
         queryWrapper.orderBy(HOT_SEARCH.SEQ.asc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, HotSearchVO.class);
     }

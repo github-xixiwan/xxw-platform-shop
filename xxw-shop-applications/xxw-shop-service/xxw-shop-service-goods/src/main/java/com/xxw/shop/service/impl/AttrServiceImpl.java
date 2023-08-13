@@ -20,6 +20,7 @@ import com.xxw.shop.service.*;
 import com.xxw.shop.vo.AttrCompleteVO;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,11 +66,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         queryWrapper.select(ATTR.ALL_COLUMNS);
         queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
         queryWrapper.from(ATTR);
-        queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
-        queryWrapper.where(ATTR.NAME.eq(dto.getName()));
+        queryWrapper.leftJoin(ATTR_VALUE).on(ATTR.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
+        queryWrapper.where(ATTR.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
         queryWrapper.and(ATTR.SEARCH_TYPE.eq(dto.getSearchType()));
         queryWrapper.and(ATTR.ATTR_TYPE.eq(dto.getAttrType()));
-        queryWrapper.and(ATTR.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
+        queryWrapper.and(ATTR.NAME.eq(dto.getName()).when(StringUtils.isNotBlank(dto.getName())));
         queryWrapper.orderBy(ATTR.ATTR_ID.desc());
         return this.pageAs(new Page<>(dto.getPageNumber(), dto.getPageSize()), queryWrapper, AttrCompleteVO.class);
     }
@@ -79,7 +80,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         queryWrapper.select(ATTR.ALL_COLUMNS);
         queryWrapper.select(ATTR_VALUE.ATTR_VALUE_ID, ATTR_VALUE.VALUE);
         queryWrapper.from(ATTR);
-        queryWrapper.leftJoin(ATTR_VALUE).on(ATTR_VALUE.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
+        queryWrapper.leftJoin(ATTR_VALUE).on(ATTR.ATTR_ID.eq(ATTR_VALUE.ATTR_ID));
         queryWrapper.where(ATTR.ATTR_ID.eq(attrId));
         AttrCompleteVO attrVO = this.getOneAs(queryWrapper, AttrCompleteVO.class);
         if (Objects.isNull(attrVO)) {
@@ -104,12 +105,13 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         Attr attr = mapperFacade.map(dto, Attr.class);
         attr.setShopId(AuthUserContext.get().getTenantId());
         this.save(attr);
+        Long attrId = attr.getAttrId();
         // 保存属性值
-        attrValueService.saveAttrValue(dto.getAttrValues(), dto.getAttrId());
+        attrValueService.saveAttrValue(dto.getAttrValues(), attrId);
         // 基本属性关联分类
         if (Objects.equals(AttrType.BASIC.value(), dto.getAttrType())) {
             // 保存属性分类关联信息
-            attrCategoryService.saveAttrCategory(dto.getAttrId(), categoryIds);
+            attrCategoryService.saveAttrCategory(attrId, categoryIds);
         }
     }
 
@@ -131,7 +133,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
 
     @Override
     public void deleteById(Long attrId) {
-        AttrCompleteVO dbAttr = getById(attrId);
+        AttrCompleteVO dbAttr = getByAttrId(attrId);
         if (Objects.equals(dbAttr.getAttrType(), AttrType.BASIC.value())) {
             List<Long> categoryIds =
                     dbAttr.getCategories().stream().map(CategoryVO::getCategoryId).collect(Collectors.toList());

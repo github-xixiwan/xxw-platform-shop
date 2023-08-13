@@ -32,13 +32,6 @@ public interface SpuAttrValueMapper extends BaseMapper<SpuAttrValue> {
     void updateSpuUpdateTime(@Param("spuIds") List<Long> spuIds, @Param("categoryIds") List<Long> categoryIds);
 
     /**
-     * 批量更新商品基本属性
-     *
-     * @param spuAttrValues
-     */
-    void batchUpdateSpuAttrValue(@Param("spuAttrValues") List<SpuAttrValue> spuAttrValues);
-
-    /**
      * 根据spuId获取商品属性列表
      *
      * @param spuId

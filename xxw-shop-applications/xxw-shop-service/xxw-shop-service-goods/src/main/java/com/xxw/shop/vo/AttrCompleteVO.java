@@ -1,5 +1,6 @@
 package com.xxw.shop.vo;
 
+import com.mybatisflex.annotation.Column;
 import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,6 +37,7 @@ public class AttrCompleteVO extends BaseVO implements Serializable {
     @Schema(description = "属性值列表")
     private List<AttrValueVO> attrValues;
 
+    @Column(ignore = true)
     @Schema(description = "分类列表")
     private List<CategoryVO> categories;
 }
