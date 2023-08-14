@@ -21,6 +21,7 @@ import com.xxw.shop.module.web.util.IpHelper;
 import com.xxw.shop.service.UserService;
 import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,9 @@ import static com.xxw.shop.entity.table.UserTableDef.USER;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
+    private MapperFacade mapperFacade;
+
+    @Resource
     private AccountFeignClient accountFeignClient;
 
     @Override
@@ -56,7 +60,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserCompleteVO getByUserId(Long userId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(USER.USER_ID.eq(userId));
-        return this.getOneAs(queryWrapper, UserCompleteVO.class);
+        User user = this.getById(userId);
+        return mapperFacade.map(user, UserCompleteVO.class);
     }
 
     @Override

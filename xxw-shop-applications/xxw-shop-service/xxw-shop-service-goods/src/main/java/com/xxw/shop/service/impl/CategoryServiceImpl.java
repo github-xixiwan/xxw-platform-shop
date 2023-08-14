@@ -172,7 +172,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         queryWrapper.where(CATEGORY.SHOP_ID.eq(shopId));
         queryWrapper.and(CATEGORY.PARENT_ID.eq(parentId));
         queryWrapper.and(CATEGORY.STATUS.eq(1));
-        return this.listAs(queryWrapper, CategoryVO.class);
+        List<Category> list = this.list(queryWrapper);
+        return mapperFacade.mapAsList(list, CategoryVO.class);
     }
 
     @Override

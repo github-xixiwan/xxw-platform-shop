@@ -16,7 +16,6 @@
     <modules>
         <module>xxw-shop-module-common</module>
         <module>xxw-shop-module-web</module>
-        <module>xxw-shop-module-web-exception</module>
         <module>xxw-shop-module-nacos</module>
         <module>xxw-shop-module-mybatis</module>
         <module>xxw-shop-module-security</module>

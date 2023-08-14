@@ -35,9 +35,5 @@
             <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-module-mybatis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-        </dependency>
     </dependencies>
 </project>

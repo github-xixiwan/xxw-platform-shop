@@ -35,7 +35,7 @@ public class ServerResponseEntity<T> implements Serializable {
         return message;
     }
 
-    public void setMsg(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -59,7 +59,7 @@ public class ServerResponseEntity<T> implements Serializable {
     public static <T> ServerResponseEntity<T> success(T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
-        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMessage());
+        serverResponseEntity.setMessage(SystemErrorEnumError.OK.getMessage());
         serverResponseEntity.setData(data);
         return serverResponseEntity;
     }
@@ -67,21 +67,28 @@ public class ServerResponseEntity<T> implements Serializable {
     public static <T> ServerResponseEntity<T> success() {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(SystemErrorEnumError.OK.getCode());
-        serverResponseEntity.setMsg(SystemErrorEnumError.OK.getMessage());
+        serverResponseEntity.setMessage(SystemErrorEnumError.OK.getMessage());
+        return serverResponseEntity;
+    }
+
+    public static <T> ServerResponseEntity<T> fail(String message) {
+        ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
+        serverResponseEntity.setCode(SystemErrorEnumError.SHOW_FAIL.getCode());
+        serverResponseEntity.setMessage(message);
         return serverResponseEntity;
     }
 
     public static <T> ServerResponseEntity<T> fail(ErrorEnumInterface errorEnum) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(errorEnum.getCode());
-        serverResponseEntity.setMsg(errorEnum.getMessage());
+        serverResponseEntity.setMessage(errorEnum.getMessage());
         return serverResponseEntity;
     }
 
     public static <T> ServerResponseEntity<T> fail(ErrorEnumInterface errorEnum, T data) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(errorEnum.getCode());
-        serverResponseEntity.setMsg(errorEnum.getMessage());
+        serverResponseEntity.setMessage(errorEnum.getMessage());
         serverResponseEntity.setData(data);
         return serverResponseEntity;
     }
@@ -89,7 +96,7 @@ public class ServerResponseEntity<T> implements Serializable {
     public static <T> ServerResponseEntity<T> transform(ServerResponseEntity<?> oldServerResponseEntity) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(oldServerResponseEntity.getCode());
-        serverResponseEntity.setMsg(oldServerResponseEntity.getMessage());
+        serverResponseEntity.setMessage(oldServerResponseEntity.getMessage());
         return serverResponseEntity;
     }
 

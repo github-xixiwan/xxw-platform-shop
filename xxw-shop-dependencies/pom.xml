@@ -43,11 +43,6 @@
             </dependency>
             <dependency>
                 <groupId>com.xxw.shop</groupId>
-                <artifactId>xxw-shop-module-web-exception</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xxw.shop</groupId>
                 <artifactId>xxw-shop-module-nacos</artifactId>
                 <version>${revision}</version>
             </dependency>

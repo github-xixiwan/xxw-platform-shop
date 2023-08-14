@@ -33,6 +33,12 @@ spring:
           # 转小写
           lower-case-service-id: true 
       routes:
+        - id: shop-user
+          uri: lb://shop-user
+          predicates:
+            - Path=/xxw_shop_user/**
+          filters:
+            - RewritePath=/xxw_shop_user(?<segment>/?.*), $\{segment}
         - id: shop-rbac
           uri: lb://shop-rbac
           predicates:
