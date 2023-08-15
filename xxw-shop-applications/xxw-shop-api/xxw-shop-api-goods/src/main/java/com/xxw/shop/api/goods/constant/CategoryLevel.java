@@ -1,4 +1,4 @@
-package com.xxw.shop.constant;
+package com.xxw.shop.api.goods.constant;
 
 /**
  * 等级

@@ -16,14 +16,14 @@ import com.xxw.shop.entity.SpuDetail;
 import com.xxw.shop.entity.SpuExtension;
 import com.xxw.shop.mapper.SpuMapper;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCache;
+import com.xxw.shop.module.common.bo.EsAttrBO;
+import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.common.vo.AttrVO;
-import com.xxw.shop.module.common.vo.GoodsVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.web.util.SpringContextUtils;
 import com.xxw.shop.service.*;
@@ -226,34 +226,34 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     }
 
     @Override
-    public GoodsVO loadGoodsVO(Long spuId) {
+    public EsGoodsBO loadEsGoodsBO(Long spuId) {
         // 获取商品、品牌数据
-        GoodsVO esGoodsVO = mapper.loadGoodsVO(spuId);
+        EsGoodsBO esGoodsBO = mapper.loadEsGoodsBO(spuId);
         // 获取分类数据
-        CategoryVO category = categoryService.getPathNameByCategoryId(esGoodsVO.getCategoryId());
+        CategoryVO category = categoryService.getPathNameByCategoryId(esGoodsBO.getCategoryId());
         String[] categoryIdArray = category.getPath().split(Constant.CATEGORY_INTERVAL);
-        esGoodsVO.setCategoryName(category.getName());
+        esGoodsBO.setCategoryName(category.getName());
         for (int i = 0; i < categoryIdArray.length; i++) {
             if (i == 0) {
-                esGoodsVO.setPrimaryCategoryId(Long.valueOf(categoryIdArray[i]));
-                esGoodsVO.setPrimaryCategoryName(category.getPathNames().get(i));
+                esGoodsBO.setPrimaryCategoryId(Long.valueOf(categoryIdArray[i]));
+                esGoodsBO.setPrimaryCategoryName(category.getPathNames().get(i));
             } else {
-                esGoodsVO.setSecondaryCategoryId(Long.valueOf(categoryIdArray[i]));
-                esGoodsVO.setSecondaryCategoryName(category.getPathNames().get(i));
+                esGoodsBO.setSecondaryCategoryId(Long.valueOf(categoryIdArray[i]));
+                esGoodsBO.setSecondaryCategoryName(category.getPathNames().get(i));
             }
         }
-        CategoryVO shopCategory = categoryService.getCategoryId(esGoodsVO.getShopSecondaryCategoryId());
+        CategoryVO shopCategory = categoryService.getCategoryId(esGoodsBO.getShopSecondaryCategoryId());
         if (Objects.nonNull(shopCategory)) {
-            esGoodsVO.setShopSecondaryCategoryName(shopCategory.getName());
-            esGoodsVO.setShopPrimaryCategoryId(shopCategory.getParentId());
-//            esGoodsVO.setShopPrimaryCategoryName(shopCategory.getPathNames().get(0));
+            esGoodsBO.setShopSecondaryCategoryName(shopCategory.getName());
+            esGoodsBO.setShopPrimaryCategoryId(shopCategory.getParentId());
+//            esGoodsBO.setShopPrimaryCategoryName(shopCategory.getPathNames().get(0));
         }
         // 获取属性
         List<SpuAttrValueVO> spuAttrsBySpuId = spuAttrValueService.getSpuAttrsBySpuId(spuId);
         List<SpuAttrValueVO> attrs =
                 spuAttrsBySpuId.stream().filter(spuAttrValueVO -> spuAttrValueVO.getSearchType().equals(1)).collect(Collectors.toList());
-        esGoodsVO.setAttrs(mapperFacade.mapAsList(attrs, AttrVO.class));
-        return esGoodsVO;
+        esGoodsBO.setAttrs(mapperFacade.mapAsList(attrs, EsAttrBO.class));
+        return esGoodsBO;
     }
 
     @Override

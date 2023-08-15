@@ -3,8 +3,8 @@ package com.xxw.shop.feign;
 import com.xxw.shop.api.business.feign.ShopDetailFeignClient;
 import com.xxw.shop.api.business.vo.ShopDetailVO;
 import com.xxw.shop.api.goods.feign.GoodsFeignClient;
+import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.common.vo.GoodsVO;
 import com.xxw.shop.service.SpuService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,19 +22,19 @@ public class GoodsFeignController implements GoodsFeignClient {
     private ShopDetailFeignClient shopDetailFeignClient;
 
     @Override
-    public ServerResponseEntity<GoodsVO> loadGoodsVO(Long spuId) {
-        GoodsVO esGoodsVO = spuService.loadGoodsVO(spuId);
+    public ServerResponseEntity<EsGoodsBO> loadEsGoodsBO(Long spuId) {
+        EsGoodsBO esEsGoodsBO = spuService.loadEsGoodsBO(spuId);
         // 获取店铺信息
         ServerResponseEntity<ShopDetailVO> shopDetailResponse =
-                shopDetailFeignClient.getShopByShopId(esGoodsVO.getShopId());
+                shopDetailFeignClient.getShopByShopId(esEsGoodsBO.getShopId());
         ShopDetailVO shopDetail = shopDetailResponse.getData();
-        esGoodsVO.setShopName(shopDetail.getShopName());
-        esGoodsVO.setShopImg(shopDetail.getShopLogo());
-        esGoodsVO.setShopType(shopDetail.getType());
-        if (Objects.isNull(esGoodsVO.getSaleNum())) {
-            esGoodsVO.setSaleNum(0);
+        esEsGoodsBO.setShopName(shopDetail.getShopName());
+        esEsGoodsBO.setShopImg(shopDetail.getShopLogo());
+        esEsGoodsBO.setShopType(shopDetail.getType());
+        if (Objects.isNull(esEsGoodsBO.getSaleNum())) {
+            esEsGoodsBO.setSaleNum(0);
         }
-        return ServerResponseEntity.success(esGoodsVO);
+        return ServerResponseEntity.success(esEsGoodsBO);
     }
 
     @Override

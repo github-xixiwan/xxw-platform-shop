@@ -4,7 +4,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.api.goods.vo.SpuVO;
 import com.xxw.shop.dto.SpuDTO;
 import com.xxw.shop.entity.Spu;
-import com.xxw.shop.module.common.vo.GoodsVO;
+import com.xxw.shop.module.common.bo.EsGoodsBO;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public interface SpuService extends IService<Spu> {
 
     void updateSpuUpdateTime(List<Long> spuIds, List<Long> categoryIds);
 
-    GoodsVO loadGoodsVO(Long spuId);
+    EsGoodsBO loadEsGoodsBO(Long spuId);
 
     List<Long> getSpuIdsByCondition(List<Long> shopCategoryIds, List<Long> categoryIds, Long brandId, Long shopId);
 

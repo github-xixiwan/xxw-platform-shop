@@ -120,6 +120,11 @@
                 <artifactId>xxw-shop-starter-elasticsearch</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xxw.shop</groupId>
+                <artifactId>xxw-shop-starter-canal</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- other -->
             <dependency>

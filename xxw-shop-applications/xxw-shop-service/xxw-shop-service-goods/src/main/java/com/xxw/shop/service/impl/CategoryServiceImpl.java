@@ -6,7 +6,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.api.goods.vo.CategoryVO;
 import com.xxw.shop.cache.GoodsCacheNames;
-import com.xxw.shop.constant.CategoryLevel;
+import com.xxw.shop.api.goods.constant.CategoryLevel;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.CategoryDTO;
 import com.xxw.shop.entity.Category;

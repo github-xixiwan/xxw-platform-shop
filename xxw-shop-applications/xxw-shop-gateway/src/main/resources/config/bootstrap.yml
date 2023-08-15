@@ -87,3 +87,9 @@ spring:
             - Path=/xxw_shop_support/**
           filters:
             - RewritePath=/xxw_shop_support(?<segment>/?.*), $\{segment}
+        - id: shop-payment
+          uri: lb://shop-payment
+          predicates:
+            - Path=/xxw_shop_payment/**
+          filters:
+            - RewritePath=/xxw_shop_payment(?<segment>/?.*), $\{segment}

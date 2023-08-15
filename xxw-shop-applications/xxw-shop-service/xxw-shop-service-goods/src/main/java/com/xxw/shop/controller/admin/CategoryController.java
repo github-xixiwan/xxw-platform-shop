@@ -1,6 +1,6 @@
 package com.xxw.shop.controller.admin;
 
-import com.xxw.shop.constant.CategoryLevel;
+import com.xxw.shop.api.goods.constant.CategoryLevel;
 import com.xxw.shop.constant.GoodsBusinessError;
 import com.xxw.shop.dto.CategoryDTO;
 import com.xxw.shop.module.common.constant.Constant;

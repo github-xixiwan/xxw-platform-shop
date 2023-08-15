@@ -17,6 +17,7 @@
         <module>xxw-shop-starter-captcha</module>
         <module>xxw-shop-starter-minio</module>
         <module>xxw-shop-starter-elasticsearch</module>
+        <module>xxw-shop-starter-canal</module>
     </modules>
 
     <dependencies>
