@@ -4,7 +4,6 @@ import com.xxw.shop.starter.canal.annotation.CanalModel;
 import com.xxw.shop.starter.canal.common.FieldNamingPolicy;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,9 +11,7 @@ import java.util.Date;
  */
 @Data
 @CanalModel(database = "xxw-shop", table = "order_info", fieldNamingPolicy = FieldNamingPolicy.LOWER_UNDERSCORE)
-public class OrderInfoBO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class OrderInfoBO {
 
     /**
      * 订单ID

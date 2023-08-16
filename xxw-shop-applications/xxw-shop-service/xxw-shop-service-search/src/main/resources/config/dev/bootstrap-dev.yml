@@ -11,7 +11,7 @@ spring:
             group: xxw-shop
     sentinel:
       transport:
-        dashboard: 10.66.70.183:8080
+        dashboard: 10.66.70.183:8088
     stream:
       default:
         producer:
@@ -23,12 +23,12 @@ spring:
           name-server: 10.66.70.183:9876
           group: default-group
       bindings:
-        xxwShop-in-0:
-          destination: xxw-shop
+        xxwShopCanal-in-0:
+          destination: xxw-shop-canal
           content-type: application/json
-          group: xxw-shop-group
+          group: xxw-shop-canal-group
       function:
-        definition: xxwShop
+        definition: xxwShopCanal
   datasource: # 数据源的相关配置
     url: jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: xxw-shop

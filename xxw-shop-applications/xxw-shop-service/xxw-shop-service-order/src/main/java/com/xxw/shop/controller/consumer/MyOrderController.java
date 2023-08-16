@@ -10,6 +10,7 @@ import com.xxw.shop.api.search.vo.EsOrderInfoVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.entity.OrderAddr;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.OrderAddrService;
@@ -117,7 +118,7 @@ public class MyOrderController {
         OrderInfoCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
         if (!Objects.equals(order.getStatus(), OrderStatus.UNPAY.value())) {
             // 订单已支付，无法取消订单
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_PAYED);
+            throw new BusinessException(SystemErrorEnumError.ORDER_PAYED);
         }
         // 如果订单未支付的话，将订单设为取消状态
         orderInfoService.cancelOrderAndGetCancelOrderIds(Collections.singletonList(order.getOrderId()));
@@ -135,7 +136,7 @@ public class MyOrderController {
         OrderInfoCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
         if (!Objects.equals(order.getStatus(), OrderStatus.CONSIGNMENT.value())) {
             // 订单未发货，无法确认收货
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_NO_DELIVERY);
+            throw new BusinessException(SystemErrorEnumError.ORDER_NO_DELIVERY);
         }
         List<OrderItemVO> orderItems = orderItemService.listOrderItemsByOrderId(orderId);
         order.setOrderItems(orderItems);
@@ -156,7 +157,7 @@ public class MyOrderController {
         if (!Objects.equals(order.getStatus(), OrderStatus.SUCCESS.value()) && !Objects.equals(order.getStatus(),
                 OrderStatus.CLOSE.value())) {
             // 订单未完成或未关闭，无法删除订单
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_NOT_FINISH_OR_CLOSE);
+            throw new BusinessException(SystemErrorEnumError.ORDER_NOT_FINISH_OR_CLOSE);
         }
         // 删除订单
         orderInfoService.deleteOrder(order.getOrderId());

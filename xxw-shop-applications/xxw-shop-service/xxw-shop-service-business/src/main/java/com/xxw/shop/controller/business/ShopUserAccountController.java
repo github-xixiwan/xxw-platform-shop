@@ -4,6 +4,7 @@ import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import com.xxw.shop.constant.BusinessBusinessError;
 import com.xxw.shop.dto.ChangeAccountDTO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.ShopUserService;
@@ -35,13 +36,13 @@ public class ShopUserAccountController {
     public ServerResponseEntity<Void> addAccount(@Valid @RequestBody ChangeAccountDTO changeAccountDTO) {
         ShopUserVO shopUserVO = shopUserService.getByUserId(changeAccountDTO.getUserId());
         if (shopUserVO == null) {
-            return ServerResponseEntity.fail(BusinessBusinessError.BUSINESS_00007);
+            throw new BusinessException(BusinessBusinessError.BUSINESS_00007);
         }
         if (Objects.equals(shopUserVO.getHasAccount(), 1)) {
-            return ServerResponseEntity.fail(BusinessBusinessError.BUSINESS_00008);
+            throw new BusinessException(BusinessBusinessError.BUSINESS_00008);
         }
         if (!Objects.equals(shopUserVO.getShopId(), AuthUserContext.get().getTenantId())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         return shopUserService.saveChangeAccount(changeAccountDTO);
     }
@@ -51,10 +52,10 @@ public class ShopUserAccountController {
     public ServerResponseEntity<Void> updateAccount(@Valid @RequestBody ChangeAccountDTO changeAccountDTO) {
         ShopUserVO shopUserVO = shopUserService.getByUserId(changeAccountDTO.getUserId());
         if (shopUserVO == null || Objects.equals(shopUserVO.getHasAccount(), 0)) {
-            return ServerResponseEntity.fail(BusinessBusinessError.BUSINESS_00007);
+            throw new BusinessException(BusinessBusinessError.BUSINESS_00007);
         }
         if (!Objects.equals(shopUserVO.getShopId(), AuthUserContext.get().getTenantId())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         return shopUserService.updateChangeAccount(changeAccountDTO);
     }

@@ -8,10 +8,10 @@ import com.xxw.shop.api.search.dto.GoodsSearchDTO;
 import com.xxw.shop.api.search.vo.*;
 import com.xxw.shop.constant.*;
 import com.xxw.shop.module.common.constant.StatusEnum;
-import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.json.JsonUtil;
 import com.xxw.shop.vo.SpuAdminVO;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -67,7 +67,7 @@ public class GoodsSearchManager {
      */
     public EsPageVO<EsGoodsSearchVO> page(GoodsSearchDTO dto) {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
-        dto.setSearchType(SearchTypeEnum.APP.value());
+        dto.setSearchType(SearchTypeEnum.CONSUMER.value());
         SearchResponse response = pageSearchResult(dto, Boolean.TRUE);
         return buildSearchResult(dto, response);
     }
@@ -81,7 +81,7 @@ public class GoodsSearchManager {
      */
     public EsPageVO<EsGoodsSearchVO> simplePage(GoodsSearchDTO dto) {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
-        dto.setSearchType(SearchTypeEnum.APP.value());
+        dto.setSearchType(SearchTypeEnum.CONSUMER.value());
         SearchResponse response = pageSearchResult(dto, Boolean.FALSE);
         return buildSearchResult(dto, response);
     }
@@ -100,7 +100,7 @@ public class GoodsSearchManager {
             //1、返回的所有查询到的商品
             spuList = getSpuListByResponse(response.getHits().getHits());
         } catch (IOException e) {
-            throw new BusinessException(SearchBusinessError.SEARCH_00001);
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
         }
         return spuList;
     }
@@ -124,7 +124,7 @@ public class GoodsSearchManager {
 
             log.debug("搜索返回结果：" + response.toString());
         } catch (IOException e) {
-            throw new BusinessException(SearchBusinessError.SEARCH_00001);
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
         }
         return response;
     }
@@ -314,7 +314,7 @@ public class GoodsSearchManager {
 
         log.debug("构建的DSL语句 {}", searchSourceBuilder.toString());
 
-        return new SearchRequest(new String[]{EsIndexEnum.PRODUCT.value()}, searchSourceBuilder);
+        return new SearchRequest(new String[]{EsIndexEnum.GOODS.value()}, searchSourceBuilder);
     }
 
     /**
@@ -575,7 +575,7 @@ public class GoodsSearchManager {
         searchSourceBuilder.aggregation(shop);
         searchSourceBuilder.size(0);
         log.debug("构建的DSL语句 {}", searchSourceBuilder.toString());
-        SearchRequest searchRequest = new SearchRequest(new String[]{EsIndexEnum.PRODUCT.value()}, searchSourceBuilder);
+        SearchRequest searchRequest = new SearchRequest(new String[]{EsIndexEnum.GOODS.value()}, searchSourceBuilder);
         //2、执行检索请求
         SearchResponse response = null;
         List<EsSpuVO> spuList = null;

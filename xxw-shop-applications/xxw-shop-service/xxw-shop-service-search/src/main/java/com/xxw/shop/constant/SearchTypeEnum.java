@@ -10,12 +10,12 @@ public enum SearchTypeEnum {
     /**
      * 用户端搜索
      */
-    APP(1),
+    CONSUMER(1),
 
     /**
      * 商家端、平台端搜索
      */
-    MULTISHOP(2),
+    BUSINESS(2),
 
     /**
      * 商家端、平台端搜索

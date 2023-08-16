@@ -1,15 +1,16 @@
 package com.xxw.shop.controller.role;
 
 import com.mybatisflex.core.paginate.Page;
+import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.role.dto.RoleDTO;
 import com.xxw.shop.module.role.dto.RoleQueryDTO;
 import com.xxw.shop.module.role.entity.Role;
 import com.xxw.shop.module.role.service.RoleService;
 import com.xxw.shop.module.role.vo.RoleVO;
 import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.module.common.constant.SystemErrorEnumError;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -83,7 +84,7 @@ public class RoleController {
         RoleVO dbRole = roleService.getByRoleId(roleDTO.getRoleId());
 
         if (!Objects.equals(dbRole.getBizType(), userInfoInTokenBO.getSysType()) || !Objects.equals(dbRole.getTenantId(), userInfoInTokenBO.getTenantId())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         Role role = mapperFacade.map(roleDTO, Role.class);
         role.setBizType(userInfoInTokenBO.getSysType());
@@ -100,7 +101,7 @@ public class RoleController {
         RoleVO dbRole = roleService.getByRoleId(roleId);
 
         if (!Objects.equals(dbRole.getBizType(), userInfoInTokenBO.getSysType()) || !Objects.equals(dbRole.getTenantId(), userInfoInTokenBO.getTenantId())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         roleService.removeById(roleId, userInfoInTokenBO.getSysType());
         return ServerResponseEntity.success();

@@ -48,7 +48,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
             throw new BusinessException(SearchBusinessError.SEARCH_00004);
         }
 
-        IndexRequest request = new IndexRequest(EsIndexEnum.PRODUCT.value());
+        IndexRequest request = new IndexRequest(EsIndexEnum.GOODS.value());
         request.id(String.valueOf(spuId));
         request.source(JsonUtil.toJson(esGoodsBO.getData()), XContentType.JSON);
         try {
@@ -69,7 +69,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
         Long spuId = result.getPrimaryKey();
         ServerResponseEntity<EsGoodsBO> esGoodsBO = goodsFeignClient.loadEsGoodsBO(spuId);
         String source = JsonUtil.toJson(esGoodsBO.getData());
-        UpdateRequest request = new UpdateRequest(EsIndexEnum.PRODUCT.value(), String.valueOf(spuId));
+        UpdateRequest request = new UpdateRequest(EsIndexEnum.GOODS.value(), String.valueOf(spuId));
         request.doc(source, XContentType.JSON);
         request.docAsUpsert(true);
         try {

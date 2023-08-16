@@ -11,7 +11,7 @@ spring:
             group: xxw-shop
     sentinel:
       transport:
-        dashboard: 10.66.70.183:8080
+        dashboard: 10.66.70.183:8088
     stream:
       default:
         producer:

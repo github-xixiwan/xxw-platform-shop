@@ -51,7 +51,7 @@ public class SpuExtensionCanalListener extends BaseCanalBinlogEventProcessor<Spu
         // 清除缓存
         globalRedisCacheManager.evictCache("shop_goods:spu_extension:", afterData.getSpuId().toString());
 
-        UpdateRequest request = new UpdateRequest(EsIndexEnum.PRODUCT.value(), String.valueOf(afterData.getSpuId()));
+        UpdateRequest request = new UpdateRequest(EsIndexEnum.GOODS.value(), String.valueOf(afterData.getSpuId()));
 
         EsGoodsBO esGoodsBO = new EsGoodsBO();
         // 可售库存

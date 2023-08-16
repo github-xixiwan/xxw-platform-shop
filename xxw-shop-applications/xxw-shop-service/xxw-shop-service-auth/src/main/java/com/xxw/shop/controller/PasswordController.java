@@ -5,9 +5,10 @@ import com.xxw.shop.constant.AuthBusinessError;
 import com.xxw.shop.dto.UpdatePasswordDTO;
 import com.xxw.shop.entity.AuthAccount;
 import com.xxw.shop.manager.TokenStore;
-import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.AuthAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +39,7 @@ public class PasswordController {
         AuthAccount authAccount = authAccountService.getByUserIdAndType(userInfoInToken.getUserId(),
                 userInfoInToken.getSysType());
         if (!passwordEncoder.matches(updatePasswordDTO.getOldPassword(), authAccount.getPassword())) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00007);
+            throw new BusinessException(AuthBusinessError.AUTH_00007);
         }
         authAccountService.modifyPassword(userInfoInToken.getUserId(), userInfoInToken.getSysType(),
                 updatePasswordDTO.getNewPassword());

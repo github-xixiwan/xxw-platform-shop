@@ -10,6 +10,7 @@ import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderAddr;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.OrderAddrService;
@@ -102,7 +103,7 @@ public class OrderController {
         OrderInfoCompleteVO order = orderInfoService.getOrderByOrderId(deliveryOrderParam.getOrderId());
         // 订单不在支付状态
         if (!Objects.equals(order.getStatus(), OrderStatus.PADYED.value())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_NOT_PAYED);
+            throw new BusinessException(SystemErrorEnumError.ORDER_NOT_PAYED);
         }
         orderInfoService.delivery(deliveryOrderParam);
         return ServerResponseEntity.success();

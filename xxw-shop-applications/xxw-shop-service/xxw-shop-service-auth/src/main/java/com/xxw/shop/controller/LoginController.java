@@ -5,10 +5,11 @@ import com.xxw.shop.api.rbac.dto.ClearUserPermissionsCacheDTO;
 import com.xxw.shop.api.rbac.feign.PermissionFeignClient;
 import com.xxw.shop.dto.AuthenticationDTO;
 import com.xxw.shop.manager.TokenStore;
-import com.xxw.shop.module.security.AuthUserContext;
-import com.xxw.shop.module.common.constant.SystemErrorEnumError;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.AuthAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,7 +56,7 @@ public class LoginController {
                 permissionFeignClient.clearUserPermissionsCache(clearUserPermissionsCacheDTO);
 
         if (!clearResponseEntity.isSuccess()) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
 
         // 保存token，返回token数据给前端，这里是最重要的

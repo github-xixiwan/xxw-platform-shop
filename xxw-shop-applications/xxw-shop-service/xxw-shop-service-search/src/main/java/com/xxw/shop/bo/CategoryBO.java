@@ -4,16 +4,12 @@ import com.xxw.shop.starter.canal.annotation.CanalModel;
 import com.xxw.shop.starter.canal.common.FieldNamingPolicy;
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
  * 分类信息
  */
 @Data
 @CanalModel(database = "xxw-shop", table = "category", fieldNamingPolicy = FieldNamingPolicy.LOWER_UNDERSCORE)
-public class CategoryBO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class CategoryBO {
 
     /**
      * 分类id

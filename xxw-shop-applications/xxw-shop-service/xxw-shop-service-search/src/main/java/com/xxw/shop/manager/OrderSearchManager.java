@@ -5,10 +5,9 @@ import com.xxw.shop.api.search.dto.OrderSearchDTO;
 import com.xxw.shop.api.search.vo.EsOrderInfoVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.constant.EsIndexEnum;
-import com.xxw.shop.constant.SearchBusinessError;
-import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.json.JsonUtil;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -47,7 +46,7 @@ public class OrderSearchManager {
      */
     public EsPageVO<EsOrderInfoVO> pageSearchResult(OrderSearchDTO dto) {
         //1、动态构建出查询需要的DSL语句
-        EsPageVO<EsOrderInfoVO> result;
+        EsPageVO<EsOrderInfoVO> result = null;
 
         //1、准备检索请求
         SearchRequest searchRequest = buildSearchRequest(dto);
@@ -61,7 +60,7 @@ public class OrderSearchManager {
             //3、分析响应数据，封装成我们需要的格式
             result = buildSearchResult(dto, response);
         } catch (IOException e) {
-            throw new BusinessException(SearchBusinessError.SEARCH_00001);
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
         }
         return result;
     }

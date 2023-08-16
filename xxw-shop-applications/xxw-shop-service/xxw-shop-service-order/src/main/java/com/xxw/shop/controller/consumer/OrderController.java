@@ -12,6 +12,7 @@ import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
 import com.xxw.shop.module.common.cache.CacheNames;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import com.xxw.shop.module.common.vo.ShopCartVO;
@@ -109,13 +110,13 @@ public class OrderController {
                 String.valueOf(userId));
         // 看看订单有没有过期
         if (mergerOrder == null) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_EXPIRED);
+            throw new BusinessException(SystemErrorEnumError.ORDER_EXPIRED);
         }
         // 防止重复提交
         boolean cad = globalRedisCache.cad(OrderCacheNames.ORDER_CONFIRM_UUID_KEY + CacheNames.UNION + userId,
                 String.valueOf(userId));
         if (!cad) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.REPEAT_ORDER);
+            throw new BusinessException(SystemErrorEnumError.REPEAT_ORDER);
         }
         List<Long> orderIds = orderInfoService.submit(userId, mergerOrder);
         return ServerResponseEntity.success(orderIds);
@@ -131,7 +132,7 @@ public class OrderController {
         //获取订单信息
         SubmitOrderPayAmountInfoVO submitOrderPayAmountInfo = orderInfoService.getSubmitOrderPayAmountInfo(orderIdList);
         if (Objects.isNull(submitOrderPayAmountInfo) || Objects.isNull(submitOrderPayAmountInfo.getCreateTime())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_NOT_EXIST);
+            throw new BusinessException(SystemErrorEnumError.ORDER_NOT_EXIST);
         }
         LocalDateTime endTime = submitOrderPayAmountInfo.getCreateTime().plusMinutes(Constant.ORDER_CANCEL_TIME);
         SubmitOrderPayInfoVO orderPayInfoParam = new SubmitOrderPayInfoVO();

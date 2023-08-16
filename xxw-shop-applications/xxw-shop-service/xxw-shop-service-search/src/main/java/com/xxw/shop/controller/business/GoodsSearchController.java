@@ -27,7 +27,7 @@ public class GoodsSearchController {
     @Operation(summary = "商品信息列表", description = "商品信息列表")
     public ServerResponseEntity<EsPageVO<SpuAdminVO>> page(@Valid GoodsSearchDTO dto) {
         Long shopId = AuthUserContext.get().getTenantId();
-        dto.setSearchType(SearchTypeEnum.MULTISHOP.value());
+        dto.setSearchType(SearchTypeEnum.BUSINESS.value());
         dto.setShopId(shopId);
         EsPageVO<SpuAdminVO> searchPage = goodsSearchManager.adminPage(dto);
         return ServerResponseEntity.success(searchPage);

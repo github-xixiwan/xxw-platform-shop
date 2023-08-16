@@ -143,7 +143,7 @@ public class TokenStore {
      */
     public ServerResponseEntity<UserInfoInTokenBO> getUserInfoByAccessToken(String accessToken, boolean needDecrypt) {
         if (StrUtil.isBlank(accessToken)) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00001);
+            throw new BusinessException(AuthBusinessError.AUTH_00001);
         }
         String realAccessToken;
         if (needDecrypt) {
@@ -159,7 +159,7 @@ public class TokenStore {
                 (UserInfoInTokenBO) redisTemplate.opsForValue().get(getAccessKey(realAccessToken));
 
         if (userInfoInTokenBO == null) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00002);
+            throw new BusinessException(AuthBusinessError.AUTH_00002);
         }
         return ServerResponseEntity.success(userInfoInTokenBO);
     }
@@ -172,7 +172,7 @@ public class TokenStore {
      */
     public ServerResponseEntity<TokenInfoBO> refreshToken(String refreshToken) {
         if (StrUtil.isBlank(refreshToken)) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00001);
+            throw new BusinessException(AuthBusinessError.AUTH_00001);
         }
         ServerResponseEntity<String> decryptTokenEntity = decryptToken(refreshToken);
         if (!decryptTokenEntity.isSuccess()) {
@@ -182,13 +182,13 @@ public class TokenStore {
         String accessToken = stringRedisTemplate.opsForValue().get(getRefreshToAccessKey(realRefreshToken));
 
         if (StrUtil.isBlank(accessToken)) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00002);
+            throw new BusinessException(AuthBusinessError.AUTH_00002);
         }
         ServerResponseEntity<UserInfoInTokenBO> userInfoByAccessTokenEntity = getUserInfoByAccessToken(accessToken,
                 false);
 
         if (!userInfoByAccessTokenEntity.isSuccess()) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00002);
+            throw new BusinessException(AuthBusinessError.AUTH_00002);
         }
 
         UserInfoInTokenBO userInfoInTokenBO = userInfoByAccessTokenEntity.getData();
@@ -254,16 +254,16 @@ public class TokenStore {
             int expiresIn = getExpiresIn(sysType);
             long second = 1000L;
             if (System.currentTimeMillis() - createTokenTime > expiresIn * second) {
-                return ServerResponseEntity.fail(AuthBusinessError.AUTH_00003);
+                throw new BusinessException(AuthBusinessError.AUTH_00003);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00003);
+            throw new BusinessException(AuthBusinessError.AUTH_00003);
         }
 
         // 防止解密后的token是脚本，从而对redis进行攻击，uuid只能是数字和小写字母
         if (!PrincipalUtil.isSimpleChar(decryptToken)) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00003);
+            throw new BusinessException(AuthBusinessError.AUTH_00003);
         }
         return ServerResponseEntity.success(decryptToken);
     }

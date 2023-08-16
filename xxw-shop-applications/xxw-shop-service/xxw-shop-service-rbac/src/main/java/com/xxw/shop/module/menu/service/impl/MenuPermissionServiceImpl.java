@@ -5,6 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.RbacCacheNames;
 import com.xxw.shop.constant.RbacBusinessError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.menu.dto.MenuPermissionQueryDTO;
 import com.xxw.shop.module.menu.entity.MenuPermission;
@@ -57,7 +58,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
         MenuPermission dbMenuPermission = mapper.getByPermission(menuPermission.getPermission(),
                 AuthUserContext.get().getSysType());
         if (dbMenuPermission != null) {
-            return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
+            throw new BusinessException(RbacBusinessError.RBAC_00001);
         }
         this.save(menuPermission);
         return ServerResponseEntity.success();
@@ -70,7 +71,7 @@ public class MenuPermissionServiceImpl extends ServiceImpl<MenuPermissionMapper,
                 AuthUserContext.get().getSysType());
         if (dbMenuPermission != null && !Objects.equals(menuPermission.getMenuPermissionId(),
                 dbMenuPermission.getMenuPermissionId())) {
-            return ServerResponseEntity.fail(RbacBusinessError.RBAC_00001);
+            throw new BusinessException(RbacBusinessError.RBAC_00001);
         }
         this.updateById(menuPermission);
         return ServerResponseEntity.success();

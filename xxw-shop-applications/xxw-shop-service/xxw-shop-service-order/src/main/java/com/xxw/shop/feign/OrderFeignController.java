@@ -1,13 +1,14 @@
 package com.xxw.shop.feign;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.api.order.feign.OrderFeignClient;
-import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.order.vo.OrderAmountVO;
+import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO;
 import com.xxw.shop.api.order.vo.OrderStatusVO;
-import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.service.OrderInfoService;
 import jakarta.annotation.Resource;
@@ -26,13 +27,13 @@ public class OrderFeignController implements OrderFeignClient {
     public ServerResponseEntity<OrderAmountVO> getOrdersAmountAndIfNoCancel(List<Long> orderIds) {
         List<OrderStatusVO> orderStatus = orderInfoService.getOrdersStatus(orderIds);
         if (CollectionUtil.isEmpty(orderStatus)) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_NOT_EXIST);
+            throw new BusinessException(SystemErrorEnumError.ORDER_NOT_EXIST);
         }
 
         for (OrderStatusVO statusVO : orderStatus) {
             // 订单已关闭
             if (statusVO.getStatus() == null || Objects.equals(statusVO.getStatus(), OrderStatus.CLOSE.value())) {
-                return ServerResponseEntity.fail(SystemErrorEnumError.ORDER_EXPIRED);
+                throw new BusinessException(SystemErrorEnumError.ORDER_EXPIRED);
             }
         }
 

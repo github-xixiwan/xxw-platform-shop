@@ -2,7 +2,7 @@ package com.xxw.shop.starter.canal.support.parser.converter;
 
 import java.sql.JDBCType;
 
-public class SqlDateCanalFieldConverter1 extends BaseCanalFieldConverter<java.sql.Date> {
+public class  SqlDateCanalFieldConverter1 extends BaseCanalFieldConverter<java.sql.Date> {
 
     public static final BaseCanalFieldConverter<java.sql.Date> X = new SqlDateCanalFieldConverter1();
 

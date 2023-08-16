@@ -6,6 +6,7 @@ import com.xxw.shop.api.goods.vo.SpuAndSkuVO;
 import com.xxw.shop.api.goods.vo.SpuVO;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.service.SkuService;
 import com.xxw.shop.service.SpuService;
@@ -44,7 +45,7 @@ public class SpuFeignController implements SpuFeignClient {
                 StatusEnum.ENABLE.value()) || !Objects.equals(sku.getStatus(), StatusEnum.ENABLE.value()) || !Objects.equals(sku.getSpuId(), spu.getSpuId());
         if (spuIsNotExist) {
             // 当返回商品不存在时，前端应该将商品从购物车界面移除
-            return ServerResponseEntity.fail(SystemErrorEnumError.SPU_NOT_EXIST);
+            throw new BusinessException(SystemErrorEnumError.SPU_NOT_EXIST);
         }
 
         SpuAndSkuVO spuAndSku = new SpuAndSkuVO();

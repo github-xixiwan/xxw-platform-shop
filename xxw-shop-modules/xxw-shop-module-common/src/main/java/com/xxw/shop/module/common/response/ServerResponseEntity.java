@@ -95,7 +95,7 @@ public class ServerResponseEntity<T> implements Serializable {
 
     public static <T> ServerResponseEntity<T> transform(ServerResponseEntity<?> oldServerResponseEntity) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
-        serverResponseEntity.setCode(oldServerResponseEntity.getCode());
+        serverResponseEntity.setCode(SystemErrorEnumError.SHOW_FAIL.getCode());
         serverResponseEntity.setMessage(oldServerResponseEntity.getMessage());
         return serverResponseEntity;
     }

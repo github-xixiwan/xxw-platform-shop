@@ -4,6 +4,7 @@ import com.xxw.shop.api.user.vo.UserCompleteVO;
 import com.xxw.shop.entity.User;
 import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.UserService;
@@ -43,7 +44,7 @@ public class UserController {
     public ServerResponseEntity<UserCompleteVO> getUserDetailInfo() {
         UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
         if (userInfoInTokenBO == null) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.CLEAN_TOKEN);
+            throw new BusinessException(SystemErrorEnumError.CLEAN_TOKEN);
         }
         Long userId = userInfoInTokenBO.getUserId();
         UserCompleteVO userVO = userService.getByUserId(userId);

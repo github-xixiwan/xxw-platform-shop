@@ -51,7 +51,7 @@ public class ShopCartAdapter {
         }
         // 请选择您需要的商品加入购物车
         if (CollectionUtil.isEmpty(shopCartItemResponse.getData())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.SHOP_CART_NOT_EXIST);
+            throw new BusinessException(SystemErrorEnumError.SHOP_CART_NOT_EXIST);
         }
         // 返回购物车选择的商品信息
         return shopCartItemResponse;

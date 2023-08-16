@@ -2,10 +2,11 @@ package com.xxw.shop.feign;
 
 import com.xxw.shop.api.rbac.dto.ClearUserPermissionsCacheDTO;
 import com.xxw.shop.api.rbac.feign.PermissionFeignClient;
+import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.menu.service.MenuPermissionService;
 import com.xxw.shop.module.menu.vo.UriPermissionVO;
-import com.xxw.shop.module.common.constant.SystemErrorEnumError;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
 import jakarta.annotation.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +39,7 @@ public class PermissionFeignController implements PermissionFeignClient {
                 if (userPermissions.contains(uriPermission.getPermission())) {
                     return ServerResponseEntity.success(Boolean.TRUE);
                 } else {
-                    return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+                    throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
                 }
             }
         }

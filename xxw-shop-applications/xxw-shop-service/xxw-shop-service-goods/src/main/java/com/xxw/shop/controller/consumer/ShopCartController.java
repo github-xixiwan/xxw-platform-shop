@@ -1,22 +1,23 @@
 package com.xxw.shop.controller.consumer;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.api.goods.manager.ShopCartAdapter;
 import com.xxw.shop.api.goods.vo.SkuVO;
 import com.xxw.shop.api.goods.vo.SpuVO;
 import com.xxw.shop.dto.ChangeShopCartItemDTO;
 import com.xxw.shop.dto.CheckShopCartItemDTO;
 import com.xxw.shop.entity.ShopCartItem;
-import com.xxw.shop.api.goods.manager.ShopCartAdapter;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.module.common.vo.ShopCartVO;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.ShopCartItemService;
 import com.xxw.shop.service.SkuService;
 import com.xxw.shop.service.SpuService;
 import com.xxw.shop.vo.ShopCartAmountVO;
-import com.xxw.shop.module.common.vo.ShopCartVO;
 import com.xxw.shop.vo.ShopCartWithAmountVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -138,7 +139,7 @@ public class ShopCartController {
         // 当商品状态不正常时，不能添加到购物车
         if (Objects.isNull(spu) || Objects.isNull(sku) || !Objects.equals(spu.getStatus(), StatusEnum.ENABLE.value()) || !Objects.equals(sku.getStatus(), StatusEnum.ENABLE.value()) || !Objects.equals(sku.getSpuId(), spu.getSpuId())) {
             // 当返回商品不存在时，前端应该将商品从购物车界面移除
-            return ServerResponseEntity.fail(SystemErrorEnumError.SPU_NOT_EXIST);
+            throw new BusinessException(SystemErrorEnumError.SPU_NOT_EXIST);
         }
         // 保存shopId，不要让前端传过来
         param.setShopId(spu.getShopId());

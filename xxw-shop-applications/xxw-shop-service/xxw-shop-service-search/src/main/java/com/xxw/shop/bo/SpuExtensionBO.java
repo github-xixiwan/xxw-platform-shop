@@ -4,18 +4,16 @@ import com.xxw.shop.starter.canal.annotation.CanalModel;
 import com.xxw.shop.starter.canal.common.FieldNamingPolicy;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 商品拓展信息
  */
 @Data
-@CanalModel(database = "mall4cloud_product", table = "spu_extension", fieldNamingPolicy =
+@CanalModel(database = "xxw-shop", table = "spu_extension", fieldNamingPolicy =
         FieldNamingPolicy.LOWER_UNDERSCORE)
-public class SpuExtensionBO implements Serializable {
+public class SpuExtensionBO {
 
-    private static final long serialVersionUID = 1L;
     /**
      * 商品扩展信息表id
      */

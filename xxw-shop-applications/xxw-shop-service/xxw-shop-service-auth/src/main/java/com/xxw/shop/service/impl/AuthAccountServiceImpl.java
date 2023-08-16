@@ -6,11 +6,12 @@ import com.xxw.shop.constant.AuthAccountStatusEnum;
 import com.xxw.shop.constant.AuthBusinessError;
 import com.xxw.shop.entity.AuthAccount;
 import com.xxw.shop.mapper.AuthAccountMapper;
-import com.xxw.shop.module.common.constant.InputUserNameEnum;
-import com.xxw.shop.module.common.string.PrincipalUtil;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.common.bo.AuthAccountInVerifyBO;
 import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
+import com.xxw.shop.module.common.constant.InputUserNameEnum;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
+import com.xxw.shop.module.common.string.PrincipalUtil;
 import com.xxw.shop.service.AuthAccountService;
 import jakarta.annotation.Resource;
 import ma.glasnost.orika.MapperFacade;
@@ -43,10 +44,10 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
                                                                                                 String password,
                                                                                                 Integer sysType) {
         if (StrUtil.isBlank(inputUserName)) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00008);
+            throw new BusinessException(AuthBusinessError.AUTH_00008);
         }
         if (StrUtil.isBlank(password)) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00009);
+            throw new BusinessException(AuthBusinessError.AUTH_00009);
         }
 
         InputUserNameEnum inputUserNameEnum = null;
@@ -57,7 +58,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         }
 
         if (inputUserNameEnum == null) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00010);
+            throw new BusinessException(AuthBusinessError.AUTH_00010);
         }
 
         AuthAccountInVerifyBO authAccountInVerifyBO =
@@ -69,15 +70,15 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
             // 计时攻击（Timing
             // attack），通过设备运算的用时来推断出所使用的运算操作，或者通过对比运算的时间推定数据位于哪个存储设备，或者利用通信的时间差进行数据窃取。
             mitigateAgainstTimingAttack(password);
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00011);
+            throw new BusinessException(AuthBusinessError.AUTH_00011);
         }
 
         if (Objects.equals(authAccountInVerifyBO.getStatus(), AuthAccountStatusEnum.DISABLE.value())) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00012);
+            throw new BusinessException(AuthBusinessError.AUTH_00012);
         }
 
         if (!passwordEncoder.matches(password, authAccountInVerifyBO.getPassword())) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00011);
+            throw new BusinessException(AuthBusinessError.AUTH_00011);
         }
 
         return ServerResponseEntity.success(mapperFacade.map(authAccountInVerifyBO, UserInfoInTokenBO.class));

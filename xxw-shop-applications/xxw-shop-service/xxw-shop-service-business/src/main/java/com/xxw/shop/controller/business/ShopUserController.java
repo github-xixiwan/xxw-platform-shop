@@ -6,6 +6,7 @@ import com.xxw.shop.dto.ShopUserQueryDTO;
 import com.xxw.shop.entity.ShopUser;
 import com.xxw.shop.module.common.bo.UserInfoInTokenBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
+import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.service.ShopUserService;
@@ -71,7 +72,7 @@ public class ShopUserController {
         ShopUser shopUser = mapperFacade.map(dto, ShopUser.class);
         ShopUserVO dbShopUser = shopUserService.getByUserId(dto.getShopUserId());
         if (!Objects.equals(dbShopUser.getShopId(), AuthUserContext.get().getTenantId())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         shopUser.setShopId(dbShopUser.getShopId());
         shopUserService.updateShopUser(shopUser, dto.getRoleIds());
@@ -83,7 +84,7 @@ public class ShopUserController {
     public ServerResponseEntity<Void> delete(@RequestParam Long shopUserId) {
         ShopUserVO dbShopUser = shopUserService.getByUserId(shopUserId);
         if (!Objects.equals(dbShopUser.getShopId(), AuthUserContext.get().getTenantId())) {
-            return ServerResponseEntity.fail(SystemErrorEnumError.UNAUTHORIZED);
+            throw new BusinessException(SystemErrorEnumError.UNAUTHORIZED);
         }
         shopUserService.deleteById(shopUserId);
         return ServerResponseEntity.success();

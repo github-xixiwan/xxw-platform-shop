@@ -2,11 +2,12 @@ package com.xxw.shop.controller.user;
 
 import com.xxw.shop.api.auth.vo.AuthAccountVO;
 import com.xxw.shop.constant.PlatformBusinessError;
+import com.xxw.shop.module.common.exception.BusinessException;
+import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.security.AuthUserContext;
 import com.xxw.shop.module.user.dto.ChangeAccountDTO;
 import com.xxw.shop.module.user.service.SysUserService;
 import com.xxw.shop.module.user.vo.SysUserVO;
-import com.xxw.shop.module.common.response.ServerResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -35,10 +36,10 @@ public class SysUserAccountController {
     public ServerResponseEntity<Void> addAccount(@Valid @RequestBody ChangeAccountDTO changeAccountDTO) {
         SysUserVO sysUserVO = sysUserService.getByUserId(changeAccountDTO.getUserId());
         if (sysUserVO == null) {
-            return ServerResponseEntity.fail(PlatformBusinessError.PLATFORM_00001);
+            throw new BusinessException(PlatformBusinessError.PLATFORM_00001);
         }
         if (Objects.equals(sysUserVO.getHasAccount(), 1)) {
-            return ServerResponseEntity.fail(PlatformBusinessError.PLATFORM_00002);
+            throw new BusinessException(PlatformBusinessError.PLATFORM_00002);
         }
         return sysUserService.save(changeAccountDTO);
     }
@@ -48,7 +49,7 @@ public class SysUserAccountController {
     public ServerResponseEntity<Void> updateAccount(@Valid @RequestBody ChangeAccountDTO changeAccountDTO) {
         SysUserVO sysUserVO = sysUserService.getByUserId(changeAccountDTO.getUserId());
         if (sysUserVO == null || Objects.equals(sysUserVO.getHasAccount(), 0)) {
-            return ServerResponseEntity.fail(PlatformBusinessError.PLATFORM_00001);
+            throw new BusinessException(PlatformBusinessError.PLATFORM_00001);
         }
         return sysUserService.updateAccount(changeAccountDTO);
     }

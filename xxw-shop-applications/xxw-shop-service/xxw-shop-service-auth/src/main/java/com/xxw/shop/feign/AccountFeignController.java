@@ -110,14 +110,14 @@ public class AccountFeignController implements AccountFeignClient {
 
         // 用户名
         if (!PrincipalUtil.isUserName(authAccountDTO.getUsername())) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00004);
+            throw new BusinessException(AuthBusinessError.AUTH_00004);
         }
 
         AuthAccountInVerifyBO userNameBo =
                 authAccountMapper.getAuthAccountInVerifyByInputUserName(InputUserNameEnum.USERNAME.value(),
                         authAccountDTO.getUsername(), authAccountDTO.getSysType());
         if (userNameBo != null && !Objects.equals(userNameBo.getUserId(), authAccountDTO.getUserId())) {
-            return ServerResponseEntity.fail(AuthBusinessError.AUTH_00005);
+            throw new BusinessException(AuthBusinessError.AUTH_00005);
         }
 
         AuthAccount authAccount = mapperFacade.map(authAccountDTO, AuthAccount.class);
