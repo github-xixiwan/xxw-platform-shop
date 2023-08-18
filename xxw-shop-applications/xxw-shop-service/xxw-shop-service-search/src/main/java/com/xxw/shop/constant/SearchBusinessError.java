@@ -11,7 +11,7 @@ public enum SearchBusinessError implements ErrorEnumInterface {
     SEARCH_00002("SEARCH_00002", "保存es信息异常"),
     SEARCH_00003("SEARCH_00003", "更新订单es信息异常"),
     SEARCH_00004("SEARCH_00004", "创建索引异常"),
-    SEARCH_00005("SEARCH_00005", "删除es信息异常"),
+    SEARCH_00005("SEARCH_00005", "canal同步es异常"),
     ;
 
     private String code;

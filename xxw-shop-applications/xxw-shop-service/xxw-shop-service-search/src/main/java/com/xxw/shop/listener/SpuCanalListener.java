@@ -83,7 +83,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
     @Override
     protected ExceptionHandler exceptionHandler() {
         return (CanalBinLogEvent event, Throwable throwable) -> {
-            throw new BusinessException(SearchBusinessError.SEARCH_00004);
+            throw new BusinessException(SearchBusinessError.SEARCH_00005);
         };
     }
 }

@@ -167,6 +167,7 @@ public class ShopDetailServiceImpl extends ServiceImpl<ShopDetailMapper, ShopDet
         // 保存商家账号
         // 保存到shopUser
         ShopUser shopUser = new ShopUser();
+        shopUser.setShopUserId(System.currentTimeMillis());
         shopUser.setShopId(shopDetail.getShopId());
         shopUser.setHasAccount(1);
         shopUser.setNickName(shopDetailDTO.getShopName());
@@ -246,6 +247,7 @@ public class ShopDetailServiceImpl extends ServiceImpl<ShopDetailMapper, ShopDet
      */
     private void createShopAccount(ShopDetailDTO shopDetailDTO, StatusEnum statusEnum) {
         ShopUser shopUser = new ShopUser();
+        shopUser.setShopUserId(System.currentTimeMillis());
         shopUser.setShopId(shopDetailDTO.getShopId());
         shopUser.setHasAccount(1);
         shopUser.setNickName(shopDetailDTO.getUsername());

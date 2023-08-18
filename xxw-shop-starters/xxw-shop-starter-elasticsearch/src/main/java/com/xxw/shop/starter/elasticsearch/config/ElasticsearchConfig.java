@@ -33,8 +33,7 @@ public class ElasticsearchConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public ElasticsearchClient restHighLevelClient() {
-
+    public ElasticsearchClient elasticsearchClient() {
         List<String> clusterNodes = elasticsearchProperties.getClusterNodes();
         clusterNodes.forEach(node -> {
             try {
@@ -47,20 +46,18 @@ public class ElasticsearchConfig {
             }
         });
         RestClientBuilder builder = RestClient.builder(httpHosts.toArray(new HttpHost[0]));
-
-        return getRestHighLevelClient(builder, elasticsearchProperties);
+        return getElasticsearchClient(builder, elasticsearchProperties);
     }
 
-
     /**
-     * get restHistLevelClient
+     * get getElasticsearchClient
      *
      * @param builder                 RestClientBuilder
      * @param elasticsearchProperties elasticsearch default properties
      * @return {@link co.elastic.clients.elasticsearch.ElasticsearchClient}
      * @author xxw
      */
-    private static ElasticsearchClient getRestHighLevelClient(RestClientBuilder builder,
+    private static ElasticsearchClient getElasticsearchClient(RestClientBuilder builder,
                                                               ElasticsearchProperties elasticsearchProperties) {
         // Callback used the default {@link RequestConfig} being set to the {@link CloseableHttpClient}
         builder.setRequestConfigCallback(requestConfigBuilder -> {
@@ -74,16 +71,17 @@ public class ElasticsearchConfig {
         builder.setHttpClientConfigCallback(httpClientBuilder -> {
             httpClientBuilder.setMaxConnTotal(elasticsearchProperties.getMaxConnectTotal());
             httpClientBuilder.setMaxConnPerRoute(elasticsearchProperties.getMaxConnectPerRoute());
+
+            // Callback used the basic credential auth
+            ElasticsearchProperties.Account account = elasticsearchProperties.getAccount();
+            if (StringUtils.isNotBlank(account.getUsername()) && StringUtils.isNotBlank(account.getPassword())) {
+                final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+                credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(account.getUsername(),
+                        account.getPassword()));
+                httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+            }
             return httpClientBuilder;
         });
-
-        // Callback used the basic credential auth
-        ElasticsearchProperties.Account account = elasticsearchProperties.getAccount();
-        if (StringUtils.isNotBlank(account.getUsername()) && StringUtils.isNotBlank(account.getPassword())) {
-            final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(account.getUsername(),
-                    account.getPassword()));
-        }
         ElasticsearchTransport transport = new RestClientTransport(builder.build(), new JacksonJsonpMapper());
         return new ElasticsearchClient(transport);
     }

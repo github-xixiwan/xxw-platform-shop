@@ -284,14 +284,8 @@ public class GoodsSearchManager {
         // 关键字搜索
         keywordSearch(dto, boolQueryBuilder);
 
-        // 排序
-        sort(dto, builder, boolQueryBuilder);
-
         // 进行聚合分析
         agg(dto, builder, isAgg);
-
-        //商品表
-        builder.index(EsIndexEnum.GOODS.value());
 
         // 排序
         sort(dto, builder, boolQueryBuilder);
@@ -301,6 +295,9 @@ public class GoodsSearchManager {
             builder.from((dto.getPageNumber() - 1) * dto.getPageSize());
             builder.size(dto.getPageSize());
         }
+
+        //商品表
+        builder.index(EsIndexEnum.GOODS.value());
 
         SearchRequest build = builder.build();
         log.debug("构建的DSL语句 {}", build.toString());

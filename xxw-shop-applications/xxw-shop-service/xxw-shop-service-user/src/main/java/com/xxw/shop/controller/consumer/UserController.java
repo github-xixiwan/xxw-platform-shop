@@ -38,7 +38,6 @@ public class UserController {
         return ServerResponseEntity.success(userSimpleInfoVO);
     }
 
-
     @GetMapping("/ma/user_detail_info")
     @Operation(summary = "获取用户详细信息", description = "返回用户详细信息")
     public ServerResponseEntity<UserCompleteVO> getUserDetailInfo() {
