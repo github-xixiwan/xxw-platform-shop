@@ -82,7 +82,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             return null;
         }
         if (Objects.equals(String.class, clazz)) {
-            return (T) value;
+            return clazz.cast(value);
         } else {
             return JsonUtil.fromJson(value, clazz);
         }

@@ -1,20 +1,17 @@
 package com.xxw.shop.listener;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.xxw.shop.bo.SpuExtensionBO;
 import com.xxw.shop.constant.EsIndexEnum;
 import com.xxw.shop.constant.SearchBusinessError;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
 import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.exception.BusinessException;
-import com.xxw.shop.module.common.json.JsonUtil;
 import com.xxw.shop.starter.canal.model.CanalBinLogResult;
 import com.xxw.shop.starter.canal.support.processor.BaseCanalBinlogEventProcessor;
 import jakarta.annotation.Resource;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.xcontent.XContentType;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,7 +27,7 @@ public class SpuExtensionCanalListener extends BaseCanalBinlogEventProcessor<Spu
     private IGlobalRedisCacheManager globalRedisCacheManager;
 
     @Resource
-    private RestHighLevelClient restHighLevelClient;
+    private ElasticsearchClient client;
 
     /**
      * 插入商品，此时插入es
@@ -48,25 +45,29 @@ public class SpuExtensionCanalListener extends BaseCanalBinlogEventProcessor<Spu
         // 更新之后的数据
         SpuExtensionBO afterData = result.getAfterData();
 
-        // 清除缓存
-        globalRedisCacheManager.evictCache("shop_goods:spu_extension:", afterData.getSpuId().toString());
+        Long spuId = afterData.getSpuId();
 
-        UpdateRequest request = new UpdateRequest(EsIndexEnum.GOODS.value(), String.valueOf(afterData.getSpuId()));
+        // 清除缓存
+        globalRedisCacheManager.evictCache("shop_goods:spu_extension:", spuId.toString());
 
         EsGoodsBO esGoodsBO = new EsGoodsBO();
         // 可售库存
-        esGoodsBO.setSpuId(afterData.getSpuId());
+        esGoodsBO.setSpuId(spuId);
         esGoodsBO.setStock(afterData.getStock());
         esGoodsBO.setHasStock(afterData.getStock() != 0);
         esGoodsBO.setSaleNum(afterData.getSaleNum());
-
-        request.doc(JsonUtil.toJson(esGoodsBO), XContentType.JSON);
         try {
-            UpdateResponse updateResponse = restHighLevelClient.update(request, RequestOptions.DEFAULT);
-            log.info(updateResponse.toString());
+            UpdateResponse<EsGoodsBO> updateResponse = client.update(u ->
+                    // 索引
+                    u.index(EsIndexEnum.GOODS.value())
+                            // ID
+                            .id(String.valueOf(spuId))
+                            // 文档
+                            .doc(esGoodsBO), EsGoodsBO.class);
+            log.info("elasticsearch返回结果：" + updateResponse.toString());
         } catch (IOException e) {
-            log.error(e.toString());
-            throw new BusinessException(SearchBusinessError.SEARCH_00005);
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
+            throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
     }
 }

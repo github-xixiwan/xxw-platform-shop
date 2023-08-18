@@ -1,7 +1,7 @@
 package com.xxw.shop.module.common.bo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class EsGoodsBO implements Serializable {
@@ -81,7 +81,7 @@ public class EsGoodsBO implements Serializable {
     /**
      * 商品创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 品牌名称
@@ -342,11 +342,11 @@ public class EsGoodsBO implements Serializable {
         this.sellingPoint = sellingPoint;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 

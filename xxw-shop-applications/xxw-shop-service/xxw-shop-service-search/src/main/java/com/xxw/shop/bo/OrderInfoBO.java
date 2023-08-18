@@ -4,7 +4,7 @@ import com.xxw.shop.starter.canal.annotation.CanalModel;
 import com.xxw.shop.starter.canal.common.FieldNamingPolicy;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 商品信息
@@ -61,22 +61,22 @@ public class OrderInfoBO {
     /**
      * 付款时间
      */
-    private Date payTime;
+    private LocalDateTime payTime;
 
     /**
      * 发货时间
      */
-    private Date deliveryTime;
+    private LocalDateTime deliveryTime;
 
     /**
      * 完成时间
      */
-    private Date finallyTime;
+    private LocalDateTime finallyTime;
 
     /**
      * 取消时间
      */
-    private Date cancelTime;
+    private LocalDateTime cancelTime;
 
     /**
      * 是否已支付，1.已支付0.未支付

@@ -1,25 +1,21 @@
 package com.xxw.shop.listener;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.xxw.shop.api.goods.feign.GoodsFeignClient;
 import com.xxw.shop.bo.SpuBO;
 import com.xxw.shop.constant.EsIndexEnum;
 import com.xxw.shop.constant.SearchBusinessError;
 import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.exception.BusinessException;
-import com.xxw.shop.module.common.json.JsonUtil;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.starter.canal.model.CanalBinLogEvent;
 import com.xxw.shop.starter.canal.model.CanalBinLogResult;
 import com.xxw.shop.starter.canal.support.processor.BaseCanalBinlogEventProcessor;
 import com.xxw.shop.starter.canal.support.processor.ExceptionHandler;
 import jakarta.annotation.Resource;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.xcontent.XContentType;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,7 +31,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
     private GoodsFeignClient goodsFeignClient;
 
     @Resource
-    private RestHighLevelClient restHighLevelClient;
+    private ElasticsearchClient client;
 
     /**
      * 插入商品，此时插入es
@@ -43,20 +39,21 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
     @Override
     protected void processInsertInternal(CanalBinLogResult<SpuBO> result) {
         Long spuId = result.getPrimaryKey();
-        ServerResponseEntity<EsGoodsBO> esGoodsBO = goodsFeignClient.loadEsGoodsBO(spuId);
-        if (!esGoodsBO.isSuccess()) {
+        ServerResponseEntity<EsGoodsBO> serverResponseEntity = goodsFeignClient.loadEsGoodsBO(spuId);
+        if (!serverResponseEntity.isSuccess()) {
             throw new BusinessException(SearchBusinessError.SEARCH_00004);
         }
-
-        IndexRequest request = new IndexRequest(EsIndexEnum.GOODS.value());
-        request.id(String.valueOf(spuId));
-        request.source(JsonUtil.toJson(esGoodsBO.getData()), XContentType.JSON);
         try {
-            IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
-            log.info(indexResponse.toString());
-
+            IndexResponse indexResponse = client.index(i ->
+                    // 索引
+                    i.index(EsIndexEnum.GOODS.value())
+                            // ID
+                            .id(String.valueOf(spuId))
+                            // 文档
+                            .document(serverResponseEntity.getData()));
+            log.info("elasticsearch返回结果：" + indexResponse.toString());
         } catch (IOException e) {
-            log.error(e.toString());
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
             throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
     }
@@ -67,17 +64,19 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
     @Override
     protected void processUpdateInternal(CanalBinLogResult<SpuBO> result) {
         Long spuId = result.getPrimaryKey();
-        ServerResponseEntity<EsGoodsBO> esGoodsBO = goodsFeignClient.loadEsGoodsBO(spuId);
-        String source = JsonUtil.toJson(esGoodsBO.getData());
-        UpdateRequest request = new UpdateRequest(EsIndexEnum.GOODS.value(), String.valueOf(spuId));
-        request.doc(source, XContentType.JSON);
-        request.docAsUpsert(true);
+        ServerResponseEntity<EsGoodsBO> serverResponseEntity = goodsFeignClient.loadEsGoodsBO(spuId);
         try {
-            UpdateResponse updateResponse = restHighLevelClient.update(request, RequestOptions.DEFAULT);
-            log.info(updateResponse.toString());
+            UpdateResponse<EsGoodsBO> updateResponse = client.update(u ->
+                    // 索引
+                    u.index(EsIndexEnum.GOODS.value())
+                            // ID
+                            .id(String.valueOf(spuId))
+                            // 文档
+                            .doc(serverResponseEntity.getData()), EsGoodsBO.class);
+            log.info("elasticsearch返回结果：" + updateResponse.toString());
         } catch (IOException e) {
-            log.error(e.toString());
-            throw new BusinessException(SearchBusinessError.SEARCH_00005);
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
+            throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
     }
 

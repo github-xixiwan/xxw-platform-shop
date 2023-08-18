@@ -4,7 +4,7 @@ import com.xxw.shop.starter.canal.annotation.CanalModel;
 import com.xxw.shop.starter.canal.common.FieldNamingPolicy;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 商品拓展信息
@@ -22,12 +22,12 @@ public class SpuExtensionBO {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 商品id
