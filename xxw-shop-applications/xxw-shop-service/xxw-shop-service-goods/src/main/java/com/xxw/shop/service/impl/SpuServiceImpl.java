@@ -246,7 +246,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         if (Objects.nonNull(shopCategory)) {
             esGoodsBO.setShopSecondaryCategoryName(shopCategory.getName());
             esGoodsBO.setShopPrimaryCategoryId(shopCategory.getParentId());
-//            esGoodsBO.setShopPrimaryCategoryName(shopCategory.getPathNames().get(0));
+            esGoodsBO.setShopPrimaryCategoryName(shopCategory.getPathNames().get(0));
         }
         // 获取属性
         List<SpuAttrValueVO> spuAttrsBySpuId = spuAttrValueService.getSpuAttrsBySpuId(spuId);

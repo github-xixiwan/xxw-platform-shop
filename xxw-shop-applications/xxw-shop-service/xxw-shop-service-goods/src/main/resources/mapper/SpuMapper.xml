@@ -71,8 +71,7 @@
     <select id="loadEsGoodsBO" resultType="com.xxw.shop.module.common.bo.EsGoodsBO">
         SELECT s.spu_id,s.name AS spu_name,s.shop_id,s.selling_point,s.price_fee,s.market_price_fee,s.img_urls,s.status AS spu_status,
                s.seq, IF(se.stock>0,1,0) AS has_stock,se.sale_num,s.create_time,s.category_id,s.main_img_url,s.category_id,
-               s.shop_category_id, se.actual_stock AS stock, s.brand_id,b.name AS brand_name,b.img_url AS brand_img, s.shop_category_id AS  shop_secondary_category_id,
-               s.shop_category_id AS shop_secondary_category_id
+               s.shop_category_id, se.actual_stock AS stock, s.brand_id,b.name AS brand_name,b.img_url AS brand_img, s.shop_category_id AS  shop_secondary_category_id
         FROM spu s
                  LEFT JOIN spu_extension se ON s.spu_id = se.spu_id
                  LEFT JOIN brand b ON s.brand_id = b.brand_id

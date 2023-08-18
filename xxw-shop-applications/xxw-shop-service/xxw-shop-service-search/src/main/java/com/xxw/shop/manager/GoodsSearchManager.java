@@ -19,8 +19,8 @@ import com.google.common.collect.Maps;
 import com.xxw.shop.api.search.dto.GoodsSearchDTO;
 import com.xxw.shop.api.search.vo.EsGoodsSearchVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
-import com.xxw.shop.api.search.vo.EsSpuVO;
 import com.xxw.shop.constant.*;
+import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -52,7 +52,7 @@ public class GoodsSearchManager {
     public EsPageVO<EsGoodsSearchVO> page(GoodsSearchDTO dto) {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
         dto.setSearchType(SearchTypeEnum.CONSUMER.value());
-        SearchResponse<EsSpuVO> searchResponse = pageSearchResult(dto, Boolean.TRUE);
+        SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.TRUE);
         return buildSearchResult(dto, searchResponse);
     }
 
@@ -66,15 +66,15 @@ public class GoodsSearchManager {
     public EsPageVO<EsGoodsSearchVO> simplePage(GoodsSearchDTO dto) {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
         dto.setSearchType(SearchTypeEnum.CONSUMER.value());
-        SearchResponse<EsSpuVO> searchResponse = pageSearchResult(dto, Boolean.FALSE);
+        SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.FALSE);
         return buildSearchResult(dto, searchResponse);
     }
 
-    public List<EsSpuVO> list(GoodsSearchDTO dto) {
+    public List<EsGoodsBO> list(GoodsSearchDTO dto) {
         //1、准备检索请求
         dto.setPageNumber(0);
         SearchRequest searchRequest = buildSearchRequest(dto, Boolean.TRUE);
-        List<EsSpuVO> spuList = Lists.newArrayList();
+        List<EsGoodsBO> spuList = Lists.newArrayList();
         try {
             //2、执行检索请求
             SearchResponse<EsGoodsSearchVO> searchResponse = client.search(searchRequest, EsGoodsSearchVO.class);
@@ -102,13 +102,13 @@ public class GoodsSearchManager {
      * @dto dto 商品搜索条件
      * @dto isAgg true:聚合搜索  false:非聚合搜索  null:非聚合搜索
      */
-    private SearchResponse<EsSpuVO> pageSearchResult(GoodsSearchDTO dto, Boolean isAgg) {
+    private SearchResponse<EsGoodsBO> pageSearchResult(GoodsSearchDTO dto, Boolean isAgg) {
         //1、准备检索请求
         SearchRequest searchRequest = buildSearchRequest(dto, isAgg);
-        SearchResponse<EsSpuVO> searchResponse = null;
+        SearchResponse<EsGoodsBO> searchResponse = null;
         try {
             //2、执行检索请求
-            searchResponse = client.search(searchRequest, EsSpuVO.class);
+            searchResponse = client.search(searchRequest, EsGoodsBO.class);
             log.debug("搜索返回结果：" + searchResponse.toString());
         } catch (IOException e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
@@ -120,14 +120,14 @@ public class GoodsSearchManager {
      * 构建结果数据
      */
     private EsPageVO<EsGoodsSearchVO> buildSearchResult(GoodsSearchDTO dto,
-                                                        SearchResponse<EsSpuVO> searchResponse) {
+                                                        SearchResponse<EsGoodsBO> searchResponse) {
         EsPageVO<EsGoodsSearchVO> esPageVO = new EsPageVO<>();
         EsGoodsSearchVO esGoodsSearchVO = new EsGoodsSearchVO();
         //1、返回的所有查询到的商品
-        List<EsSpuVO> spus = Lists.newArrayList();
-        List<Hit<EsSpuVO>> hitList = searchResponse.hits().hits();
-        for (Hit<EsSpuVO> hit : hitList) {
-            EsSpuVO vo = hit.source();
+        List<EsGoodsBO> spus = Lists.newArrayList();
+        List<Hit<EsGoodsBO>> hitList = searchResponse.hits().hits();
+        for (Hit<EsGoodsBO> hit : hitList) {
+            EsGoodsBO vo = hit.source();
             spus.add(vo);
         }
         esGoodsSearchVO.setSpus(spus);
@@ -240,10 +240,10 @@ public class GoodsSearchManager {
 //     * @return
 //     * @dto hits es返回的数据
 //     */
-//    public List<EsSpuVO> getSpuListByResponse(SearchHit[] hits) {
-//        List<EsSpuVO> spus = new ArrayList<>();
+//    public List<EsGoodsBO> getSpuListByResponse(SearchHit[] hits) {
+//        List<EsGoodsBO> spus = new ArrayList<>();
 //        for (SearchHit hit : hits) {
-//            EsSpuVO spuSearchVO = JsonUtil.fromJson(hit.getSourceAsString(), EsSpuVO.class);
+//            EsGoodsBO spuSearchVO = JsonUtil.fromJson(hit.getSourceAsString(), EsGoodsBO.class);
 //            spus.add(spuSearchVO);
 //        }
 //        return spus;
@@ -573,7 +573,7 @@ public class GoodsSearchManager {
      * @return
      * @dto shopIds
      */
-    public List<EsSpuVO> limitSizeListByShopIds(List<Long> shopIds, Integer size) {
+    public List<EsGoodsBO> limitSizeListByShopIds(List<Long> shopIds, Integer size) {
         SearchRequest.Builder builder = new SearchRequest.Builder();
         // 构建bool-query
         BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
@@ -599,7 +599,7 @@ public class GoodsSearchManager {
         log.debug("构建的DSL语句 {}", searchRequest.toString());
 
         //2、执行检索请求
-        List<EsSpuVO> spuList = Lists.newArrayList();
+        List<EsGoodsBO> spuList = Lists.newArrayList();
         try {
             SearchResponse<EsGoodsSearchVO> searchResponse = client.search(searchRequest, EsGoodsSearchVO.class);
             log.debug("搜索返回结果：" + searchResponse.toString());
@@ -624,8 +624,8 @@ public class GoodsSearchManager {
 //     * @return
 //     * @dto response
 //     */
-//    private List<EsSpuVO> loadSpuListByAggregations(SearchResponse response) {
-//        List<EsSpuVO> spuList = new ArrayList<>();
+//    private List<EsGoodsBO> loadSpuListByAggregations(SearchResponse response) {
+//        List<EsGoodsBO> spuList = new ArrayList<>();
 //        Aggregations aggregations = response.getAggregations();
 //        ParsedLongTerms shopCouponTerm = aggregations.get(EsConstant.SHOP_COUPON);
 //        if (Objects.nonNull(shopCouponTerm)) {
@@ -646,10 +646,10 @@ public class GoodsSearchManager {
      * @dto dto 分页数据
      * @dto dto 商品搜索条件
      */
-    public EsPageVO<EsSpuVO> adminPage(GoodsSearchDTO dto) {
+    public EsPageVO<EsGoodsBO> adminPage(GoodsSearchDTO dto) {
         loadSpuStatus(dto);
-        EsPageVO<EsSpuVO> esPageVO = new EsPageVO<>();
-        SearchResponse<EsSpuVO> searchResponse = pageSearchResult(dto, Boolean.FALSE);
+        EsPageVO<EsGoodsBO> esPageVO = new EsPageVO<>();
+        SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.FALSE);
         // 商品信息
         esPageVO.setRecords(buildSpuAdminList(searchResponse));
         // 分页信息
@@ -678,11 +678,11 @@ public class GoodsSearchManager {
      * @return
      * @dto response es返回的数据
      */
-    public List<EsSpuVO> buildSpuAdminList(SearchResponse<EsSpuVO> searchResponse) {
-        List<EsSpuVO> spuList = Lists.newArrayList();
-        List<Hit<EsSpuVO>> hitList = searchResponse.hits().hits();
-        for (Hit<EsSpuVO> hit : hitList) {
-            EsSpuVO vo = hit.source();
+    public List<EsGoodsBO> buildSpuAdminList(SearchResponse<EsGoodsBO> searchResponse) {
+        List<EsGoodsBO> spuList = Lists.newArrayList();
+        List<Hit<EsGoodsBO>> hitList = searchResponse.hits().hits();
+        for (Hit<EsGoodsBO> hit : hitList) {
+            EsGoodsBO vo = hit.source();
             spuList.add(vo);
         }
         return spuList;
@@ -722,7 +722,7 @@ public class GoodsSearchManager {
      * @dto response
      */
     private void buildSearchPage(GoodsSearchDTO dto, EsPageVO<?> esPageVO,
-                                 SearchResponse<EsSpuVO> searchResponse) {
+                                 SearchResponse<EsGoodsBO> searchResponse) {
         //===============分页信息====================//
         //总记录数
         long total = searchResponse.hits().total() != null ? searchResponse.hits().total().value() : 0;

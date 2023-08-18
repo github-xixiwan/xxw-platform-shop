@@ -3,7 +3,7 @@ package com.xxw.shop.api.search.feign;
 import com.xxw.shop.api.search.dto.GoodsSearchDTO;
 import com.xxw.shop.api.search.vo.EsGoodsSearchVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
-import com.xxw.shop.api.search.vo.EsSpuVO;
+import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -36,7 +36,7 @@ public interface SearchSpuFeignClient {
      * @return 商品列表
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/searchSpu/getSpusBySpuIds")
-    ServerResponseEntity<List<EsSpuVO>> getSpusBySpuIds(@RequestParam("spuIds") List<Long> spuIds);
+    ServerResponseEntity<List<EsGoodsBO>> getSpusBySpuIds(@RequestParam("spuIds") List<Long> spuIds);
 
     /**
      * 根据店铺，获取商品分页信息
@@ -55,7 +55,7 @@ public interface SearchSpuFeignClient {
      * @return
      */
     @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/searchSpu/limitSizeListByShopIds")
-    ServerResponseEntity<List<EsSpuVO>> limitSizeListByShopIds(@RequestParam("shopIds") List<Long> shopIds,
-                                                               @RequestParam("size") Integer size);
+    ServerResponseEntity<List<EsGoodsBO>> limitSizeListByShopIds(@RequestParam("shopIds") List<Long> shopIds,
+                                                                 @RequestParam("size") Integer size);
 
 }

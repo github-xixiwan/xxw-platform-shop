@@ -5,8 +5,8 @@ import com.xxw.shop.api.search.dto.GoodsSearchDTO;
 import com.xxw.shop.api.search.feign.SearchSpuFeignClient;
 import com.xxw.shop.api.search.vo.EsGoodsSearchVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
-import com.xxw.shop.api.search.vo.EsSpuVO;
 import com.xxw.shop.manager.GoodsSearchManager;
+import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import jakarta.annotation.Resource;
@@ -31,13 +31,13 @@ public class SearchSpuFeignController implements SearchSpuFeignClient {
     }
 
     @Override
-    public ServerResponseEntity<List<EsSpuVO>> getSpusBySpuIds(List<Long> spuIds) {
+    public ServerResponseEntity<List<EsGoodsBO>> getSpusBySpuIds(List<Long> spuIds) {
         if (CollUtil.isEmpty(spuIds)) {
             return ServerResponseEntity.success(new ArrayList<>());
         }
         GoodsSearchDTO goodsSearchDTO = new GoodsSearchDTO();
         goodsSearchDTO.setSpuIds(spuIds);
-        List<EsSpuVO> list = goodsSearchManager.list(goodsSearchDTO);
+        List<EsGoodsBO> list = goodsSearchManager.list(goodsSearchDTO);
         return ServerResponseEntity.success(list);
     }
 
@@ -54,11 +54,11 @@ public class SearchSpuFeignController implements SearchSpuFeignClient {
     }
 
     @Override
-    public ServerResponseEntity<List<EsSpuVO>> limitSizeListByShopIds(List<Long> shopIds, Integer size) {
+    public ServerResponseEntity<List<EsGoodsBO>> limitSizeListByShopIds(List<Long> shopIds, Integer size) {
         if (CollUtil.isEmpty(shopIds)) {
             return ServerResponseEntity.success(new ArrayList<>());
         }
-        List<EsSpuVO> list = goodsSearchManager.limitSizeListByShopIds(shopIds, size);
+        List<EsGoodsBO> list = goodsSearchManager.limitSizeListByShopIds(shopIds, size);
         return ServerResponseEntity.success(list);
     }
 }
