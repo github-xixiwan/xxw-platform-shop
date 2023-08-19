@@ -20,8 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
 public class OrderCanalListener extends BaseCanalBinlogEventProcessor<OrderInfoBO> {
 
@@ -49,7 +47,7 @@ public class OrderCanalListener extends BaseCanalBinlogEventProcessor<OrderInfoB
                             // 文档
                             .document(serverResponseEntity.getData()));
             log.info("elasticsearch返回结果：" + indexResponse.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
             throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
@@ -71,7 +69,7 @@ public class OrderCanalListener extends BaseCanalBinlogEventProcessor<OrderInfoB
                             // 文档
                             .doc(serverResponseEntity.getData()), OrderInfoCompleteVO.class);
             log.info("elasticsearch返回结果：" + updateResponse.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
             throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
@@ -80,7 +78,8 @@ public class OrderCanalListener extends BaseCanalBinlogEventProcessor<OrderInfoB
     @Override
     protected ExceptionHandler exceptionHandler() {
         return (CanalBinLogEvent event, Throwable throwable) -> {
-            throw new BusinessException(SearchBusinessError.SEARCH_00004);
+            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(throwable));
+            throw new BusinessException(SearchBusinessError.SEARCH_00005);
         };
     }
 }

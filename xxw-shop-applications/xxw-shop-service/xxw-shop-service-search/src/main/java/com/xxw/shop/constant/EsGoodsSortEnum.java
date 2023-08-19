@@ -10,9 +10,9 @@ import java.util.Objects;
 public enum EsGoodsSortEnum {
 
     /**
-     * 新品(创建时间)
+     * 新品(ID)
      */
-    CREATE_TIME(1, "createTime", Boolean.TRUE),
+    CREATE_TIME(1, "spuId", Boolean.FALSE),
 
     /**
      * 销量倒序
