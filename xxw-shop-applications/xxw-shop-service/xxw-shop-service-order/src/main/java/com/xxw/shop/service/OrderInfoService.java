@@ -4,6 +4,7 @@ import com.mybatisflex.core.service.IService;
 import com.xxw.shop.api.order.vo.*;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderInfo;
+import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.vo.*;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     SubmitOrderPayAmountInfoVO getSubmitOrderPayAmountInfo(long[] orderIdList);
 
-    OrderInfoCompleteVO getEsOrder(Long orderId);
+    EsOrderBO getEsOrder(Long orderId);
 
     List<OrderInfoCompleteVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
 

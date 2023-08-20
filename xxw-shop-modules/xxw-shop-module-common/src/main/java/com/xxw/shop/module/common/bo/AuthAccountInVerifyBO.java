@@ -1,7 +1,12 @@
 package com.xxw.shop.module.common.bo;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class AuthAccountInVerifyBO extends UserInfoInTokenBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -9,27 +14,5 @@ public class AuthAccountInVerifyBO extends UserInfoInTokenBO implements Serializ
     private String password;
 
     private Integer status;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "AuthAccountInVerifyBO{" + "password='" + password + '\'' + ", status=" + status + "} " + super.toString();
-    }
-
 
 }

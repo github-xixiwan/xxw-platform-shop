@@ -2,13 +2,14 @@ package com.xxw.shop.manager;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldSort;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
-import co.elastic.clients.elasticsearch._types.aggregations.AggregationBuilders;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
@@ -17,8 +18,7 @@ import co.elastic.clients.json.JsonData;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.xxw.shop.api.search.dto.GoodsSearchDTO;
-import com.xxw.shop.api.search.vo.EsGoodsSearchVO;
-import com.xxw.shop.api.search.vo.EsPageVO;
+import com.xxw.shop.api.search.vo.*;
 import com.xxw.shop.constant.*;
 import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.constant.StatusEnum;
@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,6 @@ import java.util.Objects;
 public class GoodsSearchManager {
 
     private static final Logger log = LoggerFactory.getLogger(GoodsSearchManager.class);
-
 
     @Resource
     private ElasticsearchClient client;
@@ -66,7 +64,7 @@ public class GoodsSearchManager {
     public EsPageVO<EsGoodsSearchVO> simplePage(GoodsSearchDTO dto) {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
         dto.setSearchType(SearchTypeEnum.CONSUMER.value());
-        SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.FALSE);
+        SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.TRUE);
         return buildSearchResult(dto, searchResponse);
     }
 
@@ -88,7 +86,7 @@ public class GoodsSearchManager {
                 }
                 spuList.addAll(vo.getSpus());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
         }
         return spuList;
@@ -110,7 +108,7 @@ public class GoodsSearchManager {
             //2、执行检索请求
             searchResponse = client.search(searchRequest, EsGoodsBO.class);
             log.debug("搜索返回结果：" + searchResponse.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
         }
         return searchResponse;
@@ -119,20 +117,11 @@ public class GoodsSearchManager {
     /**
      * 构建结果数据
      */
-    private EsPageVO<EsGoodsSearchVO> buildSearchResult(GoodsSearchDTO dto,
-                                                        SearchResponse<EsGoodsBO> searchResponse) {
+    private EsPageVO<EsGoodsSearchVO> buildSearchResult(GoodsSearchDTO dto, SearchResponse<EsGoodsBO> searchResponse) {
         EsPageVO<EsGoodsSearchVO> esPageVO = new EsPageVO<>();
-        EsGoodsSearchVO esGoodsSearchVO = new EsGoodsSearchVO();
+
         //1、返回的所有查询到的商品
-        List<EsGoodsBO> spus = Lists.newArrayList();
-        List<Hit<EsGoodsBO>> hitList = searchResponse.hits().hits();
-        for (Hit<EsGoodsBO> hit : hitList) {
-            EsGoodsBO vo = hit.source();
-            spus.add(vo);
-        }
-        esGoodsSearchVO.setSpus(spus);
-        List<EsGoodsSearchVO> list = Lists.newArrayList();
-        list.add(esGoodsSearchVO);
+        List<EsGoodsSearchVO> list = getEsGoodsSearchVOList(searchResponse);
         esPageVO.setRecords(list);
 
         // 分页信息
@@ -140,133 +129,128 @@ public class GoodsSearchManager {
         return esPageVO;
     }
 
-//    private List<EsGoodsSearchVO> getGoodsSearchVOList(SearchResponse<EsGoodsSearchVO> searchResponse) {
-//        List<EsGoodsSearchVO> list = Lists.newArrayList();
-//        List<Hit<EsGoodsSearchVO>> hitList = searchResponse.hits().hits();
-//        for (Hit<EsGoodsSearchVO> hit : hitList) {
-//            EsGoodsSearchVO vo = hit.source();
-//            list.add(vo);
-//        }
-//
-//        //===============聚合信息====================//
-//        Aggregations aggregations = response.getAggregations();
-//        if (Objects.nonNull(aggregations)) {
-//            loadAggregationsData(goodsSearchVO, aggregations);
-//        }
-//
-//        List<EsGoodsSearchVO> goodsSearches = new ArrayList<>();
-//        goodsSearches.add(goodsSearchVO);
-//        return list;
-//}
+    private List<EsGoodsSearchVO> getEsGoodsSearchVOList(SearchResponse<EsGoodsBO> searchResponse) {
+        EsGoodsSearchVO esGoodsSearchVO = new EsGoodsSearchVO();
+        //===============spu列表信息====================//
+        List<EsGoodsBO> spus = Lists.newArrayList();
+        List<Hit<EsGoodsBO>> hitList = searchResponse.hits().hits();
+        for (Hit<EsGoodsBO> hit : hitList) {
+            EsGoodsBO vo = hit.source();
+            spus.add(vo);
+        }
+        esGoodsSearchVO.setSpus(spus);
 
-//    private void loadAggregationsData(EsGoodsSearchVO goodsSearchVO, Aggregations aggregations) {
-//        //===============品牌信息====================//
-//        ParsedLongTerms brandTerms = aggregations.get(EsConstant.BRANDS);
-//        if (Objects.nonNull(brandTerms)) {
-//            goodsSearchVO.setBrands(new ArrayList<>());
-//            List<? extends Terms.Bucket> brandsBuckets = brandTerms.getBuckets();
-//            for (Terms.Bucket bucket : brandsBuckets) {
-//                BrandSearchVO brandSearchVO = new BrandSearchVO();
-//                brandSearchVO.setBrandId(Long.valueOf(bucket.getKey().toString()));
-//                brandSearchVO.setBrandImg(getValuesByBucket(bucket, EsConstant.BRAND_IMG));
-//                brandSearchVO.setBrandName(getValuesByBucket(bucket, EsConstant.BRAND_NAME));
-//                goodsSearchVO.getBrands().add(brandSearchVO);
-//            }
-//        }
-//        //===============分类信息====================//
-//        goodsSearchVO.setCategorys(new ArrayList<>());
-//        ParsedLongTerms categoriesTerms = null;
-//        String categoryName = null;
-//        // 平台分类
-//        if (Objects.nonNull(aggregations.get(EsConstant.CATEGORIES))) {
-//            categoryName = EsConstant.CATEGORY_NAME;
-//            categoriesTerms = aggregations.get(EsConstant.CATEGORIES);
-//        }
-//        // 店铺分类
-//        else {
-//            categoryName = EsConstant.SHOP_CATEGORY_NAME;
-//            categoriesTerms = aggregations.get(EsConstant.SHOP_CATEGORIES);
-//        }
-//        if (Objects.nonNull(categoriesTerms)) {
-//            List<? extends Terms.Bucket> categoriesBuckets = categoriesTerms.getBuckets();
-//            for (Terms.Bucket bucket : categoriesBuckets) {
-//                CategorySearchVO categoryVO = new CategorySearchVO();
-//                categoryVO.setCategoryId((Long) bucket.getKey());
-//                categoryVO.setName(getValuesByBucket(bucket, categoryName));
-//                goodsSearchVO.getCategorys().add(categoryVO);
-//            }
-//        }
-//
-//        //===============店铺信息====================//
-//        ParsedLongTerms shopTerms = aggregations.get(EsConstant.SHOP);
-//        if (Objects.nonNull(shopTerms)) {
-//            List<? extends Terms.Bucket> shopBuckets = shopTerms.getBuckets();
-//            for (Terms.Bucket bucket : shopBuckets) {
-//                goodsSearchVO.setShopInfo(new ShopInfoSearchVO());
-//                goodsSearchVO.getShopInfo().setShopId(Long.valueOf(bucket.getKey().toString()));
-//            }
-//        }
-//        //===============属性信息====================//
-//        goodsSearchVO.setAttrs(new ArrayList<>());
-//        ParsedNested attrsNested = aggregations.get(EsConstant.ATTRS);
-//        if (Objects.nonNull(attrsNested)) {
-//            Aggregations attrIdAggregations = attrsNested.getAggregations();
-//            ParsedLongTerms attrIdsTrems = attrIdAggregations.get(EsConstant.ATTR_IDS);
-//            List<? extends Terms.Bucket> attrsBuckets = attrIdsTrems.getBuckets();
-//            for (Terms.Bucket bucket : attrsBuckets) {
-//                ParsedLongTerms attrLongTerms = bucket.getAggregations().get(EsConstant.ATTR_VALUE_IDS);
-//                AttrSearchVO attrSearchVO = null;
-//                for (Terms.Bucket attrValueBucket : attrLongTerms.getBuckets()) {
-//                    ParsedTopHits parsedTopHits = attrValueBucket.getAggregations().get(EsConstant.TOP_HITS_DATA);
-//                    for (SearchHit hit : parsedTopHits.getHits().getHits()) {
-//                        if (Objects.isNull(attrSearchVO)) {
-//                            attrSearchVO = JsonUtil.fromJson(hit.getSourceAsString(), AttrSearchVO.class);
-//                            attrSearchVO.setAttrId(Long.valueOf(bucket.getKey().toString()));
-//                            attrSearchVO.setAttrValues(new ArrayList<>());
-//                        }
-//                        AttrValueSearchVO attrValueSearchVO = JsonUtil.fromJson(hit.getSourceAsString(),
-//                                AttrValueSearchVO.class);
-//                        attrSearchVO.getAttrValues().add(attrValueSearchVO);
-//                    }
-//                }
-//                goodsSearchVO.getAttrs().add(attrSearchVO);
-//            }
-//        }
-//    }
+        //===============聚合信息====================//
+        Map<String, Aggregate> aggregations = searchResponse.aggregations();
+        if (CollectionUtil.isNotEmpty(aggregations)) {
+            loadAggregationsData(esGoodsSearchVO, aggregations);
+        }
+        List<EsGoodsSearchVO> list = Lists.newArrayList();
+        list.add(esGoodsSearchVO);
+        return list;
+    }
 
-//    /**
-//     * 从es返回的数据中获取spu列表
-//     *
-//     * @return
-//     * @dto hits es返回的数据
-//     */
-//    public List<EsGoodsBO> getSpuListByResponse(SearchHit[] hits) {
-//        List<EsGoodsBO> spus = new ArrayList<>();
-//        for (SearchHit hit : hits) {
-//            EsGoodsBO spuSearchVO = JsonUtil.fromJson(hit.getSourceAsString(), EsGoodsBO.class);
-//            spus.add(spuSearchVO);
-//        }
-//        return spus;
-//    }
+    private void loadAggregationsData(EsGoodsSearchVO esGoodsSearchVO, Map<String, Aggregate> aggregations) {
+        //===============品牌信息====================//
+        Aggregate brandsAggregate = aggregations.get(EsConstant.BRANDS);
+        if (brandsAggregate != null) {
+            List<BrandSearchVO> list = Lists.newArrayList();
+            brandsAggregate.lterms().buckets().array().forEach(a -> {
+                BrandSearchVO brandSearchVO = new BrandSearchVO();
+                brandSearchVO.setBrandId(a.key());
+                Map<String, Aggregate> brandIdAggregations = a.aggregations();
+                Aggregate brandNameAggregate = brandIdAggregations.get(EsConstant.BRAND_NAME);
+                if (brandNameAggregate != null) {
+                    brandNameAggregate.sterms().buckets().array().forEach(aa -> {
+                        brandSearchVO.setBrandName(aa.key().stringValue());
+                    });
+                }
+                Aggregate brandImgAggregate = brandIdAggregations.get(EsConstant.BRAND_IMG);
+                if (brandImgAggregate != null) {
+                    brandImgAggregate.sterms().buckets().array().forEach(aa -> {
+                        brandSearchVO.setBrandImg(aa.key().stringValue());
+                    });
+                }
+                list.add(brandSearchVO);
+            });
+            esGoodsSearchVO.setBrands(list);
+        }
 
-//    /**
-//     * 获取对应名称（name）的值
-//     *
-//     * @return 仅返回一个值
-//     * @dto bucket
-//     * @dto name
-//     */
-//    private String getValuesByBucket(Terms.Bucket bucket, String name) {
-//        String value = "";
-//        Aggregations categoryAggregations = bucket.getAggregations();
-//        ParsedStringTerms categoryNameTerms = categoryAggregations.get(name);
-//        List<? extends Terms.Bucket> buckets = categoryNameTerms.getBuckets();
-//        for (Terms.Bucket bucketValue : buckets) {
-//            value = bucketValue.getKey().toString();
-//            break;
-//        }
-//        return value;
-//    }
+        //===============分类信息====================//
+        String categoryName = null;
+        Aggregate categoriesAggregate = null;
+        // 平台分类
+        if (Objects.nonNull(aggregations.get(EsConstant.CATEGORIES))) {
+            categoryName = EsConstant.CATEGORY_NAME;
+            categoriesAggregate = aggregations.get(EsConstant.CATEGORIES);
+        }
+        // 店铺分类
+        else {
+            categoryName = EsConstant.SHOP_CATEGORY_NAME;
+            categoriesAggregate = aggregations.get(EsConstant.SHOP_CATEGORIES);
+        }
+        if (categoriesAggregate != null) {
+            List<CategorySearchVO> list = Lists.newArrayList();
+            String finalCategoryName = categoryName;
+            categoriesAggregate.lterms().buckets().array().forEach(a -> {
+                CategorySearchVO categorySearchVO = new CategorySearchVO();
+                categorySearchVO.setCategoryId(a.key());
+                Map<String, Aggregate> brandIdAggregations = a.aggregations();
+                Aggregate categoryNameAggregate = brandIdAggregations.get(finalCategoryName);
+                if (categoryNameAggregate != null) {
+                    categoryNameAggregate.sterms().buckets().array().forEach(aa -> {
+                        categorySearchVO.setName(aa.key().stringValue());
+                    });
+                }
+                list.add(categorySearchVO);
+            });
+            esGoodsSearchVO.setCategorys(list);
+        }
+
+        //===============店铺信息====================//
+        Aggregate shopAggregate = aggregations.get(EsConstant.SHOP);
+        if (shopAggregate != null) {
+            ShopInfoSearchVO shopInfo = new ShopInfoSearchVO();
+            shopAggregate.lterms().buckets().array().forEach(a -> {
+                shopInfo.setShopId(a.key());
+            });
+            esGoodsSearchVO.setShopInfo(shopInfo);
+        }
+
+        //===============属性信息====================//
+        Aggregate attrsAggregate = aggregations.get(EsConstant.ATTRS);
+        if (attrsAggregate != null) {
+            Aggregate attrIdsAggregate = attrsAggregate.nested().aggregations().get(EsConstant.ATTR_IDS);
+            if (attrIdsAggregate != null) {
+                List<AttrSearchVO> list = Lists.newArrayList();
+                attrIdsAggregate.lterms().buckets().array().forEach(a -> {
+                    AttrSearchVO attrSearchVO = new AttrSearchVO();
+                    attrSearchVO.setAttrId(a.key());
+                    Aggregate attrValueIdsAggregate = a.aggregations().get(EsConstant.ATTR_VALUE_IDS);
+                    if (attrValueIdsAggregate != null) {
+                        attrValueIdsAggregate.lterms().buckets().array().forEach(aa -> {
+                            aa.aggregations().get(EsConstant.TOP_HITS_DATA).topHits().hits().hits().forEach(h -> {
+                                JsonData source = h.source();
+                                if (source != null) {
+                                    JSONObject jsonObject = source.to(JSONObject.class);
+                                    if (jsonObject != null) {
+                                        attrSearchVO.setAttrName(String.valueOf(jsonObject.get("attrName")));
+
+                                        AttrValueSearchVO vo = new AttrValueSearchVO();
+                                        vo.setAttrValueId(Long.valueOf(String.valueOf(jsonObject.get("attrValueId"))));
+                                        vo.setAttrValueName(String.valueOf(jsonObject.get("attrValueName")));
+                                        attrSearchVO.setAttrValues(Lists.newArrayList(vo));
+                                    }
+                                }
+                                list.add(attrSearchVO);
+                            });
+                        });
+                    }
+                });
+                esGoodsSearchVO.setAttrs(list);
+            }
+        }
+    }
 
     /**
      * 准备检索请求
@@ -277,6 +261,8 @@ public class GoodsSearchManager {
      */
     private SearchRequest buildSearchRequest(GoodsSearchDTO dto, Boolean isAgg) {
         SearchRequest.Builder builder = new SearchRequest.Builder();
+
+        // 构建bool-query
         BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
 
         // 过滤
@@ -310,61 +296,46 @@ public class GoodsSearchManager {
      */
     private void agg(GoodsSearchDTO dto, SearchRequest.Builder builder, Boolean isAgg) {
         Map<String, Aggregation> map = Maps.newHashMap();
+        Map<String, Aggregation> subMap = Maps.newHashMap();
         // 店铺进行聚合
         if (dto.getKeyword() != null && dto.getKeyword().length() > 1) {
             // 按照店铺进行聚合
-            Aggregation shopIdAggregation = AggregationBuilders.terms(t -> t.field(EsConstant.SHOP_ID).size(1));
+            Aggregation shopIdAggregation = Aggregation.of(a -> a.terms(t -> t.field(EsConstant.SHOP_ID).size(1)));
             map.put(EsConstant.SHOP, shopIdAggregation);
         }
-
         if (Objects.isNull(isAgg) || !isAgg) {
             return;
         }
 
         // 按照品牌进行聚合
-        Aggregation brandIdAggregation = AggregationBuilders.terms(t -> t.field(EsConstant.BRAND_ID).size(10));
-        Aggregation brandNameAggregation = AggregationBuilders.terms(t -> t.field(EsConstant.BRAND_NAME).size(1));
-        brandIdAggregation.aggregations().put(EsConstant.BRAND_NAME, brandNameAggregation);
-        Aggregation brandImgAggregation = AggregationBuilders.terms(t -> t.field(EsConstant.BRAND_IMG).size(1));
-        brandIdAggregation.aggregations().put(EsConstant.BRAND_IMG, brandImgAggregation);
+        Aggregation brandIdAggregation =
+                Aggregation.of(a -> a.terms(t -> t.field(EsConstant.BRAND_ID).size(10)).aggregations(EsConstant.BRAND_NAME, aa -> aa.terms(t -> t.field(EsConstant.BRAND_NAME).size(1))).aggregations(EsConstant.BRAND_IMG, aa -> aa.terms(t -> t.field(EsConstant.BRAND_IMG).size(1))));
         map.put(EsConstant.BRANDS, brandIdAggregation);
 
         // 搜索平台商品，按照平台分类信息进行聚合
         if (Objects.isNull(dto.getShopId())) {
             Aggregation categoryIdAggregation =
-                    AggregationBuilders.terms(t -> t.field(EsConstant.CATEGORY_ID).size(10));
-            Aggregation categoryNameAggregation =
-                    AggregationBuilders.terms(t -> t.field(EsConstant.CATEGORY_NAME).size(1));
-            categoryIdAggregation.aggregations().put(EsConstant.CATEGORY_NAME, categoryNameAggregation);
+                    Aggregation.of(a -> a.terms(t -> t.field(EsConstant.CATEGORY_ID).size(10)).aggregations(EsConstant.CATEGORY_NAME, aa -> aa.terms(t -> t.field(EsConstant.CATEGORY_NAME).size(1))));
             map.put(EsConstant.CATEGORIES, categoryIdAggregation);
         }
+
         // 搜索店铺中的商品，按照店铺分类信息进行聚合
         else {
             Aggregation secondaryCategoryIdAggregation =
-                    AggregationBuilders.terms(t -> t.field(EsConstant.SHOP_CATEGORY_ID).size(10));
-            Aggregation secondaryCategoryNameAggregation =
-                    AggregationBuilders.terms(t -> t.field(EsConstant.SHOP_CATEGORY_NAME).size(1));
-            secondaryCategoryIdAggregation.aggregations().put(EsConstant.SHOP_CATEGORY_NAME,
-                    secondaryCategoryNameAggregation);
+                    Aggregation.of(a -> a.terms(t -> t.field(EsConstant.SHOP_CATEGORY_ID).size(10)).aggregations(EsConstant.SHOP_CATEGORY_NAME, aa -> aa.terms(t -> t.field(EsConstant.SHOP_CATEGORY_NAME).size(1))));
             map.put(EsConstant.SHOP_CATEGORIES, secondaryCategoryIdAggregation);
         }
 
         // 按照属性信息进行聚合
-        Aggregation attrsAggregation = AggregationBuilders.nested(n -> n.path(EsConstant.ATTRS).name(EsConstant.ATTRS));
-
-        // 按照属性ID进行聚合
-        Aggregation attrIdAggregation = AggregationBuilders.terms(t -> t.field(EsConstant.ATTR_ATTR_ID).size(10));
-        attrsAggregation.aggregations().put(EsConstant.ATTR_IDS, attrIdAggregation);
-        // 按照属性VALUE进行聚合
-        Aggregation attrValueIdAggregation =
-                AggregationBuilders.terms(t -> t.field(EsConstant.ATTR_ATTR_VALUE_ID).size(10));
-        attrIdAggregation.aggregations().put(EsConstant.ATTR_VALUE_IDS, attrValueIdAggregation);
-
         List<String> includesList = Lists.newArrayList(EsConstant.ATTR_ATTR_NAME, EsConstant.ATTR_ATTR_VALUE_ID,
                 EsConstant.ATTR_ATTR_VALUE_NAME);
-        Aggregation topHitsAggregation =
-                AggregationBuilders.topHits(t -> t.source(s -> s.filter(f -> f.includes(includesList))).sort(s -> s.field(FieldSort.of(f -> f.field(EsConstant.ATTR_ATTR_VALUE_NAME).order(SortOrder.Asc)))).size(1));
-        attrValueIdAggregation.aggregations().put(EsConstant.TOP_HITS_DATA, topHitsAggregation);
+        Aggregation attrsAggregation = Aggregation.of(a -> a.nested(n -> n.path(EsConstant.ATTRS))
+                // 按照属性ID进行聚合
+                .aggregations(EsConstant.ATTR_IDS, aa -> aa.terms(t -> t.field(EsConstant.ATTR_ATTR_ID).size(10))
+                        // 按照属性VALUE进行聚合
+                        .aggregations(EsConstant.ATTR_VALUE_IDS,
+                                aaa -> aaa.terms(t -> t.field(EsConstant.ATTR_ATTR_VALUE_ID).size(10)).aggregations(EsConstant.TOP_HITS_DATA, aaaa -> aaaa.topHits(th -> th.source(s -> s.filter(f -> f.includes(includesList))).sort(s -> s.field(FieldSort.of(f -> f.field(EsConstant.ATTR_ATTR_VALUE_NAME).order(SortOrder.Asc)))).size(1))))));
+        map.put(EsConstant.ATTRS, attrsAggregation);
 
         builder.aggregations(map);
     }
@@ -568,78 +539,6 @@ public class GoodsSearchManager {
     }
 
     /**
-     * 根据店铺id列表获取每个店铺的spu列表
-     *
-     * @return
-     * @dto shopIds
-     */
-    public List<EsGoodsBO> limitSizeListByShopIds(List<Long> shopIds, Integer size) {
-        SearchRequest.Builder builder = new SearchRequest.Builder();
-        // 构建bool-query
-        BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
-        // 过滤
-        List<FieldValue> shopIdList = new ArrayList<>();
-        for (Long shopId : shopIds) {
-            shopIdList.add(FieldValue.of(shopId));
-        }
-        TermsQueryField termsQueryField = new TermsQueryField.Builder().value(shopIdList).build();
-        boolQueryBuilder.filter(f -> f.terms(t -> t.field(EsConstant.SHOP_ID).terms(termsQueryField)));
-        builder.query(boolQueryBuilder.build()._toQuery());
-        // 聚合分析
-        Aggregation shopIdAggregation = AggregationBuilders.terms(t -> t.field(EsConstant.SHOP_ID));
-        List<String> includesList = Lists.newArrayList(EsConstant.SPU_NAME, EsConstant.MAIN_IMG_URL,
-                EsConstant.SHOP_ID, EsConstant.SPU_ID, EsConstant.PRICE_FEE);
-        Aggregation topHitsAggregation =
-                AggregationBuilders.topHits(t -> t.source(s -> s.filter(f -> f.includes(includesList))).sort(s -> s.field(FieldSort.of(f -> f.field(EsConstant.SALE_NUM).order(SortOrder.Desc)))).size(size));
-        shopIdAggregation.aggregations().put(EsConstant.TOP_HITS_DATA, topHitsAggregation);
-
-        builder.aggregations(EsConstant.SHOP_COUPON, shopIdAggregation).size(0);
-
-        SearchRequest searchRequest = builder.index(EsIndexEnum.GOODS.value()).build();
-        log.debug("构建的DSL语句 {}", searchRequest.toString());
-
-        //2、执行检索请求
-        List<EsGoodsBO> spuList = Lists.newArrayList();
-        try {
-            SearchResponse<EsGoodsSearchVO> searchResponse = client.search(searchRequest, EsGoodsSearchVO.class);
-            log.debug("搜索返回结果：" + searchResponse.toString());
-
-            List<Hit<EsGoodsSearchVO>> hitList = searchResponse.hits().hits();
-            for (Hit<EsGoodsSearchVO> hit : hitList) {
-                EsGoodsSearchVO vo = hit.source();
-                if (vo == null || CollectionUtil.isEmpty(vo.getSpus())) {
-                    break;
-                }
-                spuList.addAll(vo.getSpus());
-            }
-        } catch (IOException e) {
-            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
-        }
-        return spuList;
-    }
-
-//    /**
-//     * 从聚合数据中获取商品列表
-//     *
-//     * @return
-//     * @dto response
-//     */
-//    private List<EsGoodsBO> loadSpuListByAggregations(SearchResponse response) {
-//        List<EsGoodsBO> spuList = new ArrayList<>();
-//        Aggregations aggregations = response.getAggregations();
-//        ParsedLongTerms shopCouponTerm = aggregations.get(EsConstant.SHOP_COUPON);
-//        if (Objects.nonNull(shopCouponTerm)) {
-//            List<? extends Terms.Bucket> buckets = shopCouponTerm.getBuckets();
-//            for (Terms.Bucket bucket : buckets) {
-//                Aggregations shopAggs = bucket.getAggregations();
-//                ParsedTopHits shopHits = shopAggs.get(EsConstant.TOP_HITS_DATA);
-//                spuList.addAll(getSpuListByResponse(shopHits.getHits().getHits()));
-//            }
-//        }
-//        return spuList;
-//    }
-
-    /**
      * 商品管理分页搜索es数据的信息
      *
      * @return 搜索结果
@@ -688,32 +587,6 @@ public class GoodsSearchManager {
         return spuList;
     }
 
-//    /**
-//     * 处理聚合国际化信息
-//     *
-//     * @return 对应语言的字段
-//     * @dto json 数据
-//     * @dto field 字段
-//     */
-//    private String handleAggregationsLang(String json, String field, String defaultField) {
-//        Map<String, Object> map = JsonUtil.fromJson(json, new TypeReference<Map<String, Object>>() {
-//        });
-//        Object object;
-//        // 找不到指定语言的数据，就查默认语言
-//        if (Objects.isNull(map.get(field))) {
-//            object = map.get(defaultField);
-//        }
-//        // 获取指定语言的数据
-//        else {
-//            object = map.get(field);
-//        }
-//        // 没有查到数据
-//        if (Objects.isNull(object)) {
-//            return null;
-//        }
-//        return object.toString();
-//    }
-
     /**
      * 构建分页数据
      *
@@ -721,8 +594,7 @@ public class GoodsSearchManager {
      * @dto esPageVO
      * @dto response
      */
-    private void buildSearchPage(GoodsSearchDTO dto, EsPageVO<?> esPageVO,
-                                 SearchResponse<EsGoodsBO> searchResponse) {
+    private void buildSearchPage(GoodsSearchDTO dto, EsPageVO<?> esPageVO, SearchResponse<EsGoodsBO> searchResponse) {
         //===============分页信息====================//
         //总记录数
         long total = searchResponse.hits().total() != null ? searchResponse.hits().total().value() : 0;

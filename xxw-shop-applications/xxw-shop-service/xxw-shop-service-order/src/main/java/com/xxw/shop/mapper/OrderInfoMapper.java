@@ -3,6 +3,7 @@ package com.xxw.shop.mapper;
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.api.order.vo.*;
 import com.xxw.shop.entity.OrderInfo;
+import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.vo.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -77,7 +78,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
      * @param orderId 订单id
      * @return
      */
-    OrderInfoCompleteVO getEsOrder(@Param("orderId") Long orderId);
+    EsOrderBO getEsOrder(@Param("orderId") Long orderId);
 
     /**
      * 计算订单实际金额

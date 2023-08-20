@@ -52,13 +52,4 @@ public class SearchSpuFeignController implements SearchSpuFeignClient {
         EsPageVO<EsGoodsSearchVO> page = goodsSearchManager.page(dto);
         return ServerResponseEntity.success(page);
     }
-
-    @Override
-    public ServerResponseEntity<List<EsGoodsBO>> limitSizeListByShopIds(List<Long> shopIds, Integer size) {
-        if (CollUtil.isEmpty(shopIds)) {
-            return ServerResponseEntity.success(new ArrayList<>());
-        }
-        List<EsGoodsBO> list = goodsSearchManager.limitSizeListByShopIds(shopIds, size);
-        return ServerResponseEntity.success(list);
-    }
 }

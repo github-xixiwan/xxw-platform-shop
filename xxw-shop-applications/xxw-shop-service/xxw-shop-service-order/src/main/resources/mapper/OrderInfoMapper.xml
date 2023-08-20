@@ -43,10 +43,10 @@
         </collection>
     </resultMap>
 
-    <resultMap type="com.xxw.shop.api.order.vo.OrderInfoCompleteVO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
+    <resultMap type="com.xxw.shop.module.common.bo.EsOrderBO" id="esOrderAndOrderItemAndUserAddrMap" extends="orderMap">
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
         <result column="consignee" jdbcType="VARCHAR" property="consignee"/>
-        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.api.order.vo.OrderItemVO">
+        <collection property="orderItems" columnPrefix="oi_" ofType="com.xxw.shop.module.common.bo.EsOrderItemBO">
             <id column="order_item_id" jdbcType="BIGINT" property="orderItemId"/>
             <result column="shop_id" property="shopId"/>
             <result column="order_id" property="orderId"/>
@@ -58,7 +58,6 @@
             <result column="sku_name" property="skuName"/>
             <result column="pic" property="pic"/>
             <result column="delivery_type" property="deliveryType"/>
-            <result column="shop_cart_time" property="shopCartTime"/>
             <result column="price" property="price"/>
             <result column="spu_total_amount" property="spuTotalAmount"/>
         </collection>
@@ -132,8 +131,8 @@
     </select>
 
     <select id="getEsOrder" resultMap="esOrderAndOrderItemAndUserAddrMap">
-        SELECT o.user_id,
-               o.*,
+        SELECT o.user_id,o.order_id,o.shop_id, o.delivery_type, o.shop_name, o.total, o.status, o.all_count,
+               o.is_payed, o.close_type, o.delete_status, o.version, o.order_addr_id,
                oi.`order_item_id`              oi_order_item_id,
                oi.`shop_id`                    oi_shop_id,
                oi.`order_id`                   oi_order_id,

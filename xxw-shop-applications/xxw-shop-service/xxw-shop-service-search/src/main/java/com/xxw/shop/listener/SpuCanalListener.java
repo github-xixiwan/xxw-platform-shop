@@ -39,7 +39,7 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
         Long spuId = result.getPrimaryKey();
         ServerResponseEntity<EsGoodsBO> serverResponseEntity = goodsFeignClient.loadEsGoodsBO(spuId);
         if (!serverResponseEntity.isSuccess()) {
-            throw new BusinessException(SearchBusinessError.SEARCH_00004);
+            return;
         }
         try {
             IndexResponse indexResponse = client.index(i ->
@@ -52,7 +52,6 @@ public class SpuCanalListener extends BaseCanalBinlogEventProcessor<SpuBO> {
             log.info("elasticsearch返回结果：" + indexResponse.toString());
         } catch (Exception e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
-            throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
     }
 

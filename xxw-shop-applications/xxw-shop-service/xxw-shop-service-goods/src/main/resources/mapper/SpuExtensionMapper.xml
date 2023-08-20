@@ -39,4 +39,12 @@
             where spu_id = #{skuWithStock.spuId}
         </foreach>
     </update>
+
+    <update id="reduceStockByOrder">
+        update spu_extension
+        set `stock`      = `stock` - #{count},
+            `lock_stock` = `lock_stock` + #{count}
+        where spu_id = #{spuId}
+          and #{count} &lt;= `stock`
+    </update>
 </mapper>

@@ -6,9 +6,9 @@ import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.order.vo.OrderItemVO;
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
 import com.xxw.shop.api.search.feign.SearchOrderFeignClient;
-import com.xxw.shop.api.search.vo.EsOrderInfoVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.entity.OrderAddr;
+import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -51,7 +51,6 @@ public class MyOrderController {
 
     @Resource
     private OrderAddrService orderAddrService;
-
 
     /**
      * 订单详情信息接口
@@ -101,7 +100,7 @@ public class MyOrderController {
      */
     @GetMapping("/search_order")
     @Operation(summary = "订单列表信息查询", description = "根据订单编号或者订单中商品名称搜索")
-    public ServerResponseEntity<EsPageVO<EsOrderInfoVO>> searchOrder(OrderSearchDTO orderSearchDTO) {
+    public ServerResponseEntity<EsPageVO<EsOrderBO>> searchOrder(OrderSearchDTO orderSearchDTO) {
         Long userId = AuthUserContext.get().getUserId();
         orderSearchDTO.setUserId(userId);
         return searchOrderFeignClient.getOrderPage(orderSearchDTO);

@@ -4,9 +4,9 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.api.order.feign.OrderFeignClient;
 import com.xxw.shop.api.order.vo.OrderAmountVO;
-import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.order.vo.OrderSimpleAmountInfoVO;
 import com.xxw.shop.api.order.vo.OrderStatusVO;
+import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -53,9 +53,9 @@ public class OrderFeignController implements OrderFeignClient {
     }
 
     @Override
-    public ServerResponseEntity<OrderInfoCompleteVO> getEsOrder(Long orderId) {
-        OrderInfoCompleteVO esOrderInfoCompleteVO = orderInfoService.getEsOrder(orderId);
-        return ServerResponseEntity.success(esOrderInfoCompleteVO);
+    public ServerResponseEntity<EsOrderBO> getEsOrder(Long orderId) {
+        EsOrderBO esOrderBO = orderInfoService.getEsOrder(orderId);
+        return ServerResponseEntity.success(esOrderBO);
     }
 
     @Override

@@ -23,7 +23,7 @@
         <jsoup.version>1.16.1</jsoup.version>
         <anji-plus.version>1.3.0</anji-plus.version>
         <minio.version>8.5.4</minio.version>
-        <elasticsearch.version>8.9.1</elasticsearch.version>
+        <elasticsearch.version>8.8.2</elasticsearch.version>
     </properties>
 
     <dependencyManagement>

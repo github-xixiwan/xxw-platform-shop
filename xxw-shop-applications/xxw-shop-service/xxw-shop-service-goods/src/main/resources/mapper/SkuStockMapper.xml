@@ -39,4 +39,13 @@
             where sku_id = #{skuWithStock.skuId}
         </foreach>
     </update>
+
+    <update id="addStockByOrder">
+        <foreach collection="skuWithStocks" item="skuWithStock" separator=";">
+            update sku_stock
+            set `stock` = `stock` + #{skuWithStock.count},
+            `lock_stock` = `lock_stock` - #{skuWithStock.count}
+            where sku_id  = #{skuWithStock.skuId}
+        </foreach>
+    </update>
 </mapper>

@@ -4,7 +4,6 @@ import com.xxw.shop.starter.canal.CanalGlue;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,6 @@ import java.util.function.Consumer;
 
 @Slf4j
 @Service
-@RefreshScope
 public class RocketmqReceive {
 
     @Resource

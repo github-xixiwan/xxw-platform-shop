@@ -5,10 +5,10 @@ import com.xxw.shop.api.order.vo.OrderAddrVO;
 import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
 import com.xxw.shop.api.search.feign.SearchOrderFeignClient;
-import com.xxw.shop.api.search.vo.EsOrderInfoVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderAddr;
+import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -48,7 +48,7 @@ public class OrderController {
      */
     @GetMapping("/page")
     @Operation(summary = "分页获取订单详情")
-    public ServerResponseEntity<EsPageVO<EsOrderInfoVO>> page(OrderSearchDTO dto) {
+    public ServerResponseEntity<EsPageVO<EsOrderBO>> page(OrderSearchDTO dto) {
         Long shopId = AuthUserContext.get().getTenantId();
         dto.setShopId(shopId);
         return searchOrderFeignClient.getOrderPage(dto);

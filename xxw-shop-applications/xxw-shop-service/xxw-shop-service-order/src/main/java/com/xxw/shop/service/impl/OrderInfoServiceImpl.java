@@ -7,6 +7,7 @@ import com.xxw.shop.api.goods.dto.SkuStockLockDTO;
 import com.xxw.shop.api.goods.feign.ShopCartFeignClient;
 import com.xxw.shop.api.goods.feign.SkuStockLockFeignClient;
 import com.xxw.shop.api.order.vo.*;
+import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.vo.ShopCartItemVO;
 import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.constant.DeliveryType;
@@ -218,7 +219,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public OrderInfoCompleteVO getEsOrder(Long orderId) {
+    public EsOrderBO getEsOrder(Long orderId) {
         return mapper.getEsOrder(orderId);
     }
 

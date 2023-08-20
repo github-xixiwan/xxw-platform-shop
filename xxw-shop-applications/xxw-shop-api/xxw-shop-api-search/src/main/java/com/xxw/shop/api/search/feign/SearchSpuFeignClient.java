@@ -47,15 +47,4 @@ public interface SearchSpuFeignClient {
     @PutMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/searchSpu/spuPage")
     ServerResponseEntity<EsPageVO<EsGoodsSearchVO>> spuPage(@RequestBody GoodsSearchDTO dto);
 
-    /**
-     * 根据店铺id列表获取每个店铺的spu列表
-     *
-     * @param shopIds 店铺id列表
-     * @param size    每个店铺返回的商品数量
-     * @return
-     */
-    @GetMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/searchSpu/limitSizeListByShopIds")
-    ServerResponseEntity<List<EsGoodsBO>> limitSizeListByShopIds(@RequestParam("shopIds") List<Long> shopIds,
-                                                                 @RequestParam("size") Integer size);
-
 }

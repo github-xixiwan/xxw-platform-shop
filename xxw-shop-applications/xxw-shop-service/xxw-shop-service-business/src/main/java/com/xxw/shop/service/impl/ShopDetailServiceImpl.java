@@ -147,7 +147,7 @@ public class ShopDetailServiceImpl extends ServiceImpl<ShopDetailMapper, ShopDet
     @Override
     public ShopDetailVO shopExtensionData(Long shopId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.where(SHOP_DETAIL.SHOP_ID.ne(shopId));
+        queryWrapper.where(SHOP_DETAIL.SHOP_ID.eq(shopId));
         return this.getOneAs(queryWrapper, ShopDetailVO.class);
     }
 

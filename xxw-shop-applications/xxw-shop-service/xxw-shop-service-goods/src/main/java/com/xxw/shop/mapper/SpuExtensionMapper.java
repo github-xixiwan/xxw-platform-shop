@@ -43,4 +43,13 @@ public interface SpuExtensionMapper extends BaseMapper<SpuExtension> {
      * @param skuWithStocks 库存信息
      */
     void addStockByOrder(@Param("skuWithStocks") List<SkuStockLockVO> skuWithStocks);
+
+    /**
+     * 通过订单减少库存
+     *
+     * @param spuId 商品id
+     * @param count 数量
+     * @return
+     */
+    int reduceStockByOrder(@Param("spuId") Long spuId, @Param("count") Integer count);
 }

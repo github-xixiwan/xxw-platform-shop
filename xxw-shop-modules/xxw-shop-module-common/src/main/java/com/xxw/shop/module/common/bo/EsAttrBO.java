@@ -1,7 +1,10 @@
 package com.xxw.shop.module.common.bo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class EsAttrBO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,46 +28,4 @@ public class EsAttrBO implements Serializable {
      * 规格值名称
      */
     private String attrValueName;
-
-    public Long getAttrId() {
-        return attrId;
-    }
-
-    public void setAttrId(Long attrId) {
-        this.attrId = attrId;
-    }
-
-    public String getAttrName() {
-        return attrName;
-    }
-
-    public void setAttrName(String attrName) {
-        this.attrName = attrName;
-    }
-
-    public Long getAttrValueId() {
-        return attrValueId;
-    }
-
-    public void setAttrValueId(Long attrValueId) {
-        this.attrValueId = attrValueId;
-    }
-
-    public String getAttrValueName() {
-        return attrValueName;
-    }
-
-    public void setAttrValueName(String attrValueName) {
-        this.attrValueName = attrValueName;
-    }
-
-    @Override
-    public String toString() {
-        return "EsAttrBO{" +
-                "attrId=" + attrId +
-                ", attrName='" + attrName + '\'' +
-                ", attrValueId=" + attrValueId +
-                ", attrValueName='" + attrValueName + '\'' +
-                '}';
-    }
 }

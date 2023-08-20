@@ -4,10 +4,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import com.xxw.shop.bo.SpuExtensionBO;
 import com.xxw.shop.constant.EsIndexEnum;
-import com.xxw.shop.constant.SearchBusinessError;
 import com.xxw.shop.module.cache.tool.IGlobalRedisCacheManager;
 import com.xxw.shop.module.common.bo.EsGoodsBO;
-import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.starter.canal.model.CanalBinLogResult;
 import com.xxw.shop.starter.canal.support.processor.BaseCanalBinlogEventProcessor;
 import jakarta.annotation.Resource;
@@ -65,7 +63,6 @@ public class SpuExtensionCanalListener extends BaseCanalBinlogEventProcessor<Spu
             log.info("elasticsearch返回结果：" + updateResponse.toString());
         } catch (Exception e) {
             log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
-            throw new BusinessException(SearchBusinessError.SEARCH_00002);
         }
     }
 }

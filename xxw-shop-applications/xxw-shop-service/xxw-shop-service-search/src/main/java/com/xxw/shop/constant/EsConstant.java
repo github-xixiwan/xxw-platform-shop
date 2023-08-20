@@ -60,6 +60,20 @@ public interface EsConstant {
     String SHOP_SECONDARY_CATEGORY_ID = "shopSecondaryCategoryId";
     String SHOP_PRIMARY_CATEGORY_ID = "shopPrimaryCategoryId";
 
+    String USER_ID = "userId";
+    String STATUS = "status";
+    String IS_PAYED = "isPayed";
+    String DELIVERY_TYPE = "deliveryType";
+    String ORDER_ID = "orderId";
+    String CONSIGNEE = "consignee";
+    String MOBILE="mobile";
+
+    /**
+     * 订单详情
+     */
+    String ORDER_ITEMS = "orderItems";
+    String ORDER_ITEMS_SPU_NAME = ORDER_ITEMS + ".spuName";
+
     String TOP_HITS_DATA = "top_hits_data";
     String CONNECTION_SYMBOLS = ",";
 

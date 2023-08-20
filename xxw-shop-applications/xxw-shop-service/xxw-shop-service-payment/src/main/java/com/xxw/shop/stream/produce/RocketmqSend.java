@@ -15,7 +15,6 @@ public class RocketmqSend {
     private StreamBridge streamBridge;
 
     public boolean orderNotify(List<Long> orderIds) {
-        // 一个小时后解锁库存
         Message<List<Long>> message = MessageBuilder.withPayload(orderIds).build();
         return streamBridge.send("order-notify", orderIds);
     }

@@ -44,4 +44,11 @@ public interface SkuStockMapper extends BaseMapper<SkuStock> {
      * @param skuWithStocks 库存信息
      */
     void reduceActualStockByCancelOrder(@Param("skuWithStocks") List<SkuStockLockVO> skuWithStocks);
+
+    /**
+     * 通过订单添加库存
+     *
+     * @param skuWithStocks 库存信息
+     */
+    void addStockByOrder(@Param("skuWithStocks") List<SkuStockLockVO> skuWithStocks);
 }
