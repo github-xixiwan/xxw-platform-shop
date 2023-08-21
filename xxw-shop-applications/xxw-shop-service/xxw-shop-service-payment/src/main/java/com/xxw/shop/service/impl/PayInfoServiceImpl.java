@@ -63,11 +63,11 @@ public class PayInfoServiceImpl extends ServiceImpl<PayInfoMapper, PayInfo> impl
         payInfo.setOrderIds(StrUtil.join(StrUtil.COMMA, orderIds));
         // 保存预支付信息
         this.save(payInfo);
-        PayInfoVO payInfoDto = new PayInfoVO();
-        payInfoDto.setBody("商城订单");
-        payInfoDto.setPayAmount(orderAmount.getPayAmount());
-        payInfoDto.setPayId(payId);
-        return payInfoDto;
+        PayInfoVO payInfoVO = new PayInfoVO();
+        payInfoVO.setBody("商城订单");
+        payInfoVO.setPayAmount(orderAmount.getPayAmount());
+        payInfoVO.setPayId(payId);
+        return payInfoVO;
     }
 
     @Override

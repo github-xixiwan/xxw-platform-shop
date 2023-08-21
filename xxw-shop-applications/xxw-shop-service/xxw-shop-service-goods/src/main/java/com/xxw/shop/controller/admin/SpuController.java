@@ -51,21 +51,6 @@ public class SpuController {
     @Resource
     private BrandService brandService;
 
-    //TODO
-//    @GetMapping("/platform_page")
-//    @Operation(summary = "获取平台spu信息列表" , description = "分页获取平台spu信息列表")
-//    public ServerResponseEntity<Page<SpuVO>> platformPage(PageDTO pageDTO, SpuPageSearchDTO spuDTO) {
-//        PageVO<SpuVO> spuPage = spuService.platformPage(pageDTO, spuDTO);
-//        return ServerResponseEntity.success(spuPage);
-//    }
-//
-//    @GetMapping("/page")
-//    @Operation(summary = "获取spu信息列表" , description = "分页获取spu信息列表")
-//    public ServerResponseEntity<PageVO<SpuVO>> page(PageDTO pageDTO, SpuPageSearchDTO spuDTO) {
-//        PageVO<SpuVO> spuPage = spuService.page(pageDTO, spuDTO);
-//        return ServerResponseEntity.success(spuPage);
-//    }
-
     @GetMapping
     @Operation(summary = "获取spu信息", description = "根据spuId获取spu信息")
     public ServerResponseEntity<SpuVO> getBySpuId(@RequestParam Long spuId) {

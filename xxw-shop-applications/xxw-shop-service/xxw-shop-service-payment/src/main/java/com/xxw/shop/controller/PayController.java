@@ -33,15 +33,10 @@ public class PayController {
     @PostMapping("/order")
     @Operation(summary = "根据订单号进行支付", description = "根据订单号进行支付")
     public ServerResponseEntity<?> pay(HttpServletRequest request, @Valid @RequestBody PayInfoDTO payParam) {
-        // 这里的地址是网关通过转发过来的时候，获取到当前服务器的地址，测试环境要用测试环境的uri
-        String gatewayUri = "http://192.168.1.17:8126/shop_payment";
         UserInfoInTokenBO userInfoInTokenBO = AuthUserContext.get();
         Long userId = userInfoInTokenBO.getUserId();
         PayInfoVO payInfo = payInfoService.pay(userId, payParam);
-        payInfo.setBizUserId(userInfoInTokenBO.getBizUserId());
-        // 回调地址
-        payInfo.setApiNoticeUrl(gatewayUri + "/notice/pay/order");
-        payInfo.setReturnUrl(payParam.getReturnUrl());
+        //模拟支付回调
         payNoticeController.submit(payInfo.getPayId());
         return ServerResponseEntity.success(payInfo.getPayId());
     }
