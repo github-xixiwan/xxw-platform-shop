@@ -28,9 +28,24 @@ public class DefaultAuthConfigAdapter implements AuthConfigAdapter {
     private static final String EXTERNAL_URI = "/**/ua/**";
 
     /**
+     * favicon
+     */
+    private static final String FAVICON = "/favicon.ico";
+
+    /**
+     * knife4j
+     */
+    private static final String DOC_URI = "/doc.html";
+
+    /**
      * swagger
      */
-    private static final String DOC_URI = "/v3/api-docs";
+    private static final String SWAGGER_URI = "/v3/api-docs/**";
+
+    /**
+     * webjars
+     */
+    private static final String WEBJARS_URI = "/webjars/**";
 
     @Override
     public List<String> pathPatterns() {
@@ -40,7 +55,10 @@ public class DefaultAuthConfigAdapter implements AuthConfigAdapter {
     @Override
     public List<String> excludePathPatterns(String... paths) {
         List<String> arrayList = new ArrayList<>();
+        arrayList.add(FAVICON);
         arrayList.add(DOC_URI);
+        arrayList.add(WEBJARS_URI);
+        arrayList.add(SWAGGER_URI);
         arrayList.add(FEIGN_INSIDER_URI);
         arrayList.add(EXTERNAL_URI);
         arrayList.addAll(Arrays.asList(paths));
