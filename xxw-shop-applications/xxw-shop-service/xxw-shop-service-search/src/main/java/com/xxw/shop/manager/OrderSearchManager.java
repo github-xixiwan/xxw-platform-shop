@@ -42,6 +42,9 @@ public class OrderSearchManager {
      */
     public EsPageVO<EsOrderBO> page(OrderSearchDTO dto) {
         SearchResponse<EsOrderBO> searchResponse = pageSearchResult(dto);
+        if (searchResponse == null) {
+            return new EsPageVO<>();
+        }
         return buildSearchResult(dto, searchResponse);
     }
 

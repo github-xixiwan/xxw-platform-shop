@@ -51,6 +51,9 @@ public class GoodsSearchManager {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
         dto.setSearchType(SearchTypeEnum.CONSUMER.value());
         SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.TRUE);
+        if (searchResponse == null) {
+            return new EsPageVO<>();
+        }
         return buildSearchResult(dto, searchResponse);
     }
 
@@ -65,31 +68,10 @@ public class GoodsSearchManager {
         dto.setSpuStatus(StatusEnum.ENABLE.value());
         dto.setSearchType(SearchTypeEnum.CONSUMER.value());
         SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.TRUE);
-        return buildSearchResult(dto, searchResponse);
-    }
-
-    public List<EsGoodsBO> list(GoodsSearchDTO dto) {
-        //1、准备检索请求
-        dto.setPageNumber(0);
-        SearchRequest searchRequest = buildSearchRequest(dto, Boolean.TRUE);
-        List<EsGoodsBO> spuList = Lists.newArrayList();
-        try {
-            //2、执行检索请求
-            SearchResponse<EsGoodsSearchVO> searchResponse = client.search(searchRequest, EsGoodsSearchVO.class);
-            log.debug("搜索返回结果：" + searchResponse.toString());
-
-            List<Hit<EsGoodsSearchVO>> hitList = searchResponse.hits().hits();
-            for (Hit<EsGoodsSearchVO> hit : hitList) {
-                EsGoodsSearchVO vo = hit.source();
-                if (vo == null || CollectionUtil.isEmpty(vo.getSpus())) {
-                    break;
-                }
-                spuList.addAll(vo.getSpus());
-            }
-        } catch (Exception e) {
-            log.error("elasticsearch异常 错误：{}", ExceptionUtils.getStackTrace(e));
+        if (searchResponse == null) {
+            return new EsPageVO<>();
         }
-        return spuList;
+        return buildSearchResult(dto, searchResponse);
     }
 
     /**

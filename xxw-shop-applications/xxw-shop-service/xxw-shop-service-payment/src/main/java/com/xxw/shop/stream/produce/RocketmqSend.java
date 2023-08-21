@@ -18,8 +18,8 @@ public class RocketmqSend {
     private StreamBridge streamBridge;
 
     public boolean orderNotify(List<Long> orderIds) {
-        log.info("stockUnorderNotifylock 发送 orderIds：{}", JsonUtil.toJson(orderIds));
+        log.info("orderNotify 发送 orderIds：{}", JsonUtil.toJson(orderIds));
         Message<List<Long>> message = MessageBuilder.withPayload(orderIds).build();
-        return streamBridge.send("order-notify", orderIds);
+        return streamBridge.send("order-notify", message);
     }
 }

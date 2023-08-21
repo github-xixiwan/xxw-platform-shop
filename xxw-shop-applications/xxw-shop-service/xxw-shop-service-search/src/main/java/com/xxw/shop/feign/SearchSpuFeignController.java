@@ -1,19 +1,15 @@
 package com.xxw.shop.feign;
 
-import cn.hutool.core.collection.CollUtil;
 import com.xxw.shop.api.search.dto.GoodsSearchDTO;
 import com.xxw.shop.api.search.feign.SearchSpuFeignClient;
 import com.xxw.shop.api.search.vo.EsGoodsSearchVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.manager.GoodsSearchManager;
-import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.constant.Constant;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,17 +24,6 @@ public class SearchSpuFeignController implements SearchSpuFeignClient {
     @Override
     public ServerResponseEntity<EsPageVO<EsGoodsSearchVO>> search(GoodsSearchDTO dto) {
         return ServerResponseEntity.success(goodsSearchManager.simplePage(dto));
-    }
-
-    @Override
-    public ServerResponseEntity<List<EsGoodsBO>> getSpusBySpuIds(List<Long> spuIds) {
-        if (CollUtil.isEmpty(spuIds)) {
-            return ServerResponseEntity.success(new ArrayList<>());
-        }
-        GoodsSearchDTO goodsSearchDTO = new GoodsSearchDTO();
-        goodsSearchDTO.setSpuIds(spuIds);
-        List<EsGoodsBO> list = goodsSearchManager.list(goodsSearchDTO);
-        return ServerResponseEntity.success(list);
     }
 
     @Override
