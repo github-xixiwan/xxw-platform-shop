@@ -37,8 +37,8 @@ spring:
         orderNotifyStock-out-0:
           destination: order-notify-stock
           content-type: application/json
-      function:
-        definition: orderCancel;orderNotify
+    function:
+      definition: orderCancel;orderNotify
   datasource: # 数据源的相关配置
     url: jdbc:mysql://10.66.70.183:3306/xxw-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: xxw-shop
