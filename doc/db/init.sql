@@ -1,0 +1,2 @@
+INSERT INTO `xxw-shop`.sys_user (sys_user_id, create_time, update_time, nick_name, avatar, code, phone_num, has_account) VALUES (1, '2021-06-24 16:59:33', '2023-08-08 10:25:33', 'admin', '/2023/08/08/be7a5eaf6aaa44bebe6c4098176b9efb', '9527', '12345678910', 1);
+INSERT INTO `xxw-shop`.auth_account (uid, create_time, update_time, username, password, create_ip, status, sys_type, user_id, tenant_id, is_admin) VALUES (1, '2021-07-01 11:07:38', '2021-07-03 13:11:52', 'admin', '$2a$10$EiwfzqsAVUtuJ0Ry5YPMPOeyc/4shzSUcqMBRInKTijzir48LLkM.', '127.0.0.1', 1, 2, 1, 0, 1);
