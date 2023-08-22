@@ -1,12 +1,12 @@
 package com.xxw.shop.manager;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import com.xxw.shop.constant.EsIndexEnum;
 import com.xxw.shop.module.common.bo.EsGoodsBO;
-import com.xxw.shop.module.common.json.JsonUtil;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class GoodsUpdateManager {
      * @param esGoodsBO 更新的数据
      */
     public void esUpdateSpuBySpuIds(List<Long> spuIds, EsGoodsBO esGoodsBO) {
-        String source = JsonUtil.toJson(esGoodsBO);
+        String source = JSONUtil.toJsonStr(esGoodsBO);
         try {
             if (CollUtil.isEmpty(spuIds)) {
                 return;

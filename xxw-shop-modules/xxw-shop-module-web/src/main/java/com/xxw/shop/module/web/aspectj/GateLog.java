@@ -1,7 +1,7 @@
 package com.xxw.shop.module.web.aspectj;
 
+import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Maps;
-import com.xxw.shop.module.common.json.JsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,8 +53,9 @@ public class GateLog {
         long startTime = System.currentTimeMillis();
         Object result = point.proceed();
         String header = request.getHeader("User-Agent");
-        final Log l = Log.builder().threadId(Long.toString(Thread.currentThread().getId())).threadName(Thread.currentThread().getName()).ip(getIp(request)).url(request.getRequestURL().toString()).classMethod(String.format("%s.%s", point.getSignature().getDeclaringTypeName(), point.getSignature().getName())).httpMethod(request.getMethod()).requestParams(getNameAndValue(point)).result(result).timeCost(System.currentTimeMillis() - startTime).userAgent(header).build();
-        log.info("request_and_response:{}", JsonUtil.toJson(l));
+        final Log l =
+                Log.builder().threadId(Long.toString(Thread.currentThread().getId())).threadName(Thread.currentThread().getName()).ip(getIp(request)).url(request.getRequestURL().toString()).classMethod(String.format("%s.%s", point.getSignature().getDeclaringTypeName(), point.getSignature().getName())).httpMethod(request.getMethod()).requestParams(getNameAndValue(point)).result(result).timeCost(System.currentTimeMillis() - startTime).userAgent(header).build();
+        log.info("request_and_response:{}", JSONUtil.toJsonStr(l));
         return result;
     }
 

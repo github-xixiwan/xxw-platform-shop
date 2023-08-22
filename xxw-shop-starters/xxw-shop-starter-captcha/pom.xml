@@ -16,12 +16,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-module-cache</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.anji-plus</groupId>
-            <artifactId>spring-boot-starter-captcha</artifactId>
+            <groupId>com.xingyuv</groupId>
+            <artifactId>spring-boot-starter-captcha-plus</artifactId>
         </dependency>
     </dependencies>
 </project>

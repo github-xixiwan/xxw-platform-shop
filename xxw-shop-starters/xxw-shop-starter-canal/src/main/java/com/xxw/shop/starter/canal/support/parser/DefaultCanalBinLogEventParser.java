@@ -1,6 +1,6 @@
 package com.xxw.shop.starter.canal.support.parser;
 
-import com.xxw.shop.module.common.json.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.xxw.shop.starter.canal.common.BinLogEventType;
 import com.xxw.shop.starter.canal.common.OperationType;
 import com.xxw.shop.starter.canal.model.CanalBinLogEvent;
@@ -16,15 +16,13 @@ import java.util.*;
 public class DefaultCanalBinLogEventParser implements CanalBinLogEventParser {
 
     @Override
-    public <T> List<CanalBinLogResult<T>> parse(CanalBinLogEvent event,
-                                                Class<T> klass,
+    public <T> List<CanalBinLogResult<T>> parse(CanalBinLogEvent event, Class<T> klass,
                                                 BasePrimaryKeyTupleFunction primaryKeyFunction,
                                                 BaseCommonEntryFunction<T> commonEntryFunction) {
         BinLogEventType eventType = BinLogEventType.fromType(event.getType());
         if (BinLogEventType.UNKNOWN == eventType || BinLogEventType.QUERY == eventType) {
             if (log.isDebugEnabled()) {
-                log.debug("监听到不需要处理或者未知的binlog事件类型[{}],将忽略解析过程返回空列表,binlog事件:{}", eventType,
-                        JsonUtil.toJson(event));
+                log.debug("监听到不需要处理或者未知的binlog事件类型[{}],将忽略解析过程返回空列表,binlog事件:{}", eventType, JSONUtil.toJsonStr(event));
             }
             return Collections.emptyList();
         }
@@ -37,8 +35,7 @@ public class DefaultCanalBinLogEventParser implements CanalBinLogEventParser {
             entry.setSql(event.getSql());
             return Collections.singletonList(entry);
         }
-        Optional.ofNullable(event.getPkNames()).filter(x -> x.size() == 1)
-                .orElseThrow(() -> new IllegalArgumentException("DML类型binlog事件主键列数量不为1"));
+        Optional.ofNullable(event.getPkNames()).filter(x -> x.size() == 1).orElseThrow(() -> new IllegalArgumentException("DML类型binlog事件主键列数量不为1"));
         // 主键列的名称
         String primaryKeyName = event.getPkNames().get(0);
         List<CanalBinLogResult<T>> entryList = new LinkedList<>();

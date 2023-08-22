@@ -1,6 +1,6 @@
 package com.xxw.shop.stream.produce;
 
-import com.xxw.shop.module.common.json.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -18,7 +18,7 @@ public class RocketmqSend {
     private StreamBridge streamBridge;
 
     public boolean orderNotify(List<Long> orderIds) {
-        log.info("orderNotify 发送 orderIds：{}", JsonUtil.toJson(orderIds));
+        log.info("orderNotify 发送 orderIds：{}", JSONUtil.toJsonStr(orderIds));
         Message<List<Long>> message = MessageBuilder.withPayload(orderIds).build();
         return streamBridge.send("order-notify", message);
     }

@@ -1,10 +1,10 @@
 package com.xxw.shop.module.config.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.xxw.shop.cache.PlatformCacheNames;
-import com.xxw.shop.module.common.json.JsonUtil;
 import com.xxw.shop.module.config.entity.SysConfig;
 import com.xxw.shop.module.config.mapper.SysConfigMapper;
 import com.xxw.shop.module.config.service.SysConfigService;
@@ -84,7 +84,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         if (Objects.equals(String.class, clazz)) {
             return clazz.cast(value);
         } else {
-            return JsonUtil.fromJson(value, clazz);
+            return JSONUtil.toBean(value, clazz);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.xxw.shop.stream.consume;
 
-import com.xxw.shop.module.common.json.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.xxw.shop.service.OrderInfoService;
 import com.xxw.shop.stream.produce.RocketmqSend;
 import jakarta.annotation.Resource;
@@ -24,7 +24,7 @@ public class RocketmqReceive {
     @Bean
     public Consumer<List<Long>> orderCancel() {
         return message -> {
-            log.info("orderCancel 接收 orderIds：{}", JsonUtil.toJson(message));
+            log.info("orderCancel 接收 orderIds：{}", JSONUtil.toJsonStr(message));
             orderInfoService.cancelOrderAndGetCancelOrderIds(message);
         };
     }
@@ -32,7 +32,7 @@ public class RocketmqReceive {
     @Bean
     public Consumer<List<Long>> orderNotify() {
         return message -> {
-            log.info("orderNotify 接收 orderIds：{}", JsonUtil.toJson(message));
+            log.info("orderNotify 接收 orderIds：{}", JSONUtil.toJsonStr(message));
             orderInfoService.updateByToPaySuccess(message);
             // 发送消息，订单支付成功 通知库存扣减
             rocketmqSend.orderNotifyStock(message);

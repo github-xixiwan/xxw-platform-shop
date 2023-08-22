@@ -1,6 +1,6 @@
 package com.xxw.shop.starter.canal.support.adapter;
 
-import com.xxw.shop.module.common.json.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import com.xxw.shop.starter.canal.util.StringUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,6 @@ class JsonSourceAdapter<T> implements SourceAdapter<String, T> {
         if (StringUtils.X.isEmpty(source)) {
             return null;
         }
-        return JsonUtil.fromJson(source, klass);
+        return JSONUtil.toBean(source, klass);
     }
 }

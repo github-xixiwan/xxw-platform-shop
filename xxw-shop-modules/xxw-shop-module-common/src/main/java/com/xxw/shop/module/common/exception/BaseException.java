@@ -1,6 +1,6 @@
 package com.xxw.shop.module.common.exception;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 异常基础类
@@ -79,7 +79,7 @@ public class BaseException extends RuntimeException {
 
     static String getErrorMessage(String message, Object... args) {
         if (args != null && args.length > 0) {
-            if (!StringUtils.isBlank(message)) {
+            if (!StrUtil.isBlank(message)) {
                 message = String.format(message, args);
             } else {
                 message = "SG 'Sprintf' error, 无法找到错误的 message，请检查错误枚举类 getMessage 的实现是否正确";

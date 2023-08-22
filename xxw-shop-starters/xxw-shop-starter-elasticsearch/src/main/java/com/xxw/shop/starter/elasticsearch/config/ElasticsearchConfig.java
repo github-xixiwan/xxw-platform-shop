@@ -1,11 +1,11 @@
 package com.xxw.shop.starter.elasticsearch.config;
 
+import cn.hutool.core.util.StrUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import jakarta.annotation.Resource;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -37,7 +37,7 @@ public class ElasticsearchConfig {
         List<String> clusterNodes = elasticsearchProperties.getClusterNodes();
         clusterNodes.forEach(node -> {
             try {
-                String[] parts = StringUtils.split(node, ":");
+                String[] parts = StrUtil.splitToArray(node, ":");
                 Assert.notNull(parts, "Must defined");
                 Assert.state(parts.length == 2, "Must be defined as 'host:port'");
                 httpHosts.add(new HttpHost(parts[0], Integer.parseInt(parts[1]), elasticsearchProperties.getSchema()));
@@ -74,7 +74,7 @@ public class ElasticsearchConfig {
 
             // Callback used the basic credential auth
             ElasticsearchProperties.Account account = elasticsearchProperties.getAccount();
-            if (StringUtils.isNotBlank(account.getUsername()) && StringUtils.isNotBlank(account.getPassword())) {
+            if (StrUtil.isNotBlank(account.getUsername()) && StrUtil.isNotBlank(account.getPassword())) {
                 final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
                 credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(account.getUsername(),
                         account.getPassword()));

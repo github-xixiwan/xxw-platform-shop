@@ -1,6 +1,6 @@
 package com.xxw.shop.starter.canal.support.parser.converter;
 
-import com.xxw.shop.module.common.json.JsonUtil;
+import cn.hutool.json.JSONUtil;
 
 import java.sql.SQLType;
 import java.util.HashSet;
@@ -68,6 +68,6 @@ public class InMemoryCanalFieldConverterFactory implements CanalFieldConverterFa
         if (null != input.getFieldKlass() && null != (converter = typeKlassConverters.get(input.getFieldKlass()))) {
             return CanalFieldConvertResult.builder().converter(converter).build();
         }
-        throw new IllegalArgumentException(String.format("加载Canal类型转换器失败,输入参数:%s", JsonUtil.toJson(input)));
+        throw new IllegalArgumentException(String.format("加载Canal类型转换器失败,输入参数:%s", JSONUtil.toJsonStr(input)));
     }
 }
