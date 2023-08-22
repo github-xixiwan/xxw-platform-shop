@@ -85,13 +85,6 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
         }
         // 保存库存锁定信息
         this.saveBatchSelective(skuStockLocks);
-        List<Long> orderIds = skuStockLocksParam.stream().map(SkuStockLockDTO::getOrderId).collect(Collectors.toList());
-        // 30分钟后解锁库存
-        boolean r = rocketmqSend.stockUnlock(orderIds);
-        if (!r) {
-            // 消息发不出去就抛异常，发的出去无所谓
-            throw new BusinessException(SystemErrorEnumError.EXCEPTION);
-        }
         return ServerResponseEntity.success();
     }
 
@@ -107,7 +100,7 @@ public class SkuStockLockServiceImpl extends ServiceImpl<SkuStockLockMapper, Sku
         List<Long> needUnLockOrderId = new ArrayList<>();
         for (OrderStatusVO vo : orderStatusList) {
             // 该订单没有下单成功，或订单已取消，赶紧解锁库存
-            if (vo.getStatus() == null || Objects.equals(vo.getStatus(), OrderStatus.UNPAY.value()) || Objects.equals(vo.getStatus(), OrderStatus.CLOSE.value())) {
+            if (vo.getStatus() == null || Objects.equals(vo.getStatus(), OrderStatus.CLOSE.value())) {
                 needUnLockOrderId.add(vo.getOrderId());
             }
         }

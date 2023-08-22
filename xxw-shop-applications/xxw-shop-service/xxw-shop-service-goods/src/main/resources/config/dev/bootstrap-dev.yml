@@ -23,9 +23,6 @@ spring:
           name-server: 10.66.70.183:9876
           group: default-group
       bindings:
-        stockUnlock-out-0:
-          destination: stock-unlock
-          content-type: application/json
         stockUnlock-in-0:
           destination: stock-unlock
           content-type: application/json
