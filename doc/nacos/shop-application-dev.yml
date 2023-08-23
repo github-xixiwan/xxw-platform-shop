@@ -1,0 +1,6 @@
+feign:
+  inside:
+    key: shop-feign-inside-key
+    secret: shop-feign-inside-secret
+    # ip白名单，如果有需要的话，用小写逗号分割
+    ips: 

@@ -77,3 +77,9 @@ xxw-shop
 
 ## canal
 /doc/canal
+
+## seata
+/doc/seata
+
+## nacos
+/doc/nacos

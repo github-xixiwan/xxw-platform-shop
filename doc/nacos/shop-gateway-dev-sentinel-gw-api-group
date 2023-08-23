@@ -1,0 +1,7 @@
+[{
+  "apiName": "order",
+  "predicateItems": [{
+    "pattern": "/order/**",
+    "matchStrategy": 1
+  }]
+}]

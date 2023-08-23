@@ -1,0 +1,12 @@
+[{
+  "resource": "order",
+  "resourceMode": 1,
+  "grade": 1,
+  "count": 1.0,
+  "interval": 1,
+  "intervalUnit": 0,
+  "controlBehavior": 0,
+  "burst": 0,
+  "maxQueueingTimeoutMs": 500,
+  "paramItem": null
+}]
