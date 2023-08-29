@@ -9,8 +9,8 @@ import com.xxw.shop.api.goods.vo.*;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
-import com.xxw.shop.module.common.vo.ShopCartItemVO;
-import com.xxw.shop.module.common.vo.ShopCartVO;
+import com.xxw.shop.api.goods.vo.ShopCartItemVO;
+import com.xxw.shop.api.goods.vo.ShopCartVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 

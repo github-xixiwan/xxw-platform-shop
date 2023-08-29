@@ -1,5 +1,7 @@
 package com.xxw.shop.api.goods.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -24,6 +26,7 @@ public class BrandVO extends BaseVO implements Serializable {
     private String desc;
 
     @Schema(description = "品牌logo图片")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String imgUrl;
 
     @Schema(description = "检索首字母")

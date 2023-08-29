@@ -12,11 +12,13 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.google.common.collect.Lists;
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
+import com.xxw.shop.api.search.vo.EsOrderVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.constant.EsConstant;
 import com.xxw.shop.constant.EsIndexEnum;
 import com.xxw.shop.module.common.bo.EsOrderBO;
 import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +36,16 @@ public class OrderSearchManager {
     @Resource
     private ElasticsearchClient client;
 
+    @Resource
+    private MapperFacade mapperFacade;
+
     /**
      * 通过搜索信息分页搜索es数据并聚合返回的信息
      *
      * @return 搜索结果
      * @dto dto 订单搜索条件
      */
-    public EsPageVO<EsOrderBO> page(OrderSearchDTO dto) {
+    public EsPageVO<EsOrderVO> page(OrderSearchDTO dto) {
         SearchResponse<EsOrderBO> searchResponse = pageSearchResult(dto);
         if (searchResponse == null) {
             return new EsPageVO<>();
@@ -71,11 +76,11 @@ public class OrderSearchManager {
     /**
      * 构建结果数据
      */
-    private EsPageVO<EsOrderBO> buildSearchResult(OrderSearchDTO dto, SearchResponse<EsOrderBO> searchResponse) {
-        EsPageVO<EsOrderBO> esPageVO = new EsPageVO<>();
+    private EsPageVO<EsOrderVO> buildSearchResult(OrderSearchDTO dto, SearchResponse<EsOrderBO> searchResponse) {
+        EsPageVO<EsOrderVO> esPageVO = new EsPageVO<>();
 
         //1、返回的所有查询到的商品
-        List<EsOrderBO> list = getEsOrderBOList(searchResponse);
+        List<EsOrderVO> list = getEsOrderBOList(searchResponse);
         esPageVO.setRecords(list);
 
         // 分页信息
@@ -83,12 +88,12 @@ public class OrderSearchManager {
         return esPageVO;
     }
 
-    private List<EsOrderBO> getEsOrderBOList(SearchResponse<EsOrderBO> searchResponse) {
-        List<EsOrderBO> list = Lists.newArrayList();
+    private List<EsOrderVO> getEsOrderBOList(SearchResponse<EsOrderBO> searchResponse) {
+        List<EsOrderVO> list = Lists.newArrayList();
         List<Hit<EsOrderBO>> hitList = searchResponse.hits().hits();
         for (Hit<EsOrderBO> hit : hitList) {
             EsOrderBO vo = hit.source();
-            list.add(vo);
+            list.add(mapperFacade.map(vo, EsOrderVO.class));
         }
         return list;
     }

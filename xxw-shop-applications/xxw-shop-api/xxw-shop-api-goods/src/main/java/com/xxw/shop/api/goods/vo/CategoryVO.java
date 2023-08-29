@@ -1,5 +1,7 @@
 package com.xxw.shop.api.goods.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -33,9 +35,11 @@ public class CategoryVO implements Serializable {
     private Integer status;
 
     @Schema(description = "分类图标")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String icon;
 
     @Schema(description = "分类的显示图片")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String imgUrl;
 
     @Schema(description = "分类层级 从0开始")

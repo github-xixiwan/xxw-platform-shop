@@ -1,7 +1,7 @@
 package com.xxw.shop.vo;
 
 import com.xxw.shop.api.user.vo.UserAddrVO;
-import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.api.goods.vo.ShopCartItemVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

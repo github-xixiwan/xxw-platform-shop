@@ -3,7 +3,7 @@ package com.xxw.shop.mapper;
 import com.mybatisflex.core.BaseMapper;
 import com.xxw.shop.dto.CheckShopCartItemDTO;
 import com.xxw.shop.entity.ShopCartItem;
-import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.api.goods.vo.ShopCartItemVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

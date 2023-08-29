@@ -1,6 +1,8 @@
 package com.xxw.shop.module.user.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mybatisflex.annotation.Column;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -28,6 +30,7 @@ public class SysUserVO implements Serializable {
      * 头像
      */
     @Schema(description = "头像")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String avatar;
 
     /**

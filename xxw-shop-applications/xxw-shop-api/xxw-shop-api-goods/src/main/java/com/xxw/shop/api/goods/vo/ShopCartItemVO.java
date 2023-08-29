@@ -1,10 +1,11 @@
-package com.xxw.shop.module.common.vo;
+package com.xxw.shop.api.goods.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -92,6 +93,7 @@ public class ShopCartItemVO implements Serializable {
     /**
      * 商品图片
      */
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String imgUrl;
 
     /**

@@ -1,7 +1,9 @@
 package com.xxw.shop.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mybatisflex.annotation.Column;
 import com.xxw.shop.api.goods.vo.SpuVO;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -22,6 +24,7 @@ public class IndexImgVO extends BaseVO implements Serializable {
     private Long shopId;
 
     @Schema(description = "图片")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String imgUrl;
 
     @Schema(description = "状态")

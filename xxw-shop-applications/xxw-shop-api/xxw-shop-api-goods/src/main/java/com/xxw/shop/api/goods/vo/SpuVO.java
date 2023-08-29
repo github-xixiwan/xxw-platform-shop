@@ -1,5 +1,7 @@
 package com.xxw.shop.api.goods.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -36,9 +38,11 @@ public class SpuVO extends BaseVO implements Serializable {
     private String sellingPoint;
 
     @Schema(description = "商品介绍主图")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String mainImgUrl;
 
     @Schema(description = "商品介绍主图 多个图片逗号分隔")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String imgUrls;
 
     @Schema(description = "售价，整数方式保存")

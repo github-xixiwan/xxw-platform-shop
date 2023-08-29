@@ -1,5 +1,7 @@
 package com.xxw.shop.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -20,6 +22,7 @@ public class SkuConsumerVO implements Serializable {
     private String skuName;
 
     @Schema(description = "banner图片")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String imgUrl;
 
     @Schema(description = "售价，整数方式保存")

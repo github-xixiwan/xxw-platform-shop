@@ -26,6 +26,7 @@ xxw-shop
 │ │ ├─xxw-shop-api-platform  --平台端相关feign
 │ │ ├─xxw-shop-api-rbac  --权限相关feign
 │ │ ├─xxw-shop-api-search  --搜索相关feign
+│ │ ├─xxw-shop-api-support  --公共支撑相关feign
 │ │ └─xxw-shop-api-user  --用户相关feign
 │ ├─xxw-shop-gateway  --网关
 │ └─xxw-shop-service  --服务

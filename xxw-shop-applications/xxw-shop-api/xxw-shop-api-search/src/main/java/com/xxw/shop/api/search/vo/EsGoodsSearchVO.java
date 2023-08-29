@@ -1,6 +1,5 @@
 package com.xxw.shop.api.search.vo;
 
-import com.xxw.shop.module.common.bo.EsGoodsBO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -22,7 +21,7 @@ public class EsGoodsSearchVO implements Serializable {
     private List<BrandSearchVO> brands;
 
     @Schema(description = "spu列表信息")
-    private List<EsGoodsBO> spus;
+    private List<EsSpuVO> spus;
 
     @Schema(description = "分类列表信息")
     private List<CategorySearchVO> categorys;

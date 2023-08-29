@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -48,6 +49,7 @@ public class OrderItemVO extends BaseVO implements Serializable {
     private String skuName;
 
     @Schema(description = "产品主图片路径")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String pic;
 
     @Schema(description = "单个orderItem的配送类型 3：无需快递")

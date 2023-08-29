@@ -2,9 +2,9 @@ package com.xxw.shop.controller.platform;
 
 import com.xxw.shop.api.search.dto.GoodsSearchDTO;
 import com.xxw.shop.api.search.vo.EsPageVO;
+import com.xxw.shop.api.search.vo.EsSpuVO;
 import com.xxw.shop.constant.SearchTypeEnum;
 import com.xxw.shop.manager.GoodsSearchManager;
-import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,9 +24,9 @@ public class GoodsSearchController {
 
     @GetMapping("/page")
     @Operation(summary = "商品管理信息列表（平台端）", description = "商品管理信息列表（平台端）")
-    public ServerResponseEntity<EsPageVO<EsGoodsBO>> adminPage(@Valid GoodsSearchDTO dto) {
+    public ServerResponseEntity<EsPageVO<EsSpuVO>> adminPage(@Valid GoodsSearchDTO dto) {
         dto.setSearchType(SearchTypeEnum.PLATFORM.value());
-        EsPageVO<EsGoodsBO> searchPage = goodsSearchManager.adminPage(dto);
+        EsPageVO<EsSpuVO> searchPage = goodsSearchManager.adminPage(dto);
         return ServerResponseEntity.success(searchPage);
     }
 }

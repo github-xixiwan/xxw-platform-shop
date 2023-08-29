@@ -1,8 +1,8 @@
 package com.xxw.shop.api.search.feign;
 
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
+import com.xxw.shop.api.search.vo.EsOrderVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
-import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
 import com.xxw.shop.module.web.feign.FeignInsideAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,6 +22,6 @@ public interface SearchOrderFeignClient {
      * @return 订单列表
      */
     @PutMapping(value = FeignInsideAuthConfig.FEIGN_INSIDE_URL_PREFIX + "/insider/searchOrder/getOrderPage")
-    ServerResponseEntity<EsPageVO<EsOrderBO>> getOrderPage(@RequestBody OrderSearchDTO dto);
+    ServerResponseEntity<EsPageVO<EsOrderVO>> getOrderPage(@RequestBody OrderSearchDTO dto);
 
 }

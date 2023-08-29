@@ -24,7 +24,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
      * @param shopId
      * @return
      */
-    OrderInfoCompleteVO getOrderAndOrderItemData(@Param("orderId") Long orderId, @Param("shopId") Long shopId);
+    OrderCompleteVO getOrderAndOrderItemData(@Param("orderId") Long orderId, @Param("shopId") Long shopId);
 
     /**
      * 计算每个订单状态的状态数量

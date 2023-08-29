@@ -8,7 +8,7 @@ import com.xxw.shop.api.goods.feign.ShopCartFeignClient;
 import com.xxw.shop.api.goods.feign.SkuStockLockFeignClient;
 import com.xxw.shop.api.order.vo.*;
 import com.xxw.shop.module.common.bo.EsOrderBO;
-import com.xxw.shop.module.common.vo.ShopCartItemVO;
+import com.xxw.shop.api.goods.vo.ShopCartItemVO;
 import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.constant.DeliveryType;
 import com.xxw.shop.constant.OrderBusinessError;
@@ -69,10 +69,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<Long> submit(Long userId, ShopCartOrderMergerVO mergerOrder) {
-        List<OrderInfoCompleteVO> orders = saveOrder(userId, mergerOrder);
+        List<OrderCompleteVO> orders = saveOrder(userId, mergerOrder);
         List<Long> orderIds = new ArrayList<>();
         List<SkuStockLockDTO> skuStockLocks = new ArrayList<>();
-        for (OrderInfoCompleteVO vo : orders) {
+        for (OrderCompleteVO vo : orders) {
             orderIds.add(vo.getOrderId());
             List<OrderItemVO> orderItems = vo.getOrderItems();
             for (OrderItemVO orderItem : orderItems) {
@@ -156,11 +156,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public OrderInfoCompleteVO getOrderByOrderIdAndUserId(Long orderId, Long userId) {
+    public OrderCompleteVO getOrderByOrderIdAndUserId(Long orderId, Long userId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(ORDER_INFO.ORDER_ID.eq(orderId));
         queryWrapper.and(ORDER_INFO.USER_ID.eq(userId));
-        OrderInfoCompleteVO vo = this.getOneAs(queryWrapper, OrderInfoCompleteVO.class);
+        OrderCompleteVO vo = this.getOneAs(queryWrapper, OrderCompleteVO.class);
         if (vo == null) {
             // 订单不存在
             throw new BusinessException(SystemErrorEnumError.ORDER_NOT_EXIST);
@@ -169,11 +169,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public OrderInfoCompleteVO getOrderByOrderId(Long orderId) {
+    public OrderCompleteVO getOrderByOrderId(Long orderId) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.where(ORDER_INFO.ORDER_ID.eq(orderId));
         queryWrapper.and(ORDER_INFO.SHOP_ID.eq(AuthUserContext.get().getTenantId()));
-        OrderInfoCompleteVO vo = this.getOneAs(queryWrapper, OrderInfoCompleteVO.class);
+        OrderCompleteVO vo = this.getOneAs(queryWrapper, OrderCompleteVO.class);
         if (vo == null) {
             // 订单不存在
             throw new BusinessException(SystemErrorEnumError.ORDER_NOT_EXIST);
@@ -224,7 +224,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
 
-    public List<OrderInfoCompleteVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder) {
+    public List<OrderCompleteVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder) {
         OrderAddr orderAddr = mapperFacade.map(mergerOrder.getUserAddr(), OrderAddr.class);
         // 地址信息
         if (Objects.isNull(orderAddr)) {
@@ -235,7 +235,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderAddrService.save(orderAddr);
         // 订单商品参数
         List<ShopCartOrderVO> shopCartOrders = mergerOrder.getShopCartOrders();
-        List<OrderInfoCompleteVO> orders = new ArrayList<>();
+        List<OrderCompleteVO> orders = new ArrayList<>();
         List<OrderInfo> orderInfos = new ArrayList<>();
         List<OrderItem> orderItems = new ArrayList<>();
         List<Long> shopCartItemIds = new ArrayList<>();
@@ -251,7 +251,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 orderInfo.setOrderAddrId(orderAddr.getOrderAddrId());
                 orderInfos.add(orderInfo);
 
-                OrderInfoCompleteVO vo = mapperFacade.map(orderInfo, OrderInfoCompleteVO.class);
+                OrderCompleteVO vo = mapperFacade.map(orderInfo, OrderCompleteVO.class);
                 vo.setOrderItems(mapperFacade.mapAsList(orderItems, OrderItemVO.class));
                 orders.add(vo);
             }
@@ -303,7 +303,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public OrderInfoCompleteVO getOrderAndOrderItemData(Long orderId, Long shopId) {
+    public OrderCompleteVO getOrderAndOrderItemData(Long orderId, Long shopId) {
         return mapper.getOrderAndOrderItemData(orderId, shopId);
     }
 

@@ -1,6 +1,8 @@
 package com.xxw.shop.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mybatisflex.annotation.Column;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -42,6 +44,7 @@ public class ShopUserVO implements Serializable {
     @Schema(description = "店铺id")
     private Long shopId;
 
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String avatar;
 
     private Integer isAdmin;

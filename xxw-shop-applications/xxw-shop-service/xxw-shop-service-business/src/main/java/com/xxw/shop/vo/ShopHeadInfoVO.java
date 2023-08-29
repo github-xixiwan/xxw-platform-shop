@@ -10,6 +10,8 @@
 
 package com.xxw.shop.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -40,6 +42,7 @@ public class ShopHeadInfoVO implements Serializable {
     private String noticeMobile;
 
     @Schema(description = "店铺logo(可修改)")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String shopLogo;
 
     @Schema(description = "是否优选好店 1.是 0.不是")
@@ -49,8 +52,10 @@ public class ShopHeadInfoVO implements Serializable {
     private Integer shopStatus;
 
     @Schema(description = "移动端背景图")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String mobileBackgroundPic;
 
     @Schema(description = "pc背景图")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String pcBackgroundPic;
 }

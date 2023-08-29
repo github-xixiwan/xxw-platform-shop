@@ -2,13 +2,13 @@ package com.xxw.shop.controller.consumer;
 
 import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.api.order.vo.OrderAddrVO;
-import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
+import com.xxw.shop.api.order.vo.OrderCompleteVO;
 import com.xxw.shop.api.order.vo.OrderItemVO;
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
 import com.xxw.shop.api.search.feign.SearchOrderFeignClient;
+import com.xxw.shop.api.search.vo.EsOrderVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.entity.OrderAddr;
-import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -61,7 +61,7 @@ public class MyOrderController {
     public ServerResponseEntity<OrderShopVO> orderDetail(@RequestParam(value = "orderId") Long orderId) {
         Long userId = AuthUserContext.get().getUserId();
         OrderShopVO orderShopDto = new OrderShopVO();
-        OrderInfoCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
+        OrderCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
         OrderAddr orderAddr = orderAddrService.getById(order.getOrderAddrId());
         List<OrderItemVO> orderItems = orderItemService.listOrderItemsByOrderId(orderId);
         orderShopDto.setShopId(order.getShopId());
@@ -100,7 +100,7 @@ public class MyOrderController {
      */
     @GetMapping("/search_order")
     @Operation(summary = "订单列表信息查询", description = "根据订单编号或者订单中商品名称搜索")
-    public ServerResponseEntity<EsPageVO<EsOrderBO>> searchOrder(OrderSearchDTO orderSearchDTO) {
+    public ServerResponseEntity<EsPageVO<EsOrderVO>> searchOrder(OrderSearchDTO orderSearchDTO) {
         Long userId = AuthUserContext.get().getUserId();
         orderSearchDTO.setUserId(userId);
         return searchOrderFeignClient.getOrderPage(orderSearchDTO);
@@ -114,7 +114,7 @@ public class MyOrderController {
     @Parameter(name = "orderId", description = "订单号", required = true)
     public ServerResponseEntity<String> cancel(@PathVariable("orderId") Long orderId) {
         Long userId = AuthUserContext.get().getUserId();
-        OrderInfoCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
+        OrderCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
         if (!Objects.equals(order.getStatus(), OrderStatus.UNPAY.value())) {
             // 订单已支付，无法取消订单
             throw new BusinessException(SystemErrorEnumError.ORDER_PAYED);
@@ -132,7 +132,7 @@ public class MyOrderController {
     @Operation(summary = "根据订单号确认收货", description = "根据订单号确认收货")
     public ServerResponseEntity<String> receipt(@PathVariable("orderId") Long orderId) {
         Long userId = AuthUserContext.get().getUserId();
-        OrderInfoCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
+        OrderCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
         if (!Objects.equals(order.getStatus(), OrderStatus.CONSIGNMENT.value())) {
             // 订单未发货，无法确认收货
             throw new BusinessException(SystemErrorEnumError.ORDER_NO_DELIVERY);
@@ -152,7 +152,7 @@ public class MyOrderController {
     @Parameter(name = "orderId", description = "订单号", required = true)
     public ServerResponseEntity<String> delete(@PathVariable("orderId") Long orderId) {
         Long userId = AuthUserContext.get().getUserId();
-        OrderInfoCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
+        OrderCompleteVO order = orderInfoService.getOrderByOrderIdAndUserId(orderId, userId);
         if (!Objects.equals(order.getStatus(), OrderStatus.SUCCESS.value()) && !Objects.equals(order.getStatus(),
                 OrderStatus.CLOSE.value())) {
             // 订单未完成或未关闭，无法删除订单

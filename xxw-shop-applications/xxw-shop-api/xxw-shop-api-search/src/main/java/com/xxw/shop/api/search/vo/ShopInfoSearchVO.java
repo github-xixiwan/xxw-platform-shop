@@ -1,5 +1,7 @@
 package com.xxw.shop.api.search.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -17,6 +19,7 @@ public class ShopInfoSearchVO implements Serializable {
     private Long shopId;
 
     @Schema(description = "店铺logo")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String shopLogo;
 
     @Schema(description = "店铺类型1自营店 2普通店")

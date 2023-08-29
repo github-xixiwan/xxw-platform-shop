@@ -1,15 +1,11 @@
 package com.xxw.shop.api.search.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class EsSpuVO implements Serializable {
@@ -17,52 +13,14 @@ public class EsSpuVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * spu id
+     * 商品id
      */
     private Long spuId;
 
     /**
-     * 创建时间
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updateTime;
-
-    /**
-     * 品牌ID
-     */
-    private Long brandId;
-
-    /**
-     * 分类ID
-     */
-    private Long categoryId;
-
-    /**
-     * 店铺分类ID
-     */
-    private Long shopCategoryId;
-
-    /**
-     * 店铺id
-     */
-    private Long shopId;
-
-    /**
      * 商品名称
      */
-    private String name;
+    private String spuName;
 
     /**
      * 卖点
@@ -70,22 +28,7 @@ public class EsSpuVO implements Serializable {
     private String sellingPoint;
 
     /**
-     * 商品介绍主图
-     */
-    private String mainImgUrl;
-
-    /**
-     * 商品图片 多个图片逗号分隔
-     */
-    private String imgUrls;
-
-    /**
-     * 商品视频
-     */
-    private String video;
-
-    /**
-     * 售价，整数方式保存
+     * 商品售价
      */
     private Long priceFee;
 
@@ -95,17 +38,125 @@ public class EsSpuVO implements Serializable {
     private Long marketPriceFee;
 
     /**
-     * 状态 -1:删除, 0:下架, 1:上架
+     * 商品介绍主图
      */
-    private Integer status;
+    @JsonSerialize(using = ImgJsonSerializer.class)
+    private String mainImgUrl;
 
     /**
-     * sku是否含有图片 0无 1有
+     * 店铺名称 搜索华为的时候，可以把华为的旗舰店搜索出来
      */
-    private Integer hasSkuImg;
+    private String shopName;
 
     /**
-     * 序号
+     * 店铺id
+     */
+    private Long shopId;
+
+    /**
+     * 店铺logo
+     */
+    @JsonSerialize(using = ImgJsonSerializer.class)
+    private String shopImg;
+
+    /**
+     * 店铺类型1自营店 2普通店
+     */
+    private Integer shopType;
+
+    /**
+     * 商品状态
+     */
+    private Integer spuStatus;
+
+    /**
+     * 是否有库存
+     */
+    private Boolean hasStock;
+
+    /**
+     * 库存
+     */
+    private Integer stock;
+
+    /**
+     * 销量
+     */
+    private Integer saleNum;
+
+    /**
+     * 品牌名称
+     */
+    private String brandName;
+
+    /**
+     * 品牌id
+     */
+    private Integer brandId;
+
+    /**
+     * 商品序号
      */
     private Integer seq;
+
+    /**
+     * 品牌图片
+     */
+    @JsonSerialize(using = ImgJsonSerializer.class)
+    private String brandImg;
+
+    /**
+     * 分类id
+     */
+    private Long categoryId;
+
+    /**
+     * 分类名称
+     */
+    private String categoryName;
+
+    /**
+     * 商家一级分类id
+     */
+    private Long shopPrimaryCategoryId;
+
+    /**
+     * 商家一级分类名称
+     */
+    private String shopPrimaryCategoryName;
+
+    /**
+     * 商家二级分类id
+     */
+    private Long shopSecondaryCategoryId;
+
+    /**
+     * 商家二级分类名称
+     */
+    private String shopSecondaryCategoryName;
+
+    /**
+     * 平台一级分类id
+     */
+    private Long primaryCategoryId;
+
+    /**
+     * 平台一级分类名称
+     */
+    private String primaryCategoryName;
+
+    /**
+     * 平台二级分类id
+     */
+    private Long secondaryCategoryId;
+
+    /**
+     * 平台二级分类名称
+     */
+    private String secondaryCategoryName;
+
+    /**
+     * 商品用于搜索的规格属性
+     */
+    private List<EsAttrVO> attrs;
 }

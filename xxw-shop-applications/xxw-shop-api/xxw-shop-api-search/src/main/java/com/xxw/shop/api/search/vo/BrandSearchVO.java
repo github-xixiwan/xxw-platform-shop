@@ -1,5 +1,7 @@
 package com.xxw.shop.api.search.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -17,5 +19,6 @@ public class BrandSearchVO implements Serializable {
     private Long brandId;
 
     @Schema(description = "品牌图片")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String brandImg;
 }

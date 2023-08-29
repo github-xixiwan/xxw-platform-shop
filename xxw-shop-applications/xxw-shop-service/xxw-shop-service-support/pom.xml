@@ -21,6 +21,10 @@
         </dependency>
         <dependency>
             <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-starter-minio</artifactId>
         </dependency>
         <dependency>

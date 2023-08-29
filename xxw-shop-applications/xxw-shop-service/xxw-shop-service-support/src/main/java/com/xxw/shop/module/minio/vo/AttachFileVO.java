@@ -1,5 +1,7 @@
 package com.xxw.shop.module.minio.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -17,6 +19,7 @@ public class AttachFileVO extends BaseVO implements Serializable {
     private Long fileId;
 
     @Schema(description = "文件路径")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String filePath;
 
     @Schema(description = "文件类型")

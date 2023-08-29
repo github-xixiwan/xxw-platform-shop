@@ -23,6 +23,7 @@ import com.xxw.shop.constant.*;
 import com.xxw.shop.module.common.bo.EsGoodsBO;
 import com.xxw.shop.module.common.constant.StatusEnum;
 import jakarta.annotation.Resource;
+import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class GoodsSearchManager {
 
     @Resource
     private ElasticsearchClient client;
+
+    @Resource
+    private MapperFacade mapperFacade;
 
     /**
      * 通过搜索信息分页搜索es数据并聚合返回的信息
@@ -114,11 +118,11 @@ public class GoodsSearchManager {
     private List<EsGoodsSearchVO> getEsGoodsSearchVOList(SearchResponse<EsGoodsBO> searchResponse) {
         EsGoodsSearchVO esGoodsSearchVO = new EsGoodsSearchVO();
         //===============spu列表信息====================//
-        List<EsGoodsBO> spus = Lists.newArrayList();
+        List<EsSpuVO> spus = Lists.newArrayList();
         List<Hit<EsGoodsBO>> hitList = searchResponse.hits().hits();
         for (Hit<EsGoodsBO> hit : hitList) {
             EsGoodsBO vo = hit.source();
-            spus.add(vo);
+            spus.add(mapperFacade.map(vo, EsSpuVO.class));
         }
         esGoodsSearchVO.setSpus(spus);
 
@@ -527,9 +531,9 @@ public class GoodsSearchManager {
      * @dto dto 分页数据
      * @dto dto 商品搜索条件
      */
-    public EsPageVO<EsGoodsBO> adminPage(GoodsSearchDTO dto) {
+    public EsPageVO<EsSpuVO> adminPage(GoodsSearchDTO dto) {
         loadSpuStatus(dto);
-        EsPageVO<EsGoodsBO> esPageVO = new EsPageVO<>();
+        EsPageVO<EsSpuVO> esPageVO = new EsPageVO<>();
         SearchResponse<EsGoodsBO> searchResponse = pageSearchResult(dto, Boolean.FALSE);
         // 商品信息
         esPageVO.setRecords(buildSpuAdminList(searchResponse));
@@ -559,12 +563,12 @@ public class GoodsSearchManager {
      * @return
      * @dto response es返回的数据
      */
-    public List<EsGoodsBO> buildSpuAdminList(SearchResponse<EsGoodsBO> searchResponse) {
-        List<EsGoodsBO> spuList = Lists.newArrayList();
+    public List<EsSpuVO> buildSpuAdminList(SearchResponse<EsGoodsBO> searchResponse) {
+        List<EsSpuVO> spuList = Lists.newArrayList();
         List<Hit<EsGoodsBO>> hitList = searchResponse.hits().hits();
         for (Hit<EsGoodsBO> hit : hitList) {
             EsGoodsBO vo = hit.source();
-            spuList.add(vo);
+            spuList.add(mapperFacade.map(vo, EsSpuVO.class));
         }
         return spuList;
     }

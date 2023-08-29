@@ -19,5 +19,9 @@
             <groupId>com.xxw.shop</groupId>
             <artifactId>xxw-shop-api-business</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.xxw.shop</groupId>
+            <artifactId>xxw-shop-api-support</artifactId>
+        </dependency>
     </dependencies>
 </project>

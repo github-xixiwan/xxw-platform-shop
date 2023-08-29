@@ -30,9 +30,9 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     void cancelOrderAndGetCancelOrderIds(List<Long> orderIds);
 
-    OrderInfoCompleteVO getOrderByOrderIdAndUserId(Long orderId, Long userId);
+    OrderCompleteVO getOrderByOrderIdAndUserId(Long orderId, Long userId);
 
-    OrderInfoCompleteVO getOrderByOrderId(Long orderId);
+    OrderCompleteVO getOrderByOrderId(Long orderId);
 
     int receiptOrder(Long orderId);
 
@@ -45,9 +45,9 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     EsOrderBO getEsOrder(Long orderId);
 
-    List<OrderInfoCompleteVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
+    List<OrderCompleteVO> saveOrder(Long userId, ShopCartOrderMergerVO mergerOrder);
 
-    OrderInfoCompleteVO getOrderAndOrderItemData(Long orderId, Long shopId);
+    OrderCompleteVO getOrderAndOrderItemData(Long orderId, Long shopId);
 
     OrderCountVO countNumberOfStatus(Long userId);
 }

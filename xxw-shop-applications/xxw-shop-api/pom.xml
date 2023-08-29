@@ -22,6 +22,7 @@
         <module>xxw-shop-api-search</module>
         <module>xxw-shop-api-platform</module>
         <module>xxw-shop-api-business</module>
+        <module>xxw-shop-api-support</module>
     </modules>
 
     <dependencies>

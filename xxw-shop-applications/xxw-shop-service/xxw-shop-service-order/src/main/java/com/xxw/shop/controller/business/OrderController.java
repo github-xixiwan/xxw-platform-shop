@@ -2,13 +2,13 @@ package com.xxw.shop.controller.business;
 
 import com.xxw.shop.api.order.constant.OrderStatus;
 import com.xxw.shop.api.order.vo.OrderAddrVO;
-import com.xxw.shop.api.order.vo.OrderInfoCompleteVO;
+import com.xxw.shop.api.order.vo.OrderCompleteVO;
 import com.xxw.shop.api.search.dto.OrderSearchDTO;
 import com.xxw.shop.api.search.feign.SearchOrderFeignClient;
+import com.xxw.shop.api.search.vo.EsOrderVO;
 import com.xxw.shop.api.search.vo.EsPageVO;
 import com.xxw.shop.dto.DeliveryOrderDTO;
 import com.xxw.shop.entity.OrderAddr;
-import com.xxw.shop.module.common.bo.EsOrderBO;
 import com.xxw.shop.module.common.constant.SystemErrorEnumError;
 import com.xxw.shop.module.common.exception.BusinessException;
 import com.xxw.shop.module.common.response.ServerResponseEntity;
@@ -48,7 +48,7 @@ public class OrderController {
      */
     @GetMapping("/page")
     @Operation(summary = "分页获取订单详情")
-    public ServerResponseEntity<EsPageVO<EsOrderBO>> page(OrderSearchDTO dto) {
+    public ServerResponseEntity<EsPageVO<EsOrderVO>> page(OrderSearchDTO dto) {
         Long shopId = AuthUserContext.get().getTenantId();
         dto.setShopId(shopId);
         return searchOrderFeignClient.getOrderPage(dto);
@@ -59,9 +59,9 @@ public class OrderController {
      */
     @GetMapping("/order_info/{orderId}")
     @Operation(summary = "根据id获取订单详情")
-    public ServerResponseEntity<OrderInfoCompleteVO> info(@PathVariable("orderId") Long orderId) {
+    public ServerResponseEntity<OrderCompleteVO> info(@PathVariable("orderId") Long orderId) {
         // 订单和订单项
-        OrderInfoCompleteVO vo = orderInfoService.getOrderAndOrderItemData(orderId,
+        OrderCompleteVO vo = orderInfoService.getOrderAndOrderItemData(orderId,
                 AuthUserContext.get().getTenantId());
         // 详情用户收货地址
         OrderAddr orderAddr = orderAddrService.getById(vo.getOrderAddrId());
@@ -84,9 +84,9 @@ public class OrderController {
      */
     @GetMapping("/order_item_and_address/{orderId}")
     @Operation(summary = "订单项待发货数量查询")
-    public ServerResponseEntity<OrderInfoCompleteVO> getOrderItemAndAddress(@PathVariable("orderId") Long orderId) {
+    public ServerResponseEntity<OrderCompleteVO> getOrderItemAndAddress(@PathVariable("orderId") Long orderId) {
         // 订单和订单项
-        OrderInfoCompleteVO vo = orderInfoService.getOrderAndOrderItemData(orderId,
+        OrderCompleteVO vo = orderInfoService.getOrderAndOrderItemData(orderId,
                 AuthUserContext.get().getTenantId());
         // 详情用户收货地址
         OrderAddr orderAddr = orderAddrService.getById(vo.getOrderAddrId());
@@ -100,7 +100,7 @@ public class OrderController {
     @PostMapping("/delivery")
     @Operation(summary = "发货")
     public ServerResponseEntity<Void> delivery(@Valid @RequestBody DeliveryOrderDTO deliveryOrderParam) {
-        OrderInfoCompleteVO order = orderInfoService.getOrderByOrderId(deliveryOrderParam.getOrderId());
+        OrderCompleteVO order = orderInfoService.getOrderByOrderId(deliveryOrderParam.getOrderId());
         // 订单不在支付状态
         if (!Objects.equals(order.getStatus(), OrderStatus.PADYED.value())) {
             throw new BusinessException(SystemErrorEnumError.ORDER_NOT_PAYED);

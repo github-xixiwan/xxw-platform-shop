@@ -1,5 +1,7 @@
 package com.xxw.shop.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,5 +16,6 @@ public class UserSimpleInfoVO implements Serializable {
     private String nickName;
 
     @Schema(description = "用户头像")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String pic;
 }

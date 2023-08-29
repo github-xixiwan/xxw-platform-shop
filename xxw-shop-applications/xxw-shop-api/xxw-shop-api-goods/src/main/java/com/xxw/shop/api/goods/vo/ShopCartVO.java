@@ -1,4 +1,4 @@
-package com.xxw.shop.module.common.vo;
+package com.xxw.shop.api.goods.vo;
 
 import lombok.Data;
 

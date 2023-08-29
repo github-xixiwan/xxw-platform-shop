@@ -1,5 +1,7 @@
 package com.xxw.shop.api.user.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xxw.shop.api.support.serializer.ImgJsonSerializer;
 import com.xxw.shop.module.web.vo.BaseVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -21,6 +23,7 @@ public class UserCompleteVO extends BaseVO implements Serializable {
     private String nickName;
 
     @Schema(description = "头像图片路径")
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String pic;
 
     @Schema(description = "状态 1 正常 0 无效")
